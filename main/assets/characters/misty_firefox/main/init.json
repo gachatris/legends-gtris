@@ -1,0 +1,354 @@
+{
+ "base": "misty_firefox",
+ "version": "1.0",
+
+ "sources": {
+  "image": {
+   "normal": "images/normal.png",
+   "warning": "images/warning.png",
+   "fever": "images/fever.png",
+
+
+   "wingif": "images/win.png",
+   "losegif": "images/lose.png",
+   "flamegif": "images/flame.png",
+   "overhead": "images/counter_overhead.png"
+  },
+  "voice": {
+
+  }
+ },
+
+ "init": {
+
+  "main": {
+   "attributes": {
+    "hp": 299,
+    "def": 110,
+    "atk": 12,
+    "mp": 156,
+    "lifesteal": 0.3,
+    "atktol": 93,
+    "hpregen": 3,
+    "hpregentol": 15,
+    "hpregentime": 25
+   },
+
+   "chainPower": [0, 8, 17, 26, 59, 79, 129, 165, 336, 461, 539, 597, 675, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+   "feverPower": [0, 6, 10, 15, 23, 29, 39, 52, 68, 85, 101, 133, 169, 204, 246, 269, 321, 369, 445, 479, 508, 571, 686, 699],
+   "dropset": [0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 4, 0, 2, 3, 0]
+  },
+    "ca_overhead": {
+  	"image": "overhead"
+   },
+
+  "animation": {
+   "sources": {
+    "win": {
+     "width": 1200,
+     "height": 1200,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 20,
+     "src": "wingif",
+     "xbound": 3
+    },
+    "flame": {
+     "width": 1000,
+     "height": 500,
+     "framewidth": 100,
+     "frameheight": 100,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 6,
+     "src": "flamegif",
+     "xbound": 10
+
+    },
+    "lose": {
+     "width": 1200,
+     "height": 400,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 20,
+     "src": "losegif",
+     "xbound": 3
+
+    }
+   },
+
+   "triggers": {
+    "win": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "win",
+       "framemax": 8,
+       "framepos": 0,
+       "framedel": 8,
+       "loop": true,
+       "paused": true,
+       "targetid": "win"
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 20,
+       "x1": 0,
+       "y1": -4,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "20": [
+
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": -4,
+       "x1": 0,
+       "y1": 3,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "40": [
+
+
+     ],
+     "50": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 7,
+       "framepos": 1,
+       "framedel": 5,
+       "loop": true,
+       "paused": false,
+       "targetid": "win"
+      }
+
+
+
+     ],
+     "65": [
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "flame",
+       "framemax": 45,
+       "framepos": 0,
+       "framedel": 2,
+       "loop": true,
+       "resetframe": 26,
+       "paused": false,
+       "targetid": "flame"
+       },
+      {
+
+       "action": "move",
+       "targetid": "flame",
+       "x0": 3,
+       "y0": 2.5,
+       "x1": 3,
+       "y1": 2.5,
+       "duration": 1,
+       "timing": "linear"
+       }
+     ],
+
+     "80": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos": 6,
+       "framedel": 1,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 1,
+       "duration": 50,
+       "timing": "linear"
+      },
+      {
+
+       "action": "move",
+       "targetid": "flame",
+       "x0": 3,
+       "y0": 2.5,
+       "x1": 3,
+       "y1": 0.5,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "110": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos": 7,
+       "framedel": 1,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      }
+
+     ],
+     "115": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos": 6,
+       "framedel": 1,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      }
+
+     ],
+     "130": [
+
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 1,
+       "x1": 0,
+       "y1": 3,
+       "duration": 50,
+       "timing": "linear"
+      },
+      {
+
+       "action": "move",
+       "targetid": "flame",
+       "x0": 3,
+       "y0": 0.5,
+       "x1": 3,
+       "y1": 2.5,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "180": [
+      {
+       "action": "time",
+       "time": 80
+      }
+
+     ]
+
+    },
+    "lose": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "lose",
+       "framemax": 3,
+       "framepos": 0,
+       "framedel": 5,
+       "loop": true,
+       "paused": false,
+       "targetid": "lose"
+      },
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": 20,
+       "x1": 0,
+       "y1": -4,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "20": [
+
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": -4,
+       "x1": 0,
+       "y1": 3,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+
+
+     "40": [
+
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 1,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+
+
+     "90": [
+
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": 1,
+       "x1": 0,
+       "y1": 3,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "140": [
+      {
+       "action": "time",
+       "time": 40
+      }
+
+     ]
+
+    }
+   }
+  },
+
+  "image": {
+   "normal": {
+    "src": "normal"
+   },
+   "warning": {
+    "src": "warning"
+   },
+
+   "insane": {
+    "src": "fever"
+   }
+
+
+
+
+
+  },
+
+  "voice": {
+
+  }
+
+ }
+}

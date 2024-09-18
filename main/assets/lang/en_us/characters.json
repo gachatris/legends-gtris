@@ -1,0 +1,101 @@
+{
+ "ericlenovo": {
+   "name": "EricLenovo",
+   "first_name": "EricLenovo",
+   "middle_name": "Sesquipedalian",
+   "last_name": "Phylum",
+   "gender": 1,
+   "description": "He is the developer of Gachatris Legends. He keeps an eye on what his powers are gonna do.",
+   "ver": {
+    "main": {
+     "name": "Blue Wolf",
+     "description": "Known for his talent, EricLenovo goes on to outdo himself when it comes to the Neoplexian Land."
+    }
+   }
+  },
+ "rubystudios": {
+  "name": "RubyStudios",
+  "first_name": "",
+  "middle_name": "",
+  "last_name": "",
+  "gender": 2,
+  "description": "She is an Enchantress who uses dark and red magic.",
+  "ver": {
+   "main": {
+    "name": "Red Enchantress",
+    "description": "The real Red Enchantress has come. Do you wonder what she's gonna do with her visually-remarkable dark-red abilities?"
+   }
+  }
+ },
+ "misty_firefox": {
+  "name": "Misty Firefox",
+  "first_name": "",
+  "middle_name": "",
+  "last_name": "",
+  "gender": 2,
+  "description": "She is a human fox who uses fire as her name suggests. Not only that, she also has ice abilities to use.",
+  "ver": {
+   "main": {
+    "name": "Pyrokinesis Enthusiast Fox",
+    "description": "Misty Firefox has the fire base. She uses Pyrokinesis abilities to manipulate flame and plasma."
+   }
+  }
+ },
+  "dominic_zi": {
+   "name": "Dominic Zi",
+   "first_name": "Dominic",
+   "middle_name": "",
+   "last_name": "Zi",
+   "gender": 1,
+   "description": "He is EricLenovo's student and Epicman's friend. He loves playing two puzzle modes and he belongs to the RIVALS team.",
+   "ver": {
+    "main": {
+     "name": "Blur Stealth Leader",
+     "description": "Dominic Zi basically uses shockingly rapid marksman skills and wants to accomplish his Rivals missions."
+    }
+   }
+  },
+    "elisha": {
+  	"name": "Elisha Dimensions",
+  	"first_name": "Elisha",
+  	"middle_name": "",
+  	"last_name": "Dimensions",
+  	"gender": 2,
+  	"description": "She is one of EricLenovo's friends. She loves using and playing with fire; she belongs to the Pyro Dimension.",
+  	"ver": {
+  		"main": {
+  			"name": "Fire Propagator",
+  			"description": "Elisha uses Pyrokinetic and \"Pyrogenetic\" skills to basically manipulate and propagate fire."
+  		}
+  	}
+  },
+  
+  "epicman": {
+   "name": "Epicman33456",
+   "first_name": "Victor",
+   "middle_name": "",
+   "last_name": "Astorga",
+   "gender": 1,
+   "description": "He's an adventurous neko aiming to dominate the Blobs and Blocks. His friend who does the same is Dominic.",
+   "ver": {
+    "main": {
+     "name": "Adventure Neko",
+     "description": "      "
+    }
+   }
+  },
+  "flotalendy": {
+   "name": "Flotalendy",
+   "first_name": "Flotalendy",
+   "middle_name": "",
+   "last_name": "Orchidea",
+   "gender": 2,
+   "description": "She's the leader and a Gangster.",
+   "ver": {
+    "main": {
+     "name": "Star Princess",
+     "description": "      "
+    }
+   }
+  }
+}

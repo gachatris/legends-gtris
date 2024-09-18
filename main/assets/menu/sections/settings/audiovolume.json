@@ -1,0 +1,38 @@
+{
+	"def": 0,
+	"sel": [
+		{
+			"string": "audiovolume_music",
+			"desc": "audiovolume_music_desc",
+			"type": "range_minmax",
+			"property": "set_global_mfx",
+			"list": "set_global_mfx",
+			"onstate": "#ffff",
+			"offstate": "#fff2"
+		},
+		{
+			"string": "audiovolume_sound",
+			"desc": "audiovolume_sound_desc",
+			"type": "range_minmax",
+			"property": "set_global_sfx",
+			"list": "set_global_sfx",
+			"onstate": "#ffff",
+			"offstate": "#fff2"
+		},
+		{
+			"string": "audiovolume_musicbank",
+			"desc": "audiovolume_musicbank_desc",
+			"type": "range_list_specific",
+			"property": "set_global_musicbank",
+			"list": "set_global_musicbank",
+			"onstate": "#ffff",
+			"offstate": "#fff2"
+		}
+	],
+	"title": "audiovolume_title",
+	"name": "audiovolume",
+	"background": {
+		"type": "rgba",
+		"color": "#0F0F"
+	}
+}

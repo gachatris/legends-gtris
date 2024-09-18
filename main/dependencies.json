@@ -1,0 +1,33 @@
+{
+"start": {
+ "category": "assets",
+ "js": ["howler", "memory_manager", "shortcuts", "characters", "worker", "loader", "locals", "touch", "data", "particle", "ai",  "music",  "sound", "player", "loading_screen",  "game", "onevone", "splash", "background", "menu"],
+ "xml":"index.xml",
+ "css": "css.css",
+ "script_folder": "js",
+ "font_folder": "assets/fonts",
+ 
+ "fonts": [{
+  
+   "name": "copd-bold",
+   "src": "copd.otf",
+   "type": "opentype"
+  },{
+   "name": "default-ttf",
+   "src": "default.ttf",
+   "type": "truetype"
+  },
+  {
+   
+   "name": "josefinsans",
+   "src": "josefin.ttf",
+   "type": "truetype"
+ }]
+},
+"files": {
+ "unchanged": [],
+ "add": [],
+ "remove": []
+
+}
+}

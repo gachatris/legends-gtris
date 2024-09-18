@@ -1,0 +1,57 @@
+{
+	"base": "dominic_zi",
+	"version": "main",
+
+	"sources": {
+		"image": {
+			"normal": "images/field.png",
+			"warning": "images/warning.png",
+			"fever": "images/fever.png",
+			"overhead": "images/counter_overhead.png"
+
+		},
+		"voice": {
+
+		}
+	},
+
+	"init": {
+		"ca_overhead": {
+			"image": "overhead"
+		},
+		"main": {
+			"attributes": {
+				"hp": 374,
+				"def": 120,
+				"atk": 12,
+				"mp": 120,
+				"lifesteal": 0.2,
+				"atktol": 93,
+				"hpregen": 10,
+				"hpregentol": 10,
+				"hpregentime": 30
+			},
+
+			"chainPower": [0, 8, 15, 31, 55, 91, 117, 200, 272, 351, 431, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+			"feverPower": [0, 6, 9, 14, 19, 25, 32, 47, 60, 82, 107, 135, 155, 176, 200, 229, 271, 305, 357, 435, 488, 522, 570, 647],
+			"dropset": [0, 0, 2, 3, 0, 0, 0, 3, 4, 0, 3, 2, 1, 0, 0, 3]
+		},
+		"image": {
+			"normal": {
+				"src": "normal"
+			},
+			"warning": {
+				"src": "warning"
+			},
+
+			"insane": {
+				"src": "fever"
+			}
+		},
+
+		"voice": {
+
+		}
+
+	}
+}

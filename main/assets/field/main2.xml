@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gtris-player-area id="PNUMBER-AREA">
+
+ <gtris-whole-body id="PNUMBER-WHOLE">
+
+  <gtris-whole-body id="PNUMBER-ROTATING-WHOLE">
+
+   <gtris-border id="PNUMBER-BORDER">
+    <svg style="width: 100%; height: 100%" xmlns="http://www.w3.org/2000/svg" viewbox="0, 0, 220, 224">
+     <polygon id="PNUMBER-BORDER-BLOCK" points="0,15, 160,4 160,213 40,221 40,51 0,54 " style="fill:#eee7; stroke: #fff7; stroke-width: 2px; display: block"></polygon>
+     <polygon id="PNUMBER-BORDER-BLOB-1" points="40,11, 160,4 160,213 40,221" style="fill:#eee7; stroke: #fff7; stroke-width: 2px;display: none"></polygon>
+     <polygon id="PNUMBER-BORDER-BLOB-2" points="40,5, 160,11 160,221 40,213" style="fill:#eee7; stroke: #fff7; stroke-width: 2px; display: block"></polygon>
+     <!--polygon points="40,12, 160,4 160,213 40,221 40,51 " style="fill:#367"></polygon-->
+    </svg>
+   </gtris-border>
+
+   <gtris-body id="PNUMBER-BODY">
+
+    <gtris-left id="PNUMBER-LEFT-HAND">
+     <gtris-hand-child id="PNUMBER-HOLD">
+      <gtris-placeholder-div id="PNUMBER-HOLD-PLACE">
+       <gtris-placeholder-text id="PNUMBER-HOLD-TEXT">HOLD</gtris-placeholder-text>
+      </gtris-placeholder-div>
+      <canvas id="PNUMBER-HOLD-CANVAS"></canvas>
+     </gtris-hand-child>
+     <gtris-clear-div id="PNUMBER-DIV-CLEARTEXT">
+
+      <gtris-clear-idiv id="PNUMBER-CLEARTEXT-TEXTS">
+       <gtris-clear-m id="PNUMBER-CLEARTEXT-TEXT-SPIN">O-SPIN</gtris-clear-m>
+       <gtris-clear-m id="PNUMBER-CLEARTEXT-TEXT-LINE">TRIPLE</gtris-clear-m>
+       <gtris-clear-m id="PNUMBER-CLEARTEXT-TEXT-B2B">B2B x3</gtris-clear-m>
+       <gtris-clear-m id="PNUMBER-CLEARTEXT-TEXT-COMBO">1 Combo</gtris-clear-m>
+       <gtris-clear-m id="PNUMBER-CLEARTEXT-TEXT-SPIKE">10 Spike</gtris-clear-m>
+      </gtris-clear-idiv>
+      <gtris-clear-idiv id="PNUMBER-CLEARTEXT-CANVTEXT">
+       <canvas id="PNUMBER-CLEARTEXT-TSPIN-CANVAS"></canvas>
+       <gtris-clear-m id="PNUMBER-CLEARTEXT-TSPIN-LINE">
+        <gtris-clear-m id="PNUMBER-CLEARTEXT-TSPIN-LINE-TEXT">
+
+        </gtris-clear-m>
+       </gtris-clear-m>
+      </gtris-clear-idiv>
+
+     </gtris-clear-div>
+     <gtris-stats-box id="PNUMBER-STATSBOX">
+     </gtris-stats-box>
+    </gtris-left>
+    <gtris-meter id="PNUMBER-METERBAR-GARBWAIT-LEFT">
+     <gtris-bar id="PNUMBER-MB-HAND-LEFT-GWLV1"></gtris-bar>
+     <gtris-bar id="PNUMBER-MB-HAND-LEFT-GWLV2"></gtris-bar>
+     <gtris-bar id="PNUMBER-MB-HAND-LEFT-GWLV3"></gtris-bar>
+    </gtris-meter>
+    <gtris-field id="PNUMBER-FIELD">
+     <gtris-dynamic-field id="PNUMBER-FIELD-DYNAMIC">
+      <canvas id="PNUMBER-FIELD-CHARACTER-CANVAS"></canvas>
+       <gtris-insane-field-div id="PNUMBER-FIELD-INSANE">
+       <canvas id="PNUMBER-FIELD-INSANE-CANVAS"></canvas>
+       <gtris-insane-timer id="PNUMBER-INSANE-TIMER"> </gtris-insane-timer>
+      </gtris-insane-field-div>
+       <canvas id="PNUMBER-FIELD-BACK-CANVAS"></canvas>
+
+
+      <canvas id="PNUMBER-FIELD-STACK-CANVAS"></canvas>
+      <canvas id="PNUMBER-FIELD-PIECE-CANVAS"></canvas>
+     </gtris-dynamic-field>
+
+    </gtris-field>
+    <gtris-meter id="PNUMBER-METERBAR-RIGHT">
+     <gtris-bar id="PNUMBER-MB-HAND-RIGHT-BEHIND"></gtris-bar>
+     <gtris-bar id="PNUMBER-MB-HAND-RIGHT"></gtris-bar>
+    </gtris-meter>
+    <gtris-right id="PNUMBER-RIGHT-HAND">
+
+    </gtris-right>
+   </gtris-body>
+
+  </gtris-whole-body>
+
+ </gtris-whole-body>
+
+
+ <gtris-layer id="PNUMBER-OVERLAY-LAYER">
+  <gtris-blob-next-div id="PNUMBER-BLOB-NEXT-DIV">
+   <gtris-blob-next-bg id="PNUMBER-BLOB-NEXT-BG">
+    <svg style="width: 100%; height: 100%" xmlns="http://www.w3.org/2000/svg" viewbox="0, 0, 120, 205">
+     <polygon id="PNUMBER-BLOB-NEXT-BG-1" points="0,8 80,3 80,83 120,80 120,198 40,205 40,125 0,128" style="fill:#eee; display: block; stroke: #fff7; stroke-width: 4px;"></polygon>
+     <polygon id="PNUMBER-BLOB-NEXT-BG-2" points="0,80 40,83 40,3 120,8 120,128 80,125 80,205 0,198" style="fill:#eee; display: block; stroke: #fff7; stroke-width: 4px;"></polygon>
+    </svg>
+   </gtris-blob-next-bg>
+   <canvas id="PNUMBER-BLOB-NEXT-CANVAS"></canvas>
+   
+
+  </gtris-blob-next-div>
+  
+
+    <gtris-block-next-div id="PNUMBER-BLOCK-NEXT">
+      <gtris-hand-child id="PNUMBER-NEXT">
+       <gtris-placeholder-div id="PNUMBER-NEXT-PLACE">
+        <gtris-placeholder-text id="PNUMBER-NEXT-TEXT">NEXT</gtris-placeholder-text>
+       </gtris-placeholder-div>
+       <canvas id="PNUMBER-NEXT-CANVAS"></canvas>
+      </gtris-hand-child>
+      <gtris-placeholder-div id="PNUMBER-NEXT-QUEUE">
+		<canvas id="PNUMBER-NEXT-QUEUE-CANVAS"></canvas>
+      </gtris-placeholder-div>
+
+     </gtris-block-next-div>
+
+
+  <gtris-garbage-tray-div id="PNUMBER-GARBAGE-TRAY-DIV">
+
+   <canvas id="PNUMBER-GARBAGE-TRAY-BEHIND-CANVAS"></canvas>
+   <canvas id="PNUMBER-GARBAGE-TRAY-CANVAS"></canvas>
+
+
+  </gtris-garbage-tray-div>
+  
+  <gtris-nameplate-div id="PNUMBER-NAMEPLATE-DIV">
+   <gtris-nameplate id="PNUMBER-NAMEPLATE"></gtris-nameplate>
+  </gtris-nameplate-div>
+  
+  <gtris-playchar-div id="PNUMBER-PLAYER-CHARACTER-LAYER">
+   <gtris-playchar-canvas-div id="PNUMBER-PLAYCHAR-CANVAS-DIV">
+    <canvas id="PNUMBER-PLAYCHAR-CANVAS"></canvas>
+   </gtris-playchar-canvas-div>
+   <gtris-playchar-text-div id="PNUMBER-PLAYCHAR-TEXT-DIV">
+    <gtris-playchar-text id="PNUMBER-PLAYCHAR-TEXT">insane: Fever</gtris-playchar-text>
+   </gtris-playchar-text-div>
+
+
+  </gtris-playchar-div>
+  <gtris-stats-text id="PNUMBER-STATS-SCORE-TEXT">0</gtris-stats-text>
+
+  <gtris-hp-bar-div id="PNUMBER-HP-BAR-DIV">
+   <gtris-hp-text-div1 id="PNUMBER-HP-TEXT-DIV">
+    <gtris-hp-text id="PNUMBER-HP-TEXT">HP</gtris-hp-text>
+   </gtris-hp-text-div1>
+   <gtris-hp-text-div2 id="PNUMBER-HP-METER-DIV">
+    <canvas id="PNUMBER-HP-METER-CANVAS">
+
+    </canvas>
+    <gtris-hp-text id="PNUMBER-HP-NUM-TEXT">0</gtris-hp-text>
+    <gtris-hp-text-div id="PNUMBER-HP-WARNING-TEXT-DIV">
+     <gtris-hp-text id="PNUMBER-HP-WARNING-TEXT"> </gtris-hp-text>
+    </gtris-hp-text-div>
+   </gtris-hp-text-div2>
+  </gtris-hp-bar-div>
+
+  <gtris-whole-body id="PNUMBER-AUX-WHOLE">
+
+   <gtris-whole-body id="PNUMBER-AUX-ROTATING-WHOLE">
+
+    <gtris-border id="PNUMBER-AUX-BORDER">
+     <svg style="width: 100%; height: 100%" xmlns="http://www.w3.org/2000/svg" viewbox="-10, 0, 220, 224">
+      <polygon id="PNUMBER-AUX-BORDER-1" points="40,11, 160,4 160,213 40,221" style="fill:#eee7; stroke: #fff7; stroke-width: 2px;display: none"></polygon>
+      <polygon id="PNUMBER-AUX-BORDER-2" points="40,5, 160,11 160,221 40,213" style="fill:#eee7; stroke: #fff7; stroke-width: 2px; display: block"></polygon>
+      <!--polygon points="40,12, 160,4 160,213 40,221 40,51 " style="fill:#367"></polygon-->
+     </svg>
+    </gtris-border>
+
+    <gtris-body id="PNUMBER-AUX-BODY">
+
+
+     <gtris-field id="PNUMBER-AUX-FIELD">
+      <gtris-dynamic-field id="PNUMBER-AUX-FIELD-DYNAMIC">
+       <canvas id="PNUMBER-AUX-FIELD-CHARACTER-CANVAS"></canvas>
+       <gtris-insane-field-div id="PNUMBER-AUX-FIELD-INSANE">
+        <canvas id="PNUMBER-AUX-FIELD-INSANE-CANVAS"></canvas>
+        <gtris-insane-timer id="PNUMBER-AUX-INSANE-TIMER"></gtris-insane-timer>
+       </gtris-insane-field-div>
+       <canvas id="PNUMBER-AUX-FIELD-BACK-CANVAS"></canvas>
+       <canvas id="PNUMBER-AUX-FIELD-STACK-CANVAS"></canvas>
+       <canvas id="PNUMBER-AUX-FIELD-PIECE-CANVAS"></canvas>
+
+      </gtris-dynamic-field>
+     </gtris-field>
+    </gtris-body>
+
+   </gtris-whole-body>
+
+  </gtris-whole-body>
+  
+  <gtris-fever-gauge id="PNUMBER-FEVER-GAUGE">
+   <canvas id="PNUMBER-FEVER-GAUGE-CANVAS"></canvas>
+  </gtris-fever-gauge>
+  <gtris-rectanim-div id="PNUMBER-RECTANIM-DIV">
+   <canvas id="PNUMBER-RECTANIM-CANVAS"></canvas>
+  </gtris-rectanim-div>
+  
+  
+
+
+ </gtris-layer>
+</gtris-player-area>

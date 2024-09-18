@@ -1,0 +1,605 @@
+
+
+#PNUMBER-AREA {
+ display: flex;
+ position: relative;
+ align-items: center;
+ justify-content: center;
+ 
+}
+
+#PNUMBER-WHOLE {
+
+ display: flex;
+ align-items: center;
+ position: absolute;
+ justify-content: center;
+ 
+ --downfall_x: 0em;
+ --downfall_y: 500%;
+ --downfall_rot: 100deg;
+ 
+}
+
+#PNUMBER-ROTATING-WHOLE {
+
+ display: flex;
+ align-items: center;
+ position: absolute;
+ justify-content: center;
+ 
+ 
+ --downfall_x: 0em;
+ --downfall_y: 500%;
+ --downfall_rot: 100deg;
+}
+
+#PNUMBER-BODY {
+ display: flex;
+ justify-content: center;
+ position: absolute;
+ 
+}
+
+#PNUMBER-BORDER {
+ position: absolute;
+ 
+ display: flex;
+ justify-content: center;
+ 
+}
+
+
+#PNUMBER-OVERLAY-LAYER {
+ display: flex;
+ justify-content: center;
+ position: absolute;
+ 
+}
+
+#PNUMBER-LEFT-HAND {
+ display: flex;
+ flex-direction: column;
+ position: relative;
+}
+
+#PNUMBER-HOLD {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+
+ flex-direction: column;
+ /*justify-content: center;*/
+ position: relative;
+}
+
+#PNUMBER-HOLD-PLACE {
+ width: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: relative;
+ background:
+  /*linear-gradient(to right, #333, #0000)/**/
+  #000;
+}
+
+#PNUMBER-HOLD-TEXT {
+ position: absolute;
+ text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+ color: #fff;
+ margin-right: 0.1em;
+ font-size: 0.5em;
+}
+
+#PNUMBER-HOLD-CANVAS {
+ position: relative;
+ background:
+  /*linear-gradient(to right, #333, #0000)/**/
+  #000;
+}
+
+#PNUMBER-DIV-CLEARTEXT {
+ position: relative;
+ display: inline-flex;
+ flex-direction: row;
+}
+
+#PNUMBER-CLEARTEXT-CANVTEXT {
+ right: 0;
+ position: absolute;
+ display: flex;
+ flex-direction: row;
+ justify-content: right;
+ align-items: top;
+ animation-play-state: paused !important;
+
+}
+
+#PNUMBER-CLEARTEXT-TEXTS {
+ right: 0;
+ position: absolute;
+ display: flex;
+ flex-flow: column;
+ align-content: flex-end;
+ align-items: top;
+}
+
+#PNUMBER-CLEARTEXT-TEXT-SPIN {
+ width: 100%;
+}
+
+#PNUMBER-CLEARTEXT-TEXT-COMBO {
+ font-size: 3.2em;
+ letter-spacing: 0.3em;
+}
+
+#PNUMBER-CLEARTEXT-TSPIN-CANVAS {
+ position: relative;
+ background: #7770;
+ width: 100%;
+ height: 100%;
+ right: 0;
+}
+
+#PNUMBER-CLEARTEXT-TSPIN-LINE {
+ position: relative;
+ background: #7770;
+ width: 100%;
+ height: 100%;
+ right: 0;
+ display: flex;
+ flex-direction: row;
+ justify-content: center;
+ align-items: center;
+}
+
+#PNUMBER-CLEARTEXT-TSPIN-LINE-TEXT {
+ position: absolute;
+ background: #7770;
+ text-align: center;
+ font-size: 150%;
+ text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#PNUMBER-METERBAR-GARBWAIT-LEFT {
+ display: block;
+ position: relative;
+ border-right: none;
+ width: 0.4em;
+}
+
+#PNUMBER-MB-HAND-LEFT-GWLV1 {
+ display: block;
+ position: absolute;
+ background: #0F0;
+ bottom: 0;
+ width: 100%;
+ height: 0%;
+}
+
+#PNUMBER-MB-HAND-LEFT-GWLV2 {
+ display: block;
+ position: absolute;
+ background: #FF0;
+ bottom: 0;
+ width: 100%;
+ height: 0%;
+}
+
+#PNUMBER-MB-HAND-LEFT-GWLV3 {
+ display: block;
+ position: absolute;
+ background: #F00;
+ bottom: 0;
+ width: 100%;
+ height: 0%;
+}
+
+#PNUMBER-FIELD {
+ display: block;
+ position: relative;
+}
+
+#PNUMBER-FIELD-DYNAMIC {
+ display: flex;
+ flex-direction: column;
+ position: absolute;
+ justify-content: center;
+ 
+ bottom: 0;
+}
+#PNUMBER-FIELD-INSANE {
+ display: inline-flex;
+ position: absolute;
+ justify-content: center;
+ bottom: 0;
+}
+
+#PNUMBER-INSANE-TIMER {
+ position: absolute;
+ font-size: 2.1em;
+}
+
+
+#PNUMBER-FIELD-PIECE-CANVAS,
+#PNUMBER-FIELD-STACK-CANVAS,
+#PNUMBER-FIELD-CHARACTER-CANVAS,
+#PNUMBER-FIELD-INSANE-CANVAS,
+#PNUMBER-FIELD-CANVAS,
+#PNUMBER-FIELD-BACK-CANVAS{
+ position: absolute;
+ bottom: 0;
+}
+
+#PNUMBER-BLOB-NEXT-DIV {
+ position: absolute;
+ --bn-position-x: 0px;
+ --bn-position-y: -1em;
+ transform: translateX(calc(var(--bn-position-x))) translateY(calc(var(--bn-position-y)));
+}
+
+#PNUMBER-BLOCK-NEXT {
+ position: absolute;
+ --bn-position-x: 0px;
+ --bn-position-y: -1em;
+ transform: translateX(calc(var(--bn-position-x))) translateY(calc(var(--bn-position-y)));
+}
+
+#PNUMBER-BLOB-NEXT-BG,
+#PNUMBER-BLOB-NEXT-CANVAS {
+ position: absolute;
+}
+
+#PNUMBER-METERBAR-RIGHT {
+ display: block;
+ position: relative;
+ border-left: none;
+ width: 0.4em;
+}
+
+#PNUMBER-MB-HAND-RIGHT-BEHIND {
+ display: block;
+ position: absolute;
+ background: #FF07;
+ bottom: 0;
+ width: 100%;
+ height: 100%;
+ transition: height 500ms linear;
+}
+
+#PNUMBER-MB-HAND-RIGHT {
+ display: block;
+ position: absolute;
+ background: #F00;
+ bottom: 0;
+ width: 100%;
+ height: 100%;
+}
+
+
+
+
+#PNUMBER-RIGHT-HAND {
+ display: flex;
+ flex-direction: column;
+ position: relative;
+}
+
+#PNUMBER-BLOCK-NEXT {
+ display: flex;
+ flex-direction: column;
+ position: absolute;
+}
+
+#PNUMBER-NEXT {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ flex-direction: column;
+ /*justify-content: center;*/
+ position: relative;
+}
+
+#PNUMBER-NEXT-QUEUE {
+ width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+position: relative;
+background:
+/*linear-gradient(to right, #333, #0000)/**/
+#000;
+border: 1.1px solid #fff;
+}
+
+#PNUMBER-NEXT-PLACE {
+ width: 100%;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: relative;
+ background:
+  /*linear-gradient(to right, #333, #0000)/**/
+  #000;
+ border: 1.1px solid #fff;
+ border-bottom: none;
+}
+
+#PNUMBER-NEXT-TEXT {
+ position: absolute;
+ text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+ color: #fff;
+ margin-left: 0.1em;
+ font-size: 0.5em;
+}
+
+#PNUMBER-NEXT-CANVAS {
+ position: relative;
+ background:
+  /*linear-gradient(to right, #333, #0000)/**/
+  #000;
+ border: 1.1px solid #fff;
+ border-top: none;
+
+}
+
+#PNUMBER-NEXT-QUEUE-CANVAS {
+ position: absolute;
+
+}
+
+
+#PNUMBER-GARBAGE-TRAY-DIV {
+ position: absolute;
+ display: block;
+ width: 6.6em;
+ height: 1.1em;
+ background: #8380
+}
+
+#PNUMBER-GARBAGE-TRAY-CANVAS {
+ position: absolute;
+}
+
+#PNUMBER-GARBAGE-TRAY-BEHIND-CANVAS {
+ position: absolute;
+ background: #9380;
+ top: -0.4em;
+ right: 0.2em;
+}
+
+#PNUMBER-PLAYER-CHARACTER-LAYER {
+ position: absolute;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ pointer-events: none;
+}
+
+#PNUMBER-PLAYCHAR-CANVAS-DIV {
+ position: absolute;
+ --y: -4em;
+ top: calc(var(--y));
+ opacity: 0;
+}
+
+#PNUMBER-PLAYCHAR-CANVAS {
+ position: absolute;
+ background: #3830;
+
+}
+
+
+#PNUMBER-PLAYCHAR-TEXT-DIV {
+ position: absolute;
+ --y: 0em;
+ top: var(--y);
+
+ opacity: 0;
+
+ display: flex;
+ justify-content: center;
+ align-items: center;
+
+}
+
+#PNUMBER-PLAYCHAR-TEXT {
+ position: absolute;
+ font-size: 2.0em;
+ text-align: center;
+}
+
+#PNUMBER-STATSBOX {
+ bottom: 0;
+ height: 50%;
+ position: absolute;
+}
+
+#PNUMBER-STATS-SCORE-TEXT {
+ position: absolute;
+ font-size: 2em;
+}
+
+#PNUMBER-RECTANIM-DIV {
+ display: flex;
+ justify-content: center;
+ position: absolute;
+ /**background: #835/**/
+}
+
+#PNUMBER-HP-BAR-DIV {
+ position: absolute;
+ display: flex;
+ background: #844;
+ justify-content: center;
+ align-items: center;
+ width: 22em;
+ height: 2em;
+}
+
+#PNUMBER-HP-TEXT-DIV {
+ position: relative;
+ display: flex;
+ background: #999;
+ justify-content: center;
+ align-items: center;
+ width: 100%;
+ height: 2em;
+}
+
+#PNUMBER-HP-TEXT {
+ position: absolute;
+ font-size: 0.7em;
+}
+
+#PNUMBER-HP-NUM-TEXT {
+ position: absolute;
+ font-size: 0.8em;
+ text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#PNUMBER-HP-METER-CANVAS {
+ position: relative;
+ display: flex;
+ background: #333;
+ justify-content: left;
+ align-items: center;
+ width: 20em;
+ height: 2em;
+ overflow: hidden;
+}
+
+#PNUMBER-HP-METER-DIV {
+ position: relative;
+ display: inline-flex;
+ background: #333;
+ justify-content: left;
+ align-items: center;
+ width: 100%;
+ height: 100%;
+ overflow: hidden;
+}
+
+#PNUMBER-HP-WARNING-TEXT {
+ position: absolute;
+ display: flex;
+ color: #e44;
+ opacity: 0%;
+ font-family: font-ns;
+ font-size: 0.5em;
+}
+
+#PNUMBER-HP-WARNING-TEXT-DIV {
+ position: absolute;
+ display: flex;
+ width: 100%;
+ height: 100%;
+ justify-content: center;
+ align-items: center
+}
+
+#PNUMBER-NAMEPLATE-DIV{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: absolute;
+ border: 0.3em solid #fff;
+ background: #222
+}
+
+
+
+/* CSS AUX PLACE */
+
+#PNUMBER-AUX-FIELD {
+ display: block;
+ position: relative;
+}
+
+#PNUMBER-AUX-FIELD-DYNAMIC {
+ display: flex;
+ flex-direction: column;
+ position: absolute;
+ justify-content: center;
+ align-items: center;
+ bottom: 0;
+ --transX: 0px;
+ --transY: 0px;
+}
+
+#PNUMBER-AUX-FIELD-INSANE {
+ display: inline-flex;
+ position: absolute;
+ justify-content: center;
+ bottom: 0;
+
+}
+
+#PNUMBER-AUX-INSANE-TIMER {
+ position: absolute;
+ font-size: 2.1em;
+}
+
+
+#PNUMBER-AUX-FIELD-PIECE-CANVAS,
+#PNUMBER-AUX-FIELD-STACK-CANVAS,
+#PNUMBER-AUX-FIELD-CHARACTER-CANVAS,
+#PNUMBER-AUX-FIELD-INSANE-CANVAS,
+#PNUMBER-AUX-FIELD-CANVAS,
+#PNUMBER-AUX-FIELD-BACK-CANVAS{
+ position: absolute;
+ bottom: 0;
+ /*background: #984;/**/
+}
+#PNUMBER-AUX-AREA {
+ display: flex;
+ position: relative;
+ align-items: center;
+}
+
+#PNUMBER-FEVER-GAUGE {
+
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: absolute;
+ --downfall_x: 0em;
+ --downfall_y: 500%;
+ --downfall_rot: 100deg;
+ 
+}
+
+#PNUMBER-AUX-WHOLE {
+
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ position: absolute;
+ --downfall_x: 0em;
+ --downfall_y: 500%;
+ --downfall_rot: 100deg;
+}
+
+#PNUMBER-AUX-ROTATING-WHOLE {
+
+ display: flex;
+  justify-content: center;
+
+ align-items: center;
+ position: absolute;
+ --downfall_x: 0em;
+ --downfall_y: 500%;
+ --downfall_rot: 100deg;
+}
+
+#PNUMBER-AUX-BODY {
+ display: flex;
+ justify-content: center;
+ position: absolute;
+}
+
+#PNUMBER-AUX-BORDER {
+ position: absolute;
+}
+

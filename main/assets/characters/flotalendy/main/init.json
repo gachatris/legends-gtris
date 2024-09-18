@@ -1,0 +1,319 @@
+{
+ "base": "flotalendy",
+ "version": "main",
+
+ "sources": {
+  "image": {
+   "normal": "images/normal.png",
+   "warning": "images/warning.png",
+   "fever": "images/fever.png",
+   "transform": "images/transform.png",
+   "transform_micro": "images/transform_micro.png",
+   "transform_macro": "images/transform_macro.png",
+   "micro_spell1": "images/micro_spell1.png",
+   "micro_spell2": "images/micro_spell2.png",
+   "micro_spell3": "images/micro_spell3.png",
+   "micro_spell4": "images/micro_spell4.png",
+   "wingif": "images/win.png",
+      "losegif": "images/lose.png",
+         "overhead": "images/counter_overhead.png"
+         
+  },
+  "voice": {
+
+  }
+ },
+
+ "init": {
+  "animation": {
+   "sources": {
+    "winasset": {
+     "width": 951,
+     "height": 1200,
+     "framewidth": 317,
+     "frameheight": 400,
+     "aspectwidth": 0.792951542,
+     "aspectheight": 1,
+     "cellsizemult": 21,
+     "src": "wingif",
+     "xbound": 3
+     
+     
+    },
+        "loseasset": {
+         "width": 2097,
+         "height": 800,
+         "framewidth": 699,
+         "frameheight": 400,
+         "aspectwidth": 1,
+         "aspectheight": 0.572246066,
+         "cellsizemult": 21,
+         "src": "losegif",
+         "xbound": 3
+    
+        }
+   },
+   
+   "triggers": {
+    "win": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "winasset",
+       "framemax": 8,
+       "framepos": 0,
+       "framedel": 8,
+       "loop": true,
+       "paused": true,
+       "targetid": "win"
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 20,
+       "x1": 0,
+       "y1": -4,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "20": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": -4,
+       "x1": 0,
+       "y1": 3,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "40": [
+       
+      
+     ],
+     "50": [
+      
+      {
+       "action": "configureAnimLayer",
+       "framemax": 8,
+       "framepos": 1,
+       "framedel": 5,
+       "loop": true,
+       "paused": false,
+       "targetid": "win"
+      }
+     ],
+     
+     "80": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos": 6,
+       "framedel": 1,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 1,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "110": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos":7,
+       "framedel": 1,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      }
+      
+     ],
+     "145": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos": 6,
+       "framedel": 1,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      }
+      
+     ],
+     "130": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 1,
+       "x1": 0,
+       "y1": 3,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "180": [
+      {
+       "action": "time",
+       "time": 79
+      }
+      
+     ]
+     
+    },
+    "lose": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "loseasset",
+       "framemax": 4,
+       "framepos": 0,
+       "framedel": 3,
+       "loop": true,
+       "paused": false,
+       "targetid": "win"
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 25,
+       "x1": 0,
+       "y1": 1,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "20": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 1,
+       "x1": 0,
+       "y1": 8,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+
+     
+     "40": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 8,
+       "x1": 0,
+       "y1": 6,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     
+
+     "90": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 6,
+       "x1": 0,
+       "y1": 8,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "140": [
+      {
+       "action": "time",
+       "time": 40
+      }
+      
+     ]
+     
+    }
+   }
+  },
+    "main": {
+   "attributes": {
+    "hp": 352,
+    "def": 130,
+    "atk": 16,
+    "mp": 156,
+    "lifesteal": 0,
+    "atktol": 93,
+    "hpregen": 0,
+    "hpregentol": 15,
+    "hpregentime": 25
+   },
+   
+   "chainPower": [0, 8, 17, 30, 46, 98, 116, 196, 249, 358, 398, 512, 661, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+   "feverPower": [0, 6, 10, 14, 19, 27, 37, 51, 67, 85, 103, 136, 162, 181, 226, 273, 340, 387, 445, 494, 576, 662, 699, 699],
+   "dropset": [0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 4, 3, 0, 2, 0, 1]
+  },
+   "ca_overhead": {
+  	"image": "overhead"
+   },
+  "image": {
+   "normal": {
+    "src": "normal"
+   },
+   "warning": {
+    "src": "warning"
+   },
+   
+   "insane": {
+    "src": "fever"
+   },
+   "transf": {
+    "src": "transform"
+   },
+   "transfmic": {
+    "src": "transform_micro"
+   },
+   "transfmac": {
+    "src": "transform_macro"
+   },
+   "tfmicspell1": {
+    "src": "micro_spell1"
+   },
+   "tfmicspell2": {
+    "src": "micro_spell2"
+   },
+   "tfmicspell3": {
+    "src": "micro_spell3"
+   },
+   "tfmicspell4": {
+    "src": "micro_spell4"
+   }
+
+
+   
+   
+   
+  },
+
+  "voice": {
+
+  }
+
+ }
+}

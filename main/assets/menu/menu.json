@@ -1,0 +1,10 @@
+{
+	"sounds": {
+		"move": "sounds/move.ogg",
+		"select": "sounds/select.ogg",
+		"cancel": "sounds/cancel.ogg",
+		"error": "sounds/error.ogg",
+		"notification": "sounds/notification.ogg",
+		"exclam": "sounds/exclam.ogg"
+	}
+}

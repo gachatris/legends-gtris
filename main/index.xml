@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Gachatris Legends: Neoplexus | Initial: 10:56PM 7/20/2023; Revision: Aug 8, 2023, 1:03AM-->
+<style id="PLAYER-STYLES"></style>
+<gtris-core id="CORE">
+	<gtris-text id="CONTROL-STAT"></gtris-text>
+
+	<gtris-screen id="SCREEN">
+		<gtris-behind-overlay-area id="GTRIS-BEHIND-OVERLAY">
+			<gtris-background-div id="BEHIND-OVERLAY-BACKGROUND">
+				<video id="BACKGROUND-VIDEO-FRAME" autoplay="true" loop="true">
+					<source id="BACKGROUND-VIDEO-SRC" type="video/mp4"></source>
+					Your browser does NOT support HTML video elements.
+				</video>
+				<gtris-background-div id="BACKGROUND-FOREGROUND-LAYER">
+				</gtris-background-div>
+			</gtris-background-div>
+
+		</gtris-behind-overlay-area>
+		<gtris-play-area id="GTRIS-AREA"></gtris-play-area>
+		<gtris-overlay-area id="GTRIS-OVERLAY">
+
+
+			<gtris-particle-div id="GTRIS-PARTICLE-SCREEN">
+				<canvas id="PARTICLE-PARTICLE-CANVAS"></canvas>
+			</gtris-particle-div>
+
+			<gtris-timer-container id="OVERLAY-TIMER">
+				<gtris-timer-overlay id="OVERLAY-TIMER-DIV">
+					<gtris-text id="OVERLAY-TIMER-TEXT">0:00</gtris-text>
+				</gtris-timer-overlay>
+			</gtris-timer-container>
+				<gtris-wins-sbar id="OVERLAY-WINS-STATUSBAR">
+					<gtris-timer-overlay id="WINSBAR-BAR">
+
+				</gtris-timer-overlay>
+			</gtris-wins-sbar>
+			<gtris-htmleff-div id="GTRIS-HTMLEFF-SCREEN">
+
+			</gtris-htmleff-div>
+			<gtris-match-signal id="OVERLAY-MATCH-SIGNAL">
+				<gtris-ms-ready id="OVERLAY-MS-READY"></gtris-ms-ready>
+				<gtris-ms-ready id="OVERLAY-MS-START"></gtris-ms-ready>
+			</gtris-match-signal>
+			
+			<gtris-1v1-overhead-container id="OVERLAY-1V1-OVERHEAD-DIV">
+				<gtris-1v1-overhead-container id="OVERLAY-1V1-OVERHEAD">
+					<canvas id="O-1V1-OH-CANVAS"></canvas>
+				</gtris-1v1-overhead-container>
+			</gtris-1v1-overhead-container>
+		</gtris-overlay-area>
+
+		<gtris-fade-div id="GTRIS-FADE">
+
+		</gtris-fade-div>
+
+		<gtris-play-area id="GTRIS-TOUCH"></gtris-play-area>
+
+		<gtris-menu id="GTRIS-MENU-DIV">
+
+			<gtris-content-main id="MENU-MAIN-CONTENT">
+				<canvas id="MM-CONTENT-CANVAS"></canvas>
+				<gtris-footer id="MM-CONTENT-FOOTER">
+					<gtris-footer-text id="MMC-FOOTER-TEXT"></gtris-footer-text>
+				</gtris-footer>
+			</gtris-content-main>
+			<gtris-character-select-div id="MENU-CHARSELECT-DIV">
+
+				<gtris-character-select-layer id="CHARSELECT-BEHIND-DIV">
+					<canvas id="CSBEHIND-BG-CANVAS"></canvas>
+					<gtris-chardetails id="CSBEHIND-DETAILS-DIV">
+						<gtris-chardetail-div id="CSBEHIND-DET-P1-DIV">
+							<gtris-names id="CSBEHIND-P1-VERSIONNAME">Pyrokinesis Fox</gtris-names>
+							<gtris-names id="CSBEHIND-P1-CHARNAME">Misty Firefox</gtris-names>
+							<gtris-names id="CSBEHIND-P1-PLAYERNAME">EricLenovo</gtris-names>
+						</gtris-chardetail-div>
+
+						<gtris-chardetail-div id="CSBEHIND-DET-P2-DIV">
+							<gtris-names id="CSBEHIND-P2-VERSIONNAME">Red Enchantress</gtris-names>
+							<gtris-names id="CSBEHIND-P2-CHARNAME">RubyStudios</gtris-names>
+							<gtris-names id="CSBEHIND-P2-PLAYERNAME">Computer 1</gtris-names>
+						</gtris-chardetail-div>
+
+					</gtris-chardetails>
+
+				</gtris-character-select-layer>
+				<gtris-character-select-layer id="CHARSELECT-FRONT-DIV">
+					<gtris-front-panel id="CSFRONT-PANEL">
+						<canvas id="CSFRONT-PANEL-CANVAS"></canvas>
+					</gtris-front-panel>
+				</gtris-character-select-layer>
+
+			</gtris-character-select-div>
+
+			<gtris-menu-header id="MENU-HEADER">
+				<gtris-back id="HEADER-BACK">
+
+				</gtris-back>
+				<gtris-title-div id="HEADER-TITLE-DIV">
+					<gtris-title id="HEADER-TITLE-TEXT">GACHATRIS LEGENDS</gtris-title>
+				</gtris-title-div>
+				<gtris-pause id="MENU-PAUSE-DIV">
+
+				</gtris-pause>
+			</gtris-menu-header>
+
+
+
+		</gtris-menu>
+
+
+		<gtris-splash id="GTRIS-SPLASH-DIV">
+			<gtris-content-main id="SPLASH-MAIN-CONTAINER">
+				<gtris-text id="SPLASH-TEXT-TEXT"></gtris-text>
+			</gtris-content-main>
+			<canvas id="SPLASH-MAIN-CANVAS"></canvas>
+		</gtris-splash>
+
+
+
+		<gtris-load id="GTRIS-LOAD-SCREEN">
+			<gtris-load id="LOAD-DIV">
+				<gtris-loading-trivia id="LOAD-TRIVIA-CANVAS-DIV">
+					<canvas id="LOAD-TRIVIA-CANVAS" />
+					<gtris-trivia-text id="LOAD-TRIVIA-TEXT-DIV">
+						<gtris-trivia-textcontent id="LOAD-TRIVIA-TEXT"></gtris-trivia-textcontent>
+					</gtris-trivia-text>
+				</gtris-loading-trivia>
+				<gtris-loading-detail id="LOAD-NOTE-DETAIL"></gtris-loading-detail>
+				<gtris-loading-div id="LOAD-SUB-DIV">
+					<gtris-loading-ball id="LOAD-ICON">
+						<gtris-loading-ball-border id="LOAD-ICON-CONTEXT"></gtris-loading-ball-border>
+					</gtris-loading-ball>
+					<gtris-loading-text>Now Loading...</gtris-loading-text>
+				</gtris-loading-div>
+			</gtris-load>
+		</gtris-load>
+
+		<gtris-edit-text-div>
+
+		</gtris-edit-text-div>
+		<gtris-error-list-div>
+			
+		</gtris-error-list-div>
+	</gtris-screen>
+</gtris-core>
+
+<gtris-text id="STAT-STAT"></gtris-text>

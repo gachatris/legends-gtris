@@ -1,0 +1,22 @@
+{
+	"option_on": "on",
+	"option_off": "off",
+	"music_music1": "Inevitable Force||Produced by EricLenovo",
+	"music_transformation": "Frontline Transformation||Produced by EricLenovo - Transformation",
+	"music_fever1": "Insanely Special Attack||Produced by EricLenovo - Enhancement (Fever/Frenzy)",
+	"music_fever2": "Legendary Attack Goes On||Produced by EricLenovo - Enhancement (Fever/Frenzy)",
+	"music_warning": "In The Brink of Losing||Produced by EricLenovo - Warning",
+	"music_wormhole": "Wormhole Evaluation of Attack || Produced by EricLenovo - Wormhole Evaluation Round",
+	"board_left": "Left||When you start a battle session, your board will be on the left side. This side is much commonly used by players.",
+	"board_right": "Right||When you start a battle session, your board will be on the right side.",
+	
+	"mode_gachatris": "Gachatris||A type/mode made of blocks, with 7 Gachaquadrominoes consisting of 4 Gachaminoes or blocks each that resemble a letter. The goal is to clear lines by filling rows.",
+	"mode_Linkblobs": "Gachae Linkblobs||A type/mode where Blobs are in and 3-5 colors exist. Blobs are soft and round objects whose goal is to connect 4 or more of them of the same color, making a chain.",
+	"mode_random": "Random Mode||Gachatris or Linkblobs? Let the roulette decide!",
+	
+	"insane_frenzy": "Frenzy||Enhancement state mode made for Gachatris whose goal is to clear lines to complete preset maps; the phase number increases as you complete maps, making the next map become more difficult that you might think.",
+	"insane_fever": "Fever||Enhancement state mode made for Gachae Linkblobs whose goal is to match the length of a chain triggered at once with the length of a chain required by a ready-made setup. Doing so or even extending will increase the required chain length by 1 or so; otherwise will decrease it by up to 2.",
+	"insane_micro": "Micro-blob||Enhancement/transformation state mode made for Gachae Linkblobs that functions the same as the normal Fever mode but with smaller Blobs; it's faster than normal when blobs vanish.",
+	"insane_macro": "Macro-blob||Enhancement/transformation state mode made for Gachae Linkblobs that functions differently than Micro-blob; it is so large that the goal is to stack up the number of chains, hence \"combo\"."
+
+}

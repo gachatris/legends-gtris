@@ -1,0 +1,29 @@
+{
+	"def": 0,
+	"sel": [
+		{
+			"string": "miscellaneous_fieldwarning",
+			"desc": "miscellaneous_fieldwarning_desc",
+			"type": "switch",
+			"property": "set_session_fieldwarning",
+			"list": "set_session_fieldwarning",
+			"onstate": "#ffff",
+			"offstate": "#fff2"
+		},
+		{
+			"string": "miscellaneous_boardpos_2p",
+			"desc": "miscellaneous_boardpos_2p",
+			"type": "range_list_specific",
+			"property": "set_session_boardpos_2p",
+			"list": "set_session_boardpos_2p",
+			"onstate": "#ffff",
+			"offstate": "#fff2"
+		}
+	],
+	"title": "miscellaneous_title",
+	"name": "misc",
+	"background": {
+		"type": "rgba",
+		"color": "#0F0F"
+	}
+}

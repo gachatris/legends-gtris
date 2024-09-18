@@ -1,0 +1,487 @@
+{
+	"base": "elisha",
+	"version": "main",
+	"sources": {
+		"image": {
+			"normal": "images/normal.png",
+			"warning": "images/warning.png",
+			"overhead": "images/overhead.png",
+			"win": "images/win.png",
+			"lose": "images/lose.png",
+			"flame": "images/flame.png",
+			"fever": "images/fever.png"
+		},
+		"voice": {
+			"init1": "voices/init1.ogg",
+			"init2": "voices/init2.ogg",
+			"init3": "voices/init3.ogg",
+			"init4": "voices/init4.ogg",
+			"init5": "voices/init5.ogg",
+			"gtris": "voices/gtris.ogg",
+			"gtrisplus": "voices/gtrisplus.ogg",
+			"spell1": "voices/spell1.ogg",
+			"spell2": "voices/spell2.ogg",
+			"spell3": "voices/spell3.ogg",
+			"spell4": "voices/spell4.ogg",
+			"spell5": "voices/spell5.ogg",
+			"damage1": "voices/damage1.ogg",
+			"damage2": "voices/damage2.ogg",
+			"counter_mid": "voices/counter.ogg",
+			"counterattack": "voices/counter.ogg",
+			"insane": "voices/insane.ogg",
+			"insane_success": "voices/insane_success.ogg",
+			"insane_fail": "voices/insane_fail.ogg",
+			"wormhole_enter": "voices/wormhole_enter.ogg",
+			"wormhole_inflict1": "voices/wormhole_inflict1.ogg",
+			"wormhole_inflict2": "voices/wormhole_inflict2.ogg",
+			"wormhole_win": "voices/wormhole_win.ogg",
+			"wormhole_damage1": "voices/wormhole_damage1.ogg",
+			"wormhole_damage2": "voices/wormhole_damage2.ogg",
+			"wormhole_lose": "voices/wormhole_lose.ogg",
+			"win": "voices/win.ogg",
+			"lose": "voices/lose.ogg"
+		}
+	},
+	"init": {
+		"ca_overhead": {
+			"image": "overhead"
+		},
+		"main": {
+			"chainPower": [
+        0,
+        8,
+        16,
+        31,
+        45,
+        62,
+        130,
+        183,
+        295,
+        423,
+        630,
+        699,
+        699,
+        699,
+        699,
+        699,
+        699,
+        699,
+        699,
+        699,
+        699,
+        699,
+        699,
+        699
+      ],
+			"feverPower": [
+        0,
+        6,
+        9,
+        14,
+        19,
+        28,
+        38,
+        51,
+        68,
+        82,
+        100,
+        131,
+        159,
+        205,
+        223,
+        244,
+        311,
+        365,
+        411,
+        460,
+        504,
+        588,
+        681,
+        699
+      ],
+			"dropset": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+			"attributes": {
+				"hp": 374,
+				"def": 120,
+				"atk": 12,
+				"mp": 120,
+				"lifesteal": 0.2,
+				"atktol": 93,
+				"hpregen": 10,
+				"hpregentol": 10,
+				"hpregentime": 30
+			}
+		},
+		"animation": {
+			"sources": {
+				"win": {
+					"width": 1200,
+					"height": 1600,
+					"framewidth": 400,
+					"frameheight": 400,
+					"aspectwidth": 1,
+					"aspectheight": 1,
+					"cellsizemult": 20,
+					"src": "win",
+					"xbound": 3
+				},
+				"flame": {
+					"width": 1000,
+					"height": 500,
+					"framewidth": 100,
+					"frameheight": 100,
+					"aspectwidth": 1,
+					"aspectheight": 1,
+					"cellsizemult": 10,
+					"src": "flame",
+					"xbound": 10
+				},
+				"lose": {
+					"width": 1200,
+					"height": 400,
+					"framewidth": 400,
+					"frameheight": 400,
+					"aspectwidth": 1,
+					"aspectheight": 1,
+					"cellsizemult": 17.4,
+					"src": "lose",
+					"xbound": 3
+				}
+			},
+			"triggers": {
+				"win": {
+					"0": [
+						{
+							"action": "createAnimLayer",
+							"targetsrc": "flame",
+							"framemax": 45,
+							"framepos": 0,
+							"framedel": 2,
+							"loop": true,
+							"resetframe": 26,
+							"paused": true,
+							"targetid": "flame"
+            },
+						{
+							"action": "move",
+							"targetid": "flame",
+							"x0": 3.5,
+							"y0": -2,
+							"x1": 3.5,
+							"y1": -2,
+							"duration": 1,
+							"timing": "linear"
+            },
+						{
+							"action": "createAnimLayer",
+							"targetsrc": "win",
+							"framemax": 1,
+							"framepos": 0,
+							"framedel": 20,
+							"loop": true,
+							"paused": true,
+							"targetid": "win"
+            },
+						{
+							"action": "move",
+							"targetid": "win",
+							"x0": 0,
+							"y0": 20,
+							"x1": 0,
+							"y1": -4,
+							"duration": 20,
+							"timing": "linear"
+            },
+						{
+
+							"action": "opacity",
+							"targetid": "flame",
+							"duration": 1,
+							"opacity": 0
+
+            }
+          ],
+					"20": [
+						{
+							"action": "move",
+							"targetid": "win",
+							"x0": 0,
+							"y0": -4,
+							"x1": 0,
+							"y1": 3,
+							"duration": 20,
+							"timing": "linear"
+            }
+          ],
+					"25": [
+						{
+							"action": "configureAnimLayer",
+							"framemax": 5,
+							"framepos": 1,
+							"resetframe": 1,
+							"framedel": 5,
+							"loop": true,
+							"paused": false,
+							"targetid": "win"
+            }
+          ],
+					"40": [
+						{
+							"action": "configureAnimLayer",
+							"framemax": 7,
+							"framepos": 4,
+							"resetframe": 4,
+							"framedel": 5,
+							"loop": true,
+							"paused": false,
+							"targetid": "win"
+            }
+          ],
+					"45": [
+						{
+							"action": "configureAnimLayer",
+							"paused": false,
+							"targetid": "flame"
+            },
+            			{
+
+							"action": "opacity",
+							"targetid": "flame",
+							"duration": 5,
+							"opacity": 1
+
+						}
+            
+          ],
+					"75": [
+						{
+							"action": "configureAnimLayer",
+							"framemax": 9,
+							"framepos": 8,
+							"framedel": 1,
+							"loop": false,
+							"paused": true,
+							"targetid": "win"
+            },
+            {
+							"action": "move",
+							"targetid": "flame",
+							"x0": 3.5,
+							"y0": -2,
+							"x1": 4.3,
+							"y1": -4,
+							"duration": 5,
+							"timing": "linear"
+            }
+          ],
+					"80": [
+						{
+							"action": "configureAnimLayer",
+							"framemax": 1,
+							"framepos": 9,
+							"framedel": 1,
+							"loop": false,
+							"paused": true,
+							"targetid": "win"
+            },
+						{
+							"action": "move",
+							"targetid": "win",
+							"x0": 0,
+							"y0": 3,
+							"x1": 0,
+							"y1": 1,
+							"duration": 50,
+							"timing": "linear"
+            },
+               {
+            	"action": "move",
+            	"targetid": "flame",
+            	"x0": 4.3,
+            	"y0": -4,
+            	"x1": 4.3,
+            	"y1": -6,
+            	"duration": 50,
+            	"timing": "linear"
+            }
+						
+          ],
+					"110": [
+						{
+							"action": "configureAnimLayer",
+							"framemax": 1,
+							"framepos": 10,
+							"framedel": 1,
+							"loop": false,
+							"paused": true,
+							"targetid": "win"
+            }
+          ],
+					"115": [
+						{
+							"action": "configureAnimLayer",
+							"framemax": 1,
+							"framepos": 9,
+							"framedel": 1,
+							"loop": false,
+							"paused": true,
+							"targetid": "win"
+            }
+          ],
+					"130": [
+						{
+							"action": "move",
+							"targetid": "win",
+							"x0": 0,
+							"y0": 1,
+							"x1": 0,
+							"y1": 3,
+							"duration": 50,
+							"timing": "linear"
+            },
+		           {
+            	"action": "move",
+            	"targetid": "flame",
+            	"x0": 3.5,
+            	"y0": -6,
+            	"x1": 4.3,
+            	"y1": -4,
+            	"duration": 50,
+            	"timing": "linear"
+            }
+          ],
+					"180": [
+						{
+							"action": "time",
+							"time": 80
+            }
+          ]
+				},
+				"lose": {
+					"0": [
+						{
+							"action": "createAnimLayer",
+							"targetsrc": "lose",
+							"framemax": 3,
+							"framepos": 0,
+							"framedel": 5,
+							"loop": true,
+							"paused": false,
+							"targetid": "lose"
+            },
+						{
+							"action": "move",
+							"targetid": "lose",
+							"x0": 0,
+							"y0": 23,
+							"x1": 0,
+							"y1": -1,
+							"duration": 20,
+							"timing": "linear"
+            }
+          ],
+					"20": [
+						{
+							"action": "move",
+							"targetid": "lose",
+							"x0": 0,
+							"y0": -1,
+							"x1": 0,
+							"y1": 6,
+							"duration": 20,
+							"timing": "linear"
+            }
+          ],
+					"40": [
+						{
+							"action": "move",
+							"targetid": "lose",
+							"x0": 0,
+							"y0": 6,
+							"x1": 0,
+							"y1": 4,
+							"duration": 50,
+							"timing": "linear"
+            }
+          ],
+					"90": [
+						{
+							"action": "move",
+							"targetid": "lose",
+							"x0": 0,
+							"y0": 4,
+							"x1": 0,
+							"y1": 6,
+							"duration": 50,
+							"timing": "linear"
+            }
+          ],
+					"140": [
+						{
+							"action": "time",
+							"time": 40
+            }
+          ]
+				}
+			}
+		},
+		"image": {
+			"normal": {
+				"src": "normal"
+			},
+			"warning": {
+				"src": "warning"
+			},
+			   "insane": {
+    "src": "fever"
+   }
+		},
+		"voice": {
+			"init1": "init1",
+			"init2": "init2",
+			"init3": "init3",
+			"init4": "init4",
+			"init5": "init5",
+			"gtris": "gtris",
+			"gtrisplus": "gtrisplus",
+			"spell1": "spell1",
+			"spell2": "spell2",
+			"spell3": "spell3",
+			"spell4": "spell4",
+			"spell5": "spell5",
+			"damage1": "damage1",
+			"damage2": "damage2",
+			"insane": "insane",
+			"insane_success": "insane_success",
+			"insane_fail": "insane_fail",
+			"counter_mid": "counter_mid",
+			"counterattack": "counterattack",
+			"wormhole_enter": "wormhole_enter",
+			"wormhole_inflict1": "wormhole_inflict1",
+			"wormhole_inflict2": "wormhole_inflict2",
+			"wormhole_win": "wormhole_win",
+			"wormhole_damage1": "wormhole_damage1",
+			"wormhole_damage2": "wormhole_damage2",
+			"wormhole_lose": "wormhole_lose",
+			"win": "win",
+			"lose": "lose"
+		}
+	}
+}

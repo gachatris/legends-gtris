@@ -1,0 +1,7 @@
+{
+	"version": "0.0.1 hAlpha",
+	"build": "A1 Alpha",
+	"database": {
+		"categories": ["cache", "local_data", "replays", "assets"]
+	}
+}

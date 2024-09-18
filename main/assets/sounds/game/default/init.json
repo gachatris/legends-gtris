@@ -1,0 +1,356 @@
+{
+ "sources": {
+  "main": {
+   "harddrop": "harddrop.ogg",
+   "move": "move.ogg",
+   "lock": "lock.ogg",
+   "rotate": "rotate.ogg",
+   "prespin": "prespin.ogg",
+   "prespinmini": "prespinmini.ogg",
+   "line": "line.ogg",
+   "line4": "line4.ogg",
+   "line4_b2b": "line4_b2b.ogg",
+   "tspin": "tspin.ogg",
+   "tspin0": "tspin0.ogg",
+   "tspinmini0": "tspinmini0.ogg",
+   "hold": "hold.ogg",
+   "collapse": "collapse.ogg",
+   "hold_first": "hold_first.ogg",
+   "charge": "charge.ogg",
+   "charge_high": "charge_high.ogg",
+   "garbage": "garbage.ogg",
+   "hit1": "hit1.ogg",
+   "hit2": "hit2.ogg",
+   "hit3": "hit3.ogg",
+   "hit4": "hit4.ogg",
+   "hit5": "hit5.ogg",
+   "lose": "lose.ogg",
+   "insane": "insane.ogg",
+   "allclear": "allclear.ogg",
+   "shoosh_chain": "shoosh_chain.ogg",
+   "timer": "timer.ogg",
+   "ready": "ready.ogg",
+   "start": "start.ogg",
+   
+      "timer_zero": "timer_zero.ogg",
+         "timer2_1": "timer2_phase1.ogg",
+            "timer2_2": "timer2_phase2.ogg",
+
+   "blub_garbage1": "blub_garbage1.ogg",
+   "blub_garbage2": "blub_garbage2.ogg",
+   "blub_move": "blub_move.ogg",
+   "blub_drop": "blub_drop.ogg",
+   "blub_rotate": "blub_rotate.ogg",
+   
+   "swap_roulette": "swap/roulette.ogg",
+   "swap_pick": "swap/pick.ogg",
+   "swap_swap": "shweesh.ogg",
+   
+   "wormhole_hit": "wormhole/whit.ogg",
+   "wormhole_block": "wormhole/wblock.ogg",
+   "wormhole_transmit": "wormhole/wtransmit.ogg",
+   "wormhole_ready": "wormhole/wready.ogg",
+   "wormhole_loop": "wormhole/wloop.ogg",
+   "wormhole_blast": "wormhole/wblast.ogg",
+   "wormhole_break": "wormhole/wbreak.ogg"
+
+   
+   
+   },
+  "chain": {
+   "src": "chain/chain",
+   "name": "chain",
+   "count": 7,
+   "filetype": "ogg"
+  },
+  "swapcombo": {
+   "src": "swap/combo",
+   "name": "swapcombo",
+   "count": 7,
+   "filetype": "ogg"
+  }  
+ },
+ "sounds": {
+  
+  "allclear": {
+   "src": "allclear",
+   "loop": false
+  },
+  "blub_move": {
+   "src": "blub_move",
+   "loop": false
+  },
+
+  "blub_garbage1": {
+   "src": "blub_garbage1",
+   "loop": false
+  },
+
+  "blub_garbage2": {
+   "src": "blub_garbage2",
+   "loop": false
+  },
+  "blub_rotate": {
+   "src": "blub_rotate",
+   "loop": false
+  },
+  "blub_drop": {
+   "src": "blub_drop",
+   "loop": false
+  },  
+  
+  "collapse": {
+   "src": "collapse",
+   "loop": false
+  },
+  
+  "charge": {
+   "src": "charge",
+   "loop": false
+  },
+  
+  "charge_high": {
+   "src": "charge_high",
+   "loop": false
+  },
+  "garbage": {
+   "src": "garbage",
+   "loop": false
+  },
+  "harddrop": {
+   "src": "harddrop",
+   "loop": false
+  },
+    
+  "timer_basic": {
+   "src": "timer",
+   "loop": false
+  },
+  
+    "timer2_1": {
+   "src": "timer2_1",
+   "loop": false
+  },
+    "timer2_2": {
+     "src": "timer2_2",
+     "loop": false
+    },
+      "timer_zero": {
+       "src": "timer_zero",
+       "loop": false
+      },
+  
+  
+  "swap_roulette": {
+   "src": "swap_roulette",
+   "loop": false
+  },
+  "swap_pick": {
+   "src": "swap_pick",
+   "loop": false
+  },
+  "shoosh_chain": {
+   "src": "shoosh_chain",
+   "loop": false
+  },  
+  "hit1": {
+   "src": "hit1",
+   "loop": false
+  },  
+  "ready": {
+   "src": "ready",
+   "loop": false
+  },
+  "start": {
+   "src": "start",
+   "loop": false
+  },
+
+
+
+
+  "hit2": {
+   "src": "hit2",
+   "loop": false
+  },  
+  
+  "hit3": {
+   "src": "hit3",
+   "loop": false
+  },  
+  
+  "hit4": {
+   "src": "hit4",
+   "loop": false
+  },  
+
+  "hit5": {
+   "src": "hit5",
+   "loop": false
+  },  
+  
+  "hold": {
+   "src": "hold",
+   "loop": false
+  },
+  "hold_first": {
+   "src": "hold_first",
+   "loop": false
+  },
+  
+
+  "swap_swap": {
+  	"src": "swap_swap",
+  	"loop": false
+  },
+  
+  "insane": {
+   "src": "insane",
+   "loop": false
+  },  
+  
+  "lose": {
+   "src": "lose",
+   "loop": false
+  },  
+  "lock": {
+   "src": "lock",
+   "loop": false
+  },
+  "move": {
+   "src": "move",
+   "loop": false
+  },
+  "line1": {
+   "src": "line",
+   "loop": false
+  },
+  "line2": {
+   "src": "line",
+   "loop": false
+  },
+  "line3": {
+   "src": "line",
+   "loop": false
+  },
+  "line4": {
+   "src": "line4",
+   "loop": false
+  },
+  "line4_b2b": {
+   "src": "line4_b2b",
+   "loop": false
+  },
+  "prespin": {
+   "src": "prespin",
+   "loop": false
+  },
+  "prespinmini": {
+   "src": "prespinmini",
+   "loop": false
+  },
+  "rotate": {
+   "src": "rotate",
+   "loop": false
+  },
+  
+  "tspin0": {
+   "src": "tspin0",
+   "loop": false
+  },  
+  
+  "tspinmini0": {
+   "src": "tspinmini0",
+   "loop": false
+  },
+  "tspin1": {
+   "src": "tspin",
+   "loop": false
+  },
+  "tspin1_b2b": {
+   "src": "tspin",
+   "loop": false
+  },
+  "tspinmini1": {
+   "src": "tspin",
+   "loop": false
+  },
+  "tspinmini1_b2b": {
+   "src": "tspin",
+   "loop": false
+  },
+  
+  "tspin2": {
+   "src": "tspin",
+   "loop": false
+  },
+  "tspin2_b2b": {
+   "src": "tspin",
+   "loop": false
+  },
+  "tspinmini2": {
+   "src": "tspin",
+   "loop": false
+  },
+  "tspinmini2_b2b": {
+   "src": "tspin",
+   "loop": false
+  },
+  
+  "tspin3": {
+   "src": "tspin",
+   "loop": false
+  },
+  "tspin3_b2b": {
+   "src": "tspin",
+   "loop": false
+  },
+  "tspinmini3": {
+   "src": "tspin",
+   "loop": false
+  },
+  "tspinmini3_b2b": {
+   "src": "tspin",
+   "loop": false
+  },
+  
+  
+  
+  
+  
+  
+  "wormhole_hit": {
+   "src": "wormhole_hit",
+   "loop": false
+  },
+  
+  "wormhole_block": {
+   "src": "wormhole_block",
+   "loop": false
+  },
+  "wormhole_break": {
+   "src": "wormhole_break",
+   "loop": false
+  },
+  "wormhole_transmit": {
+   "src": "wormhole_transmit",
+   "loop": false
+  },
+  
+  "wormhole_blast": {
+   "src": "wormhole_blast",
+   "loop": false
+  },
+  
+  "wormhole_loop": {
+   "src": "wormhole_loop",
+   "loop": "ready"
+  },
+  
+  "wormhole_ready": {
+   "src": "wormhole_ready",
+   "loop": false
+  }
+  
+ }
+}

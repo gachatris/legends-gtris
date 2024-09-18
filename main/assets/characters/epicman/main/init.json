@@ -1,0 +1,144 @@
+{
+ "base": "epicman",
+ "version": "main",
+ 
+ "sources": {
+  "image": {
+   "normal": "images/field.png",
+   "warning": "images/warning.png",
+   "insane": "images/fever.png",
+   "overhead": "images/counter_overhead.png"
+  },
+  "voice": {
+   "init1": "voices/init1.ogg",
+   "init2": "voices/init2.ogg",
+   "init3": "voices/init3.ogg",
+   "init4": "voices/init4.ogg",
+   "init5": "voices/init5.ogg",
+   "gtris": "voices/gtris.ogg",
+   "gtrisplus": "voices/gtrisplus.ogg",
+
+   "spell1": "voices/spell1.ogg",
+   "spell2": "voices/spell2.ogg",
+   "spell3": "voices/spell3.ogg",
+   "spell4": "voices/spell4.ogg",
+   "spell5": "voices/spell5.ogg",
+
+   "damage1": "voices/damage1.ogg",
+   "damage2": "voices/damage2.ogg",
+
+   "counter_mid": "voices/counter.ogg",
+   "counterattack": "voices/counter.ogg",
+   
+   "insane": "voices/insane.ogg",
+   "insane_success": "voices/success.ogg",
+   "daihenshin": "voices/daihenshin.ogg",
+
+   
+   "zenkeshi": "voices/zenkeshi.ogg",
+   
+   "insane_fail": "voices/fail.ogg",
+   
+   "wormhole_enter": "voices/wormhole_enter.ogg",
+   "wormhole_inflict1": "voices/wormhole_inflict1.ogg",
+   "wormhole_inflict2": "voices/wormhole_inflict2.ogg",
+   "wormhole_win": "voices/wormhole_win.ogg",
+   "wormhole_damage1": "voices/wormhole_damage1.ogg",
+   "wormhole_damage2": "voices/wormhole_damage2.ogg",
+   "wormhole_lose": "voices/wormhole_lose.ogg",
+   
+   "swap_gtris": "voices/swap_gtris.ogg",
+   "swap_blob": "voices/swap_blob.ogg",
+   
+   "swap_swap": "voices/swap_swap.ogg",
+   "swap_closecall": "voices/swap_closecall.ogg",
+   "swap_danger": "voices/swap_danger.ogg",
+
+   
+   "win": "voices/win.ogg",
+   "lose": "voices/lose.ogg"
+  }
+ },
+
+ "init": {
+ 			"ca_overhead": {
+			"image": "overhead"
+		},
+  "main": {
+  	"attributes": {
+  		"hp": 374,
+  		"def": 120,
+  		"atk": 12,
+  		"mp": 120,
+  		"lifesteal": 0.2,
+  		"atktol": 93,
+  		"hpregen": 10,
+  		"hpregentol": 10,
+  		"hpregentime": 30
+  	},
+
+  	"chainPower": [0, 8, 16, 24, 51, 79, 120, 198, 253, 457, 643, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+  	"feverPower": [0, 6, 10, 16, 23, 32, 44, 57, 74, 97, 120, 157, 176, 211, 244, 281, 315, 351, 416, 473, 542, 604, 644, 681],
+  	"dropset": [0, 0, 3, 0, 0, 4, 1, 0, 4, 0, 0, 3, 0, 2, 0, 0]
+  },
+  "image": {
+   "normal": {
+    "src": "normal"
+   },
+   "warning": {
+    "src": "warning"
+   },
+   "insane": {
+    "src": "insane"
+   }
+  },
+
+  "voice": {
+   "init1": "init1",
+   "init2": "init2",
+   "init3": "init3",
+   "init4": "init4",
+   "init5": "init5",
+   "gtris": "gtris",
+   "gtrisplus": "gtrisplus",
+   "spell1": "spell1",
+   "spell2": "spell2",
+   "spell3": "spell3",
+   "spell4": "spell4",
+   "spell5": "spell5",
+   "damage1": "damage1",
+   "damage2": "damage2",
+   
+            "win": "win",
+         "lose": "lose",
+   
+   "insane": "insane",
+   
+      "daihenshin": "daihenshin",
+   
+   "insane_success": "insane_success",
+    "insane_fail": "insane_fail",
+     "zenkeshi": "zenkeshi",
+
+            "wormhole_enter": "wormhole_enter",
+   "wormhole_inflict1": "wormhole_inflict1",
+   "wormhole_inflict2": "wormhole_inflict2",
+   "wormhole_win": "wormhole_win",
+   "wormhole_damage1": "wormhole_damage1",
+   "wormhole_damage2": "wormhole_damage2",
+   "wormhole_lose": "wormhole_lose",
+   "counter_mid": "counter_mid",
+   "counterattack": "counterattack" ,
+   
+   
+    "swap_gtris": "swap_gtris",
+   "swap_blob": "swap_blob",
+
+   "swap_swap": "swap_swap",
+   "swap_closecall": "swap_closecall",
+   "swap_danger": "swap_danger"
+   
+  }
+
+ }
+}

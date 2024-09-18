@@ -1,0 +1,98 @@
+{
+	"set_global_mfx": {
+		"type": "range_minmax",
+		"min": 0,
+		"max": 100,
+		"default": 35,
+		"text": "text_percent"
+	},
+	"set_global_sfx": {
+		"type": "range_minmax",
+		"min": 0,
+		"max": 100,
+		"default": 90,
+		"text": "text_percent"
+	},
+	"set_global_interface_sfx": {
+		"type": "range_minmax",
+		"min": 0,
+		"max": 100,
+		"default": 50,
+		"text": "text_percent"
+	},
+	"set_misc_bgopacity": {
+		"type": "range_minmax",
+		"min": 0,
+		"max": 100,
+		"default": 75,
+		"text": "text_percent"
+	},
+	"set_global_musicbank": {
+		"type": "range_list_specific",
+		"choices": [
+			"music_music1||./assets/music/music1",
+			"music_transformation||./assets/music/insane_transform",
+			"music_fever1||./assets/music/insane2",
+			"music_fever2||./assets/music/insane",
+			"music_warning||./assets/music/warning",
+			"music_wormhole||./assets/music/wmw_eval"
+		],
+		"default": 0,
+		"text": "text_text"
+	},
+	"set_session_fieldwarning": {
+		"type": "switch",
+		"on": "option_on",
+		"off": "option_off",
+		"default": 1
+	},
+	"set_session_boardpos_2p": {
+		"type": "range_list_specific",
+		"choices": [
+			"board_left||0",
+			"board_right||1"
+		],
+		"default": 0,
+		"text": "text_text"
+	},
+	
+	"set_prep_wins": {
+		"type": "range_minmax",
+		"min": 1,
+		"max": 100,
+		"default_obj": {
+			"vs": 2,
+			"swap": 2,
+			"wmw": 1,
+			"fever": 2
+		} ,
+		"text": "text_text"
+	},
+	"set_prep_margintime": {
+		"type": "range_minmax",
+		"min": 0,
+		"max": 350,
+		"default_obj": {
+			"vs": 2,
+			"swap": 2,
+			"wmw": 1,
+			"fever": 2
+		} ,
+		"text": "text_text"
+	},
+	"set_prep_insane_start": {
+		"type": "range_list_specific",
+		"choices": [
+			"option_off||0-0",
+			"insane_frenzy||1-0",
+			"insane_fever||2-0",
+			"insane_micro||3-2",
+			"insane_macro||3-1"
+		],
+		"default": 0,
+		"text": "text_text"
+	}
+	
+	
+	
+}

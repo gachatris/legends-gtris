@@ -1,0 +1,37 @@
+{
+	"def": 0,
+	"sel": [{
+			"string": "settings_audiovolume",
+			"desc": "settings_audiovolume_desc",
+			"type": "button",
+			"action": "submenu",
+			"onstate": "#ffff",
+			"offstate": "#fff2",
+			"backable": true,
+			"submenu": "settings/audiovolume.json"
+	},
+	{
+			"string": "settings_miscellaneous",
+			"desc": "settings_miscellaneous_desc",
+			"type": "button",
+			"action": "submenu",
+			"onstate": "#ffff",
+			"offstate": "#fff2",
+			"backable": true,
+			"submenu": "settings/miscellaneous.json"
+	},
+	{
+			"string": "settings_nameplate",
+			"type": "button",
+			"action": "nameplate",
+			"onstate": "#ffff",
+			"offstate": "#fff2",
+			"desc": "settings_nameplate_desc"
+	}],
+	"title": "settings_title",
+	"name": "settings",
+	"background": {
+		"type": "rgba",
+		"color": "#030F"
+	}
+}

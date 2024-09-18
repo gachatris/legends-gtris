@@ -1,0 +1,27 @@
+{
+ "header": "menu_main",
+ "name": "menu_play",
+ "props": [
+  {
+   "string": "alpha_note",
+   "type": "text",
+   "text_type": "body",
+   "text_color": "#ff0",
+   "font_size": 1
+  },
+  {
+   "string": "mainmenu_play",
+   "type": "button",
+   "desc": "mode_list_zen_desc",
+   "action": "initgame",
+   "initgame": [1]
+  },
+  {
+   "string": "mainmenu_gachatris_server",
+   "type": "button",
+   "desc": "mode_list_defense_desc",
+   "action": "submenu",
+   "submenu": "ui/mode/defense"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+	"def": 0,
+	"sel": [{
+		"string": "1pstart_zen",
+		"desc": "1pstart_zen_desc",
+		"type": "button",
+		"action": "init",
+		"init": 0,
+		"onstate": "#fff5",
+		"offstate": "#0000",
+		"selectname": "MAIN",
+		"selectnumber": 0,
+		"is_default": false,
+		"charselect_param": {
+			"is_dual": false,
+			"is_pick_mode": true,
+			"is_ai": false,
+			"players": 1,
+			"playerpos": "first"
+		},
+		"mode_param": [
+			"insane_start|insane_start|insane_start"
+		]
+				}
+				
+				],
+	"title": "1pstart_title",
+	"name": "main",
+	"background": {
+		"type": "rgba",
+		"color": "#242F"
+	}
+}

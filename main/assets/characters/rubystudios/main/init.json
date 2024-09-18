@@ -1,0 +1,391 @@
+{
+ "base": "rubystudios",
+ "version": "main",
+
+ "sources": {
+  "image": {
+  	
+  	
+   "normal": "images/normal.png",
+   "warning": "images/warning.png",
+   "fever": "images/insane.png",
+   "transform": "images/transform.png",
+   
+   "overhead": "images/counter_overhead.png",
+      "wingif": "images/win.png",
+   "losegif": "images/lose.png",
+   "flamegif": "images/win_fx2.png",
+   "appeargif": "images/win_fx1.png"
+  },
+  
+
+  
+
+  "voice": {
+
+  }
+ },
+
+ "init": {
+  "main": {
+   "attributes": {
+    "hp": 374,
+    "def": 120,
+    "atk": 12,
+    "mp": 120,
+    "lifesteal": 0.2,
+    "atktol": 93,
+    "hpregen": 10,
+    "hpregentol": 10,
+    "hpregentime": 30
+   },
+
+   "chainPower": [0, 8, 16, 24, 51, 79, 120, 198, 253, 457, 643, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+   "feverPower": [0, 6, 10, 16, 23, 32, 44, 57, 74, 97, 120, 157, 176, 211, 244, 281, 315, 351, 416, 473, 542, 604, 644, 681],
+   "dropset": [0, 0, 0, 1, 4, 2, 0, 3, 1, 3, 0, 4, 1, 2, 0, 0]
+  },
+  "ca_overhead": {
+  	"image": "overhead"
+  },
+  "image": {
+   "normal": {
+    "src": "normal"
+   },
+   "warning": {
+    "src": "warning"
+   },
+   "insane": {
+    "src": "fever"
+   },
+   "transf": {
+    "src": "transform"
+   }
+  },
+
+
+  "animation": {
+   "sources": {
+    "win": {
+     "width": 1200,
+     "height": 1056,
+     "framewidth": 400,
+     "frameheight": 528,
+     "aspectwidth": 1,
+     "aspectheight": 1.32,
+     "cellsizemult": 17,
+     "src": "wingif",
+     "xbound": 3
+
+    },
+
+    "appearfx": {
+     "width": 2000,
+     "height": 1200,
+     "framewidth": 200,
+     "frameheight": 200,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 40,
+     "src": "appeargif",
+     "xbound": 10
+
+    },
+    "flame": {
+     "width": 300,
+     "height": 100,
+     "framewidth": 100,
+     "frameheight": 100,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 6,
+     "src": "flamegif",
+     "xbound": 3
+
+    },
+    "lose": {
+     "width": 800,
+     "height": 528,
+     "framewidth": 400,
+     "frameheight": 528,
+     "aspectwidth": 1,
+     "aspectheight": 1.32,
+     "cellsizemult": 17,
+     "src": "losegif",
+     "xbound": 3
+
+    }
+   },
+
+   "triggers": {
+    "win": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "win",
+       "framemax": 6,
+       "framepos": 0,
+       "framedel": 8,
+       "loop": true,
+       "paused": false,
+       "targetid": "win",
+       "opacity": -0
+
+      },
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "flame",
+       "framemax": 3,
+       "framepos": 0,
+       "framedel": 2,
+       "loop": true,
+       "paused": false,
+       "targetid": "flame",
+       "opacity": 0
+
+      },
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "appearfx",
+       "framemax": 60,
+       "framepos": 0,
+       "framedel": 2,
+       "loop": false,
+       "paused": false,
+       "targetid": "appear",
+       "opacity": -0
+
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 3,
+       "duration": 1,
+       "timing": "linear"
+      },
+      {
+       "action": "move",
+       "targetid": "flame",
+       "x0": 0,
+       "y0": -2.4,
+       "x1": 4.5,
+       "y1": -2.4,
+       "duration": 0,
+       "timing": "linear"
+      },
+      {
+       "action": "move",
+       "targetid": "appear",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 3,
+       "duration": 1,
+       "timing": "linear"
+      },
+      {
+       "action": "opacity",
+       "targetid": "appear",
+       "duration": 10,
+       "opacity": 1
+      }
+     ],
+     "54": [
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 3,
+       "duration": 1,
+       "timing": "linear"
+      },
+      {
+       "action": "move",
+       "targetid": "appear",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 3,
+       "duration": 1,
+       "timing": "linear"
+      },
+      {
+       "action": "opacity",
+       "targetid": "win",
+       "duration": 5,
+       "opacity": 1
+      },
+      {
+       "action": "opacity",
+       "targetid": "flame",
+       "duration": 5,
+       "opacity": 1
+      }
+     ],
+     "60": [
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 1,
+       "duration": 50,
+       "timing": "linear"
+      },
+      {
+       "action": "move",
+       "targetid": "flame",
+       "x0": 4.5,
+       "y0": -2.4,
+       "x1": 4.5,
+       "y1": -4.4,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "110": [
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 1,
+       "x1": 0,
+       "y1": 3,
+       "duration": 50,
+       "timing": "linear"
+      },
+      {
+       "action": "move",
+       "targetid": "flame",
+       "x0": 4.5,
+       "y0": -4.4,
+       "x1": 4.5,
+       "y1": -2.4,
+       "duration": 50,
+       "timing": "linear"
+      }
+      
+     ],
+     "160": [
+      {
+       "action": "time",
+       "time": 60
+      }
+     ]
+
+    },
+    "lose": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "lose",
+       "framemax": 3,
+       "framepos": 0,
+       "framedel": 5,
+       "loop": true,
+       "paused": true,
+       "targetid": "lose"
+      },
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": 20,
+       "x1": 0,
+       "y1": -4,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "20": [
+
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": -4,
+       "x1": 0,
+       "y1": 3,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+
+
+     "40": [
+
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 1,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+
+
+     "90": [
+
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": 1,
+       "x1": 0,
+       "y1": 3,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     
+     "120": [
+
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos": 1,
+       "framedel": 5,
+       "loop": true,
+       "paused": true,
+       "targetid": "lose"
+      }
+     ],
+
+     "125": [
+
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos": 0,
+       "framedel": 5,
+       "loop": true,
+       "paused": true,
+       "targetid": "lose"
+      }
+     ],
+     "140": [
+      {
+       "action": "time",
+       "time": 40
+      }
+
+     ]
+
+    }
+   }
+  },
+
+  "voice": {
+
+  }
+
+ }
+}
