@@ -2338,6 +2338,7 @@ const menu = new class {
 		}
 
 		setupPlayerGame() {
+			try {
 			let a = game.actualParameters,
 				b = this.activeSelection;
 			a.players.length = 0;
@@ -2437,6 +2438,9 @@ const menu = new class {
 			//game.startGameSet("actual");
 			this.showHide(0);
 			this.activeSelection.length = 0;
+		}catch(e) {
+			alert(e.stack);
+		}
 		}
 
 		checkButton(select) {
