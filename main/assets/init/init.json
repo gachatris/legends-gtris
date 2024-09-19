@@ -1,6 +1,5 @@
 {
  "settings": { "path": "./assets/settings/settings.json", "type": "text" },
-  "settings2": { "path": "./assets/settings/settings.json", "type": "text" },
  "field_xml": { "path": "./assets/field/main2.xml", "type": "text" },
  "field_css": { "path": "./assets/field/main2.css", "type": "text" },
  "cs_border_black": { "path": "./assets/menu/images/cs_border_black.png", "type": "image" },

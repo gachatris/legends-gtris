@@ -782,6 +782,7 @@ const manager = new class {
 		if (count >= max) {
 
 			menu.presetSettings = JSON.parse(this.#fetchLoad("./assets/settings/settings.json"));
+			alert(this.#fetchLoad("./assets/settings/settings.json"))
 			menu.checkStorageSettings();
 			menu.checkData();
 
