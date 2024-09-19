@@ -1,7 +1,7 @@
 {
 	"title": "Gachatris Legends",
 
-	"alpha_note": "This Game is under Alpha stage, version 0.1.0. If you have any suggestions, go contact the developer through the official Gachatris Discord Server.",
+	"alpha_note": "This Game is under Alpha stage, version 0.0.1 A1q1 Alpha. If you have any suggestions, go contact the developer through the official Gachatris Discord Server.",
 
 	"splash_note": "Press any key, tap, or click anywhere to start.",
 
@@ -40,7 +40,7 @@
 
 	"first_to": "FTvar=0",
 
-	"menu_main": "Gachatris Legends v0.1.0 Alpha",
+	"menu_main": "Gachatris Legends v0.0.1 A1q1 Alpha",
 	"menu_start": "Play Game",
 	"menu_start_desc": "Start a new game session.",
 	"menu_replaycenter": "Replay Center",
