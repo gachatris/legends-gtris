@@ -1017,8 +1017,8 @@ const menu = new class {
 
 	checkStorageSettings() {
 		//console.log(this.storage.stringFetchData)
-		if (this.storage.stringFetchData === "") return;
-		let data = JSON.parse(this.storage.stringFetchData);
+		
+		let data = this.stringFetchData == "" ? {} : JSON.parse(this.storage.stringFetchData);
 		for (let b in this.presetSettings) {
 			let c = this.presetSettings[b];
 			//console.log(b,c)
@@ -2405,7 +2405,7 @@ const menu = new class {
 			for (let g of this.parameters.modeparams) {
 				let w = g.split("|");
 				let setting = main.storage.getList(`set_prep_${w[0]}`);
-				alert(`set_prep_${w[0]}` + JSON.stringify(main.storage.lists));
+				
 				sel.push({
 					"string": `gameprepset_${w[2]}`,
 					"type": setting.type,

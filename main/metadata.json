@@ -1,5 +1,5 @@
 {
-	"version": "Debug 0.0.1",
+	"version": "0.0.1",
 	"build": "1",
 	"database": {
 		"categories": ["cache", "local_data", "replays", "assets"]
