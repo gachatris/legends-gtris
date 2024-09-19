@@ -2405,7 +2405,7 @@ const menu = new class {
 			for (let g of this.parameters.modeparams) {
 				let w = g.split("|");
 				let setting = main.storage.getList(`set_prep_${w[0]}`);
-				//console.log(setting, w);
+				alert(`set_prep_${w[0]}`);
 				sel.push({
 					"string": `gameprepset_${w[2]}`,
 					"type": setting.type,
