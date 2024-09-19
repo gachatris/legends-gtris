@@ -1018,7 +1018,7 @@ const menu = new class {
 	checkStorageSettings() {
 		//console.log(this.storage.stringFetchData)
 		
-		let data = this.stringFetchData == "" ? {} : JSON.parse(this.storage.stringFetchData);
+		let data = this.storage.stringFetchData == "" ? {} : JSON.parse(this.storage.stringFetchData);
 		for (let b in this.presetSettings) {
 			let c = this.presetSettings[b];
 			//console.log(b,c)
