@@ -615,6 +615,7 @@ const manager = new class {
 		this.synchroLoop.confirmIsAsync = true;
 		this.isRoundActive = false;
 		this.matchEndHandler.hasEnded = true;
+		this.isFinish = true;
 		if (isForce) {
 			this.pause.on = true;
 		}
@@ -2954,7 +2955,7 @@ blob.colorSet = defaultBlobColors;
 		if (this.pause.on) return;
 		this.pause.on = true;
 		if (this.replay.isOn) touchButtons.enableControllers(true);
-		menu.changeSelectables(this.replay.isOn ? menu.pauseReplaySels : (menu.pauseSels));
+		menu.changeMenu(JSON.stringify(this.replay.isOn ? menu.pauseReplaySels : (menu.pauseSels)), false);
 		menu.showMenu(true);
 		this.synchroLoop.confirmIsAsync = true;
 	}

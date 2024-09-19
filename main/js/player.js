@@ -32,7 +32,6 @@ class MainPlayerFragment {
 		this.addScoreText = "";
 		this.scoreText = new NumberChangeFuncExec(0, (m) => {
 			this.editIH("STATS-SCORE-TEXT", m);
-
 		});
 
 		this.animationLayerElements = [];
@@ -1468,6 +1467,7 @@ class InsaneMode {
 				this.parent.setDelay(1, this.parent.parent.isInsaneModeOnly ? -19 : 5);
 				this.parent.setDelay(0, this.parent.parent.isInsaneModeOnly ? -19 : 5);
 				this.parent.drawStack(this.parent.stack);
+				this.parent.canFallTrash = false;
 				
 				this.parent.blobCount = this.parent.checkBlobCount(this.parent.stack);
 
@@ -1508,6 +1508,12 @@ class InsaneMode {
 		if (this.delay.out == 0) {
 			this.isTime = false;
 			this.parent.parent.editIH("INSANE-TIMER", "");
+			
+			
+			
+			if (this.type == "blob" && this.parent.canFallTrashAfterFever) {
+				this.parent.dropGarbage();
+			}
 
 			/*if (this.type == "blob") {
 			 this.blobToField(2, true);
@@ -5189,6 +5195,7 @@ class NeoplexianBlob {
 		this.rotate180Timer = 0;
 
 		this.canFallTrash = true;
+		this.canFallTrashAfterFever = true;
 
 		this.activeVoiceLine = "";
 		this.repeatSpellVoice = 0;
@@ -6005,6 +6012,7 @@ class NeoplexianBlob {
 		this.rotate180Timer = 0;
 
 		this.canFallTrash = true;
+		this.canFallTrashAfterFever = true;
 
 		this.chain = 0;
 		this.actualChain = 0;
@@ -6261,6 +6269,7 @@ class NeoplexianBlob {
 			}
 			if ((this.parent.feverStat.isOn && this.isFever) || this.insane.isOn || this.isChainOffsetting) {
 				this.canFallTrash = false;
+				this.canFallTrashAfterFever = false;
 			}
 
 		}
@@ -7652,6 +7661,7 @@ class NeoplexianBlob {
 			//let temp = this.piece.template;
 			this.rotate180Timer = -1;
 			this.canFallTrash = true;
+			this.canFallTrashAfterFever = true;
 
 			if (type === 4) {
 				this.piece.rot = color1;
@@ -8362,6 +8372,7 @@ class NeoplexianBlob {
 		}
 
 		this.canFallTrash = this.isActive;
+		this.canFallTrashAfterFever = this.isActive;
 
 		//if (this.forecastedChain > 0) this.chain = 999;
 
@@ -8609,7 +8620,7 @@ class NeoplexianBlob {
 			this.pop.x = this.eraseInfo[0].x;
 			this.pop.y = this.eraseInfo[0].y;
 
-			this.canFallTrash = this.isActive || ((this.requiredChain > 0) && (this.chain < this.requiredChain)) || (this.parent.garbageBlocking !== "full");
+			this.canFallTrash = this.canFallTrashAfterFever = this.isActive || ((this.requiredChain > 0) && (this.chain < this.requiredChain)) || (this.parent.garbageBlocking !== "full");
 			this.firstGroupsPop.length = 0;
 			for (let h of groupsFirstBlob) {
 				this.firstGroupsPop.push(h);
@@ -8884,7 +8895,8 @@ class NeoplexianBlob {
 		this.blobCount = a.remaining;
 		//console.log(this.parent.player, a.chain);
 		if (a.chain > 6) {
-			if (this.parent.isVisible) {
+			/*
+			if (this.parent.isVisible && false) {
 				let asset = this.parent.assetRect(this.isAux ? "AUX-FIELD" : "FIELD");
 				let plw = this.isAux ? 0.47 : 1;
 				let px = (asset.x) + (this.parent.fieldCellSize * this.getQPosX(this.piece.x) * plw);
@@ -8898,194 +8910,9 @@ class NeoplexianBlob {
 
 
 			}
+			*/
 		}
 	}
-	/*checkForecast() {
-	 let width = this.fieldSize.w,
-	  height = this.fieldSize.h,
-	  hiddenHeight = this.fieldSize.hh,
-	  visibleHeight = this.fieldSize.vh
-
-	 let grid = JSON.parse(JSON.stringify(this.stack));
-	 let chain = 0;
-
-	 let eraseInfo = [];
-	 let erasedBlocks = [];
-	 let check = () => {
-	  let isExistForChain = false;
-	  const eraseColor = {},
-	   sqi = [],
-	   sequenceNuisanceInfo = [];
-	  eraseInfo.length = 0;
-	  erasedBlocks.length = 0;
-	  const existingBlubList = [],
-	   checkBlubOrigin = (x, y) => {
-	    const origin = grid[x][y];
-	    if (!(origin !== 0 && typeof origin !== "undefined" && origin !== null && origin !== this.NUISANCE) || y < hiddenHeight) {
-	     return;
-	    };
-
-	    sqi.push({
-	     x: x,
-	     y: y,
-	     cell: grid[x][y]
-	    });
-	    grid[x][y] = 0;
-
-	    const direction = [[0, 1], [1, 0], [0, -1], [-1, 0]];
-	    for (let iteration = 0; iteration < direction.length; iteration++) {
-	     const dX = x + direction[iteration][0];
-	     const dY = y + direction[iteration][1];
-
-	     if (
-	      dX < 0 ||
-	      dY < hiddenHeight ||
-	      dX >= width ||
-	      dY >= height
-	     ) {
-	      continue;
-	     };
-	     if (dY < hiddenHeight) continue;
-	     const dCell = grid[dX][dY];
-	     if (!(dCell !== 0 && typeof dCell !== "undefined" && dCell !== null && dCell !== this.NUISANCE) || dCell !== origin) {
-	      continue;
-	     };
-	     checkBlubOrigin(dX, dY);
-	    };
-	   },
-	   checkNuisanceOrigin = (x, y) => {
-	    const origin = grid[x][y];
-
-	    //grid[x][y] = 0;
-
-	    const direction = [[0, 1], [1, 0], [0, -1], [-1, 0]];
-	    for (let iteration = 0; iteration < direction.length; iteration++) {
-	     const dX = x + direction[iteration][0];
-	     const dY = y + direction[iteration][1];
-
-	     if (
-	      dX < 0 ||
-	      dY < hiddenHeight ||
-	      dX >= width ||
-	      dY >= height
-	     ) {
-	      continue;
-	     };
-	     if (dY < hiddenHeight) continue;
-	     const dCell = grid[dX][dY];
-	     if (!(dCell !== 0 && typeof dCell !== "undefined" && dCell !== null || dCell !== this.HARD)) {
-	      continue;
-	     };
-	     if (grid[dX][dY] == this.NUISANCE) sequenceNuisanceInfo.push({
-	      x: dX,
-	      y: dY,
-	      cell: grid[x][y]
-	     });
-	    };
-	   }
-	  for (var x = 0; x < width; x++) {
-	   for (var y = hiddenHeight - 1; y < height; y++) {
-	    if (y >= hiddenHeight - 1 && grid[x][y] > 0) {
-	     sqi.length = 0; //reset sequence arr
-	     sequenceNuisanceInfo.length = 0;
-	     const BlubCol = grid[x][y];
-	     checkBlubOrigin(x, y);
-	     if (sqi.length == 0 || sqi.length < this.blobRequire) {
-	      if (sqi.length > 0) {
-	       existingBlubList.push(...sqi);
-	      }
-	     } else {
-	      eraseColor[BlubCol] = true;
-	      eraseInfo.push(...sqi);
-	     }
-	     for (const e of existingBlubList) {
-	      grid[e.x][e.y] = e.cell
-	     }
-
-	     if (eraseInfo.length > 0) {
-	      isExistForChain = true;
-	      for (const isNuisance of eraseInfo) {
-	       checkNuisanceOrigin(isNuisance.x, isNuisance.y);
-	      }
-	      for (const e of sequenceNuisanceInfo) {
-	       grid[e.x][e.y] = 0;
-	      }
-	      //console.table(eraseInfo)
-	      erasedBlocks.push({
-	       x: x,
-	       y: y,
-	       cell: BlubCol
-	      });
-	      continue
-	     }
-	    } else if (grid[x][y] > 0 && y < hiddenHeight - 2) {
-	     grid[x][y] = 0;
-	    }
-	   }
-	  }
-	  for (let o of eraseInfo) erasedBlocks.push(o);
-	  if (isExistForChain) {
-	   chain++;
-	  }
-	 };
-	 let testSpace = function(x, y) {
-	   if (x < 0 || x >= width) {
-	    return true;
-	   }
-	   if (y < height) {
-	    if (typeof grid[x][y] !== "undefined" && grid[x][y] !== 0) {
-	     return true;
-	    }
-	    return false;
-	   }
-	   return true;
-	  },
-
-	  checkHoles = function() {
-	   let checked = true;
-	   for (let t = 0; t < height && checked; t++)
-	    for (var y = height - 1; y >= hiddenHeight - 2; y--) {
-	     for (var x = 0; x < width; x++) {
-	      checked = true;
-	      if (!testSpace(x, y - 1)) {
-	       continue
-	      }
-	      if (!testSpace(x, y)) {
-	       grid[x][y] = grid[x][y - 1]
-	       grid[x][y - 1] = 0;
-	       checked = false;
-	      }
-	     }
-	    }
-	  },
-	  isFinished = false;
-	 while (true) {
-	  checkHoles();
-	  check();
-	  if (eraseInfo.length == 0) break;
-
-	 };
-	 this.forecastedChain = chain;
-	 this.blobCount = this.checkBlobCount(grid);
-	 if (chain && !this.isVisible) {
-	  //this.parent.engageCleartext("line", true, `${this.forecastedChain}-chain`);
-	  
-	  let asset = this.parent.assetRect(this.isAux ? "AUX-FIELD" : "FIELD");
-	  let plw = this.isAux ? 0.47 : 1;
-	  let px = (asset.x) + (this.parent.fieldCellSize * this.getQPosX(this.piece.x) * plw);
-	  let py = (asset.y) + (this.parent.fieldCellSize * this.getQPosY(this.piece.y - this.fieldSize.hh) * plw);
-
-	  if (this.forecastedChain > 6) htmlEffects.add("Sheeshie!!!", px, py, 50, {
-	   name: "chain-text-anim",
-	   iter: 1,
-	   timefunc: "cubic-bezier(0,0,1,0)",
-	   initdel: 0,
-	  }, "color: #ff0; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; --__chaintext_size: 1.5em")
-
-	 }
-
-	 return null;
-	}/**/
 
 	checkHoles() {
 		this.holes = 0;
