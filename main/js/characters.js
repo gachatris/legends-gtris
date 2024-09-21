@@ -10,7 +10,7 @@ const gtcharacter = new class {
 					},
 					name: "misty_firefox>name",
 					description: "misty_firefox>desc",
-					date_featured: "9-20-2024", version : "0.0.1 Alpha",
+					date_featured: "9-17-2024", version : "0.0.1 Alpha",
 					path: "misty_firefox"
 				},
 				versions: [
@@ -39,7 +39,7 @@ const gtcharacter = new class {
 					},
 					name: "rubystudios>name",
 					description: "rubystudios>desc",
-					date_featured: "9-20-2024", version : "0.0.1 Alpha",
+					date_featured: "9-17-2024", version : "0.0.1 Alpha",
 					path: "rubystudios"
 				},
 				versions: [
@@ -67,7 +67,7 @@ const gtcharacter = new class {
 					},
 					name: "dominic_zi>name",
 					description: "dominic_zi>desc",
-					date_featured: "9-20-2024", version : "0.0.1 Alpha",
+					date_featured: "9-17-2024", version : "0.0.1 Alpha",
 					path: "dominic_zi"
 				},
 				versions: [
@@ -95,7 +95,7 @@ const gtcharacter = new class {
 					},
 					name: "elisha>name",
 					description: "elisha>desc",
-					date_featured: "9-20-2024", version : "0.0.1 Alpha",
+					date_featured: "9-17-2024", version : "0.0.1 Alpha",
 					path: "elisha"
 				},
 				versions: [
@@ -123,7 +123,7 @@ const gtcharacter = new class {
 					},
 					name: "epicman>name",
 					description: "epicman>desc",
-					date_featured: "9-20-2024", version : "0.0.1 Alpha",
+					date_featured: "9-17-2024", version : "0.0.1 Alpha",
 					path: "epicman"
 				},
 				versions: [
@@ -151,7 +151,7 @@ const gtcharacter = new class {
 					},
 					name: "flotalendy>name",
 					description: "flotalendy>desc",
-					date_featured: "9-20-2024", version : "0.0.1 Alpha",
+					date_featured: "9-17-2024", version : "0.0.1 Alpha",
 					path: "flotalendy"
 				},
 				versions: [

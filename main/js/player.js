@@ -568,7 +568,6 @@ class MainPlayerFragment {
 		this.canvasses[c].height = h;
 	}
 
-
 	loadCharacter(char, ver) {
 		this.character.char = char;
 		this.character.ver = ver;
@@ -887,8 +886,6 @@ class MainPlayerFragment {
 	getCanvasAnimationLoadedName(obj) {
 		return `ANIM||${this.character.char}||${this.character.ver}||${obj}`;
 	}
-
-
 
 	canvasClear(ctx) {
 		let a = this.canvasses[ctx];
@@ -11308,7 +11305,7 @@ class Player extends MainPlayerFragment {
 
 			if (bitPress & bitRelease) {
 				impulse |= bitPress & bitRelease;
-				console.log(impulse)
+				//console.log(impulse)
 			}
 
 			if (bitPress > 0 && ((this.controlsBitwise.bit & bitPress) == 0)) this.controlsBitwise.bit |= bitPress;

@@ -2000,6 +2000,8 @@ blob.colorSet = defaultBlobColors;
 
 		style(`GTRIS-SPLASH-DIV`, `width`, `${this.resolution.w}px`);
 		style(`GTRIS-SPLASH-DIV`, `height`, `${this.resolution.h}px`);
+		style(`GTRIS-FADE`, `width`, `${this.resolution.w}px`);
+		style(`GTRIS-FADE`, `height`, `${this.resolution.h}px`);
 
 
 		style(`GTRIS-HTMLEFF-SCREEN`, `width`, `${this.resolution.w}px`);
@@ -2955,7 +2957,7 @@ blob.colorSet = defaultBlobColors;
 		if (this.pause.on) return;
 		this.pause.on = true;
 		if (this.replay.isOn) touchButtons.enableControllers(true);
-		menu.changeMenu(JSON.stringify(this.replay.isOn ? menu.pauseReplaySels : (menu.pauseSels)), false);
+		menu.changeMenu(this.replay.isOn ? JSON.stringify(menu.pauseReplaySels) : JSON.stringify(menu.pauseSels), false);
 		menu.showMenu(true);
 		this.synchroLoop.confirmIsAsync = true;
 	}
@@ -3125,6 +3127,7 @@ const keypressManager = new class {
 			splash.nextSlide();
 		}
 		else if (!menu.isMenu) {
+			if (key == "escape") game.pauseGame();
 			let player = manager.players[manager.activePlayer];
 			var flag = this.keyFlag(key, {
 				keydown: 0,
@@ -3132,6 +3135,7 @@ const keypressManager = new class {
 			} [evt.type], player.activeType);
 			////console.log(evt.key, flag)
 			manager.typeInput(flag);
+			
 		} else if (menu.characterMenu.isActive) {
 			if (evt.type == "keydown") menu.characterMenu.controlsListen((key));
 		} else if (menu.isMenu) {

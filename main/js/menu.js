@@ -947,23 +947,6 @@ const menu = new class {
 
 	load() {
 		return new Promise(async res => {
-			/*let a = await load("./assets/menu/this.json", "text");
-			let json = JSON.parse(a);
-
-			this.layout = json;
-
-			for (let g in json.main) this.recursionElement(g, json.main, false, this.mainElement);
-
-			this.menuList = JSON.parse(JSON.stringify(json.menulists));
-
-
-			////console.log(json);
-			////console.log(this.elements);
-			/**/
-
-			//let gson = this.convertJSONSimpleToJSONComplex();
-
-			//for (let h in gson) //this.recursionElement(h, gson, false, this.getID("MENU-LIST0-DIV"))
 			let a = await load("./assets/menu/menu.json", "text");
 			let json = JSON.parse(a);
 
@@ -1150,106 +1133,6 @@ const menu = new class {
 		////console.log(this.selectionGroup);
 	}
 
-	recursionElement(n, l, isTemp, isBrothers) {
-		let j = l[n];
-
-		let hha = isTemp ? this.temporaryElements.elements : this.elements;
-		let hhb = isTemp ? this.temporaryElements.elementObjects : this.elementObjects;
-		let hhc = isTemp ? this.temporaryElements.resizeObjects : this.resizeObjects;
-		elem(j?.tag || "GTRIS-MENU-OBJECT-DIV", a => {
-			a.id = j.id;
-			hha[j.id] = a;
-			hhb[j.id] = j;
-			hhc[j.id] = {
-
-			};
-			////console.log(j)
-			if ("style" in j) {
-				for (let g in j.style) {
-					a.style.setProperty(g, j.style[g]);
-				}
-			}
-
-			if ("attributes" in j)
-				for (let ats in j.attributes) {
-					let m = j.attributes[ats];
-					////console.log(m)
-
-					if (ats == "font_size") {
-						a.style["font-size"] = `${m}em`;
-					}
-
-					a.setAttribute(ats, m);
-				}
-
-
-
-			if ("inner_html" in j) a.innerHTML = j.inner_html;
-			if ("size" in j) {
-				let lx = this.cellSize;
-				let ly = this.cellSize;
-				if (j.size.type == "whole") {
-					lx = this.landscape.w;
-					ly = this.landscape.h;
-				}
-				if (j.size.type == "free") {
-					lx = 1;
-					ly = 1;
-				}
-
-				if ("width" in j.size) a.style.width = (j.size.width * lx) + "px";
-				if ("height" in j.size) a.style.height = (j.size.height * ly) + "px";
-			}
-			if ("event_listeners" in j) {
-				j.__event_functions = {};
-				for (let ats in j.event_listeners) {
-					let m = j.event_listeners[ats];
-					m.func += ";"
-					let ne = new Function(["menu_global", "evt"], m.func);
-					j.__event_functions[ats] = (event) => {
-						ne(__private.menu, event);
-					}
-					a.addEventListener(ats, (event) => {
-						j.__event_functions[ats](event);
-					}, {
-						once: m.once
-					});
-				}
-			}
-			//this.elements[n] = a;
-
-
-			if ("children" in j)
-				for (let h in j.children) {
-
-					//recursion time
-
-					this.recursionElement(h, j.children, isTemp, a);
-
-					//a.append(this.elements[h]);
-
-				}
-			isBrothers.appendChild(a);
-		});
-
-		hhb[j.id] = j;
-
-		// this code looks pretty dirty lolwut - EricLenovo 
-
-		if ("size" in j)
-			if (("width" in j.size) || ("height" in j.size)) {
-				hhc[j.id] = {
-					t: j.size.type,
-				};
-
-				if ("width" in j.size) hhc[j.id].w = j.size.width;
-				if ("height" in j.size) hhc[j.id].h = j.size.height;
-
-			}
-		//recursion
-		////console.log(j)
-	}
-
 	playSound(name) {
 		this.sounds[name].stop();
 		this.sounds[name].play();
@@ -1432,6 +1315,7 @@ const menu = new class {
 
 				my += reference.size * this.canvasDims.c * 1 * 2;
 			}
+			
 			if (reference.type === "switch") {
 				let prop = this.presetSettings[reference.property];
 
