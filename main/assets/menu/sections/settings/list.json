@@ -27,7 +27,18 @@
 			"onstate": "#ffff",
 			"offstate": "#fff2",
 			"desc": "settings_nameplate_desc"
-	}],
+	},
+	{
+			"string": "settings_keybind",
+			"type": "button",
+			"action": "submenu",
+			"onstate": "#ffff",
+			"offstate": "#fff2",
+			"backable": true,
+			"submenu": "settings/keybind.json",
+			"desc": "settings_keybind_desc"
+	}
+	],
 	"title": "settings_title",
 	"name": "settings",
 	"background": {

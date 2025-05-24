@@ -1,0 +1,49 @@
+{
+	"hp": 145,
+	"mana": 25,
+	"atk": 6,
+	"def": 25,
+	"regen": 0,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 1200,
+		"voice": "skill1",
+		"mana": 25,
+		"skill": "none",
+		"desc": "lifesteal, deflect",
+		"rawdesc": "lifesteal|deflect",
+		"attr": [
+			{
+				"type": "lsbuff",
+				"time": 630,
+				"parameters": {
+					"value": 0.1
+				}
+			},
+			{
+				"type": "lfabuff",
+				"time": 630,
+				"parameters": {
+					"value": 0.041
+				}
+			},
+			{
+				"type": "deflect",
+				"time": 630,
+				"parameters": {
+					"value": 0.2
+				}
+			},
+			{
+				"type": "regen",
+				"time": 210,
+				"parameters": {
+					"value": "1%hp",
+					"maxf": 30
+				}
+			}
+		]
+	}
+}

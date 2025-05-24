@@ -6,7 +6,6 @@
   "image": {
    "normal": "images/normal.png",
    "warning": "images/warning.png",
-   "fever": "images/fever.png",
    "transform": "images/transform.png",
    "transform_micro": "images/transform_micro.png",
    "transform_macro": "images/transform_macro.png",
@@ -280,9 +279,6 @@
     "src": "warning"
    },
    
-   "insane": {
-    "src": "fever"
-   },
    "transf": {
     "src": "transform"
    },

@@ -5,6 +5,17 @@ function $(gid) {
 
 const id = $;
 
+const generateUUID = function() {
+		const HEXADECIMAL = "0123456789abcdef";
+		let uuid = "";
+		for (let u = 0; u < 4 * 8; u++) {
+			if ((u % 4) == 0 && ~~(u / 4) >= 2 && ~~(u / 4) <= 5)
+				uuid += "-";
+			uuid += HEXADECIMAL[~~(Math.random() * 16)];
+			
+		}
+		return uuid;
+	}
 
 const elem = function(el, func) {
  let a = document.createElement(el);
@@ -77,10 +88,10 @@ const grid = function(x, y, val) {
 
 const getCanvasCtx = function(canvas) {
 	return canvas.getContext("2d");
-}
+};
 const clientRect = function(f, type) {
  return $(f).getBoundingClientRect()[type];
-}
+};
 const asyncPromise = function(func) {
  return new Promise((res, rej) => {
   func(res, rej);
@@ -135,8 +146,18 @@ function hexToRGB(hex) {
 		b: b,
 	}
 }
-
 ////console.log((0xffFFffffffffffffffffff), Number.MAX_SAFE_INTEGER)
+
+const blobToBase64 = function(blob) {
+	return new Promise((call, rej) => {
+	var reader = new FileReader();
+	reader.readAsDataURL(blob);
+	reader.onloadend = function() {
+		var base64 = reader.result;
+		call(base64);
+	};
+	});
+};
 
 class ArrayFunctionIterator {
  constructor(func) {
@@ -705,6 +726,70 @@ class DateSynchronizedLoopHandler {
   if (this.isRunning) {
    
    clearInterval(this.interval);
+   this.isRunning = false;
+   
+  }
+ }
+ 
+ replaceRun(func) {
+  this.run = func;
+ }
+}
+
+class RAFLoopHandler {
+ constructor(fps, func) {
+  this.actualFrames = 0;
+  this.isRunning = false;
+  this.fps = fps;
+  this.prevTime = 0;
+  this.run = func;
+  
+  this.speed = 1;
+  this.c = 0;
+  this.delta = 0;
+  
+  this.confirmIsAsync = false;
+ }
+ 
+ #asyncRun(t) {
+ 	
+  if (!this.isRunning) return;
+  {
+  	let difference = t - this.prevTime;
+  	let h = ~~(difference / (1000 / this.fps));
+  	this.prevTime = t;
+  	do {
+  this.c += this.speed;
+  while (this.c >= 1) {
+   try {
+   this.run();
+   }catch(e) {
+    console.error(e, e.stack);
+   }
+   this.c--;
+  }
+  h--;
+  
+  } while(h > 0 && (!this.confirmIsAsync));
+  }
+  
+   window.requestAnimationFrame((time) => {
+    this.#asyncRun(Date.now());
+   });
+  
+ }
+ 
+ start() {
+  if (!this.isRunning) {
+   
+   this.isRunning = true;
+	this.#asyncRun(performance.now());
+  };
+ }
+ 
+ stop() {
+  if (this.isRunning) {
+   
    this.isRunning = false;
    
   }

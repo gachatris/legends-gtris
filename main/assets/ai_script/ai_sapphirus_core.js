@@ -200,35 +200,7 @@ function makeMove(args) {
    hq |= //(KEY_FLAGS.LEFT);
     movePiece(-1);
   }
-  else if (rotTimes > 0) {
-   euler: switch (rotTimes) {
-    case 1: {
-     hq |= //(KEY_FLAGS.CW);
-      rotate(1, kickTable, matrixTemplate);
-
-     rotTimes = 0;
-     break euler;
-    }
-    case 3: {
-     hq |= //(KEY_FLAGS.CCW);
-      rotate(-1, kickTable, matrixTemplate);
-     rotTimes = 0;
-     break euler;
-    }
-    case 2: {
-     if (jsobj.isEnable180) {
-      hq |= //(KEY_FLAGS.C180W);
-       rotate(2, kickTable, matrixTemplate);
-      rotTimes = 0;
-     } else {
-      hq |= //(KEY_FLAGS.CW);
-       rotate(1, kickTable, matrixTemplate);
-      rotTimes--;
-     }
-     break euler;
-    }
-   }
-  }
+  
 
 
   // move.push(hq);
@@ -258,6 +230,34 @@ function makeMove(args) {
 
    }
    //break;
+  } else if (rotTimes > 0) {
+   euler: switch (rotTimes) {
+    case 1: {
+     hq |= //(KEY_FLAGS.CW);
+      rotate(1, kickTable, matrixTemplate);
+
+     rotTimes = 0;
+     break euler;
+    }
+    case 3: {
+     hq |= //(KEY_FLAGS.CCW);
+      rotate(-1, kickTable, matrixTemplate);
+     rotTimes = 0;
+     break euler;
+    }
+    case 2: {
+     if (jsobj.isEnable180) {
+      hq |= //(KEY_FLAGS.C180W);
+       rotate(2, kickTable, matrixTemplate);
+      rotTimes = 0;
+     } else {
+      hq |= //(KEY_FLAGS.CW);
+       rotate(1, kickTable, matrixTemplate);
+      rotTimes--;
+     }
+     break euler;
+    }
+   }
   } else if (ic) {
    var fe = best.move.shift();
    hq |= hf(fe);

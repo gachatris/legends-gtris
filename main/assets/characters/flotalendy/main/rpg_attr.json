@@ -1,0 +1,35 @@
+{
+	"hp": 155,
+	"mana": 85,
+	"atk": 5,
+	"def": 30,
+	"regen": 0,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 300,
+		"mana": 50,
+		"voice": "skill1",
+		"skill": "none",
+		"desc": "immunity, healing",
+		"rawdesc": "immunity|healing",
+		"attr": [
+			{
+				"type": "regen",
+				"time": 2,
+				"parameters": {
+					"maxf": 50,
+					"value": "740%attack"
+				}
+			},
+			{
+				"type": "immune2dmg",
+				"time": 210,
+				"parameters": {
+					
+				}
+			}
+		]
+	}
+}

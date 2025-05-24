@@ -28,8 +28,8 @@ class ArtificialIntelligence {
 
 			enableTspin: true,
 			grid: [],
-			ppsLimit: 289,
-			
+			ppsLimit: 1,
+
 			extraMovements: [],
 			x: 0,
 			y: 0,
@@ -82,9 +82,9 @@ class ArtificialIntelligence {
 			this.#core = a.worker;
 		});
 	}
-	
+
 	loadFrenzyMovements(file) {
-		
+
 	}
 
 	run(a) {
@@ -98,6 +98,7 @@ class ArtificialIntelligence {
 		if (this.pieceDelay < 0) {
 
 			this.pieceDelay = Math.random() * 15 + 5;
+			if (this.parent.block.isProfessional) this.pieceDelay += 30;
 
 			if (isTooMuchChain) {
 				//h = 8;
@@ -107,7 +108,7 @@ class ArtificialIntelligence {
 			if (false) {
 				this.pressStr = "Dd";
 			} else if (this.ai.extraMovements.length > 0 && this.parent.block.frenzy.isOn) {
-				
+
 				let isSoftDrop = 0;
 				let j = {
 					1: "Aa",
@@ -136,34 +137,39 @@ class ArtificialIntelligence {
 
 			}
 
-			else for (let g = 0; g < this.moves.length; g++) {
-				let j = {
-					1: "Aa",
-					2: "Bb",
-					4: "C",
-					8: "Dd",
-					16: "Ee",
-					32: "Gg",
-					64: "Ff",
-					128: "Hh"
-				}
-				let h = this.moves[g];
-
-				if (!this.parent.flagPresses.softdrop) this.pressStr += j[h];
-				if (h == 4) {
-					if (this.parent.block.checkValid(this.parent.block.piece.activeArr, 0, 1)) {
-						break;
-						this.pieceDelay = -999;
-					} else {
-						this.pieceDelay = -999;
-						this.pressStr += "c";
+			else
+				for (let g = 0; g < this.moves.length; g++) {
+					let j = {
+						1: "Aa",
+						2: "Bb",
+						4: "C",
+						8: "Dd",
+						16: "Ee",
+						32: "Gg",
+						64: "Ff",
+						128: "Hh"
 					}
+					let h = this.moves[g];
+
+					if (h == 4) {
+						if (this.parent.block.checkValid(this.parent.block.piece.activeArr, 0, 1)) {
+							this.pieceDelay = -999;
+							this.pressStr += "C";
+							break;
+
+						} else {
+							this.pieceDelay = -999;
+							this.pressStr += "c";
+						}
+					}
+
+					if (h !== 4) this.pressStr += j[h];
+
+					this.moves.shift();
+					g--;
+					////console.log(this.parent.pressStr)
+					if (!this.parent.block.isProfessional) break;
 				}
-				this.moves.shift();
-				g--;
-				////console.log(this.parent.pressStr)
-				break;
-			}
 		}
 		this.pieceDelay--;
 	}
@@ -216,10 +222,6 @@ class ArtificialIntelligence {
 		this.ai.tspinDetected.tAvoidColumn = best.ta;
 		this.ai.tspinDetected.tPrevent = best.tp;
 		this.ai.tspinDetected.tFulfill = best.tf;
-
-		for (let v = 0, len = this.moves.length; v < len; v++) {
-
-		}
 	}
 }
 class NeoplexArtificialIntelligence {
@@ -329,7 +331,7 @@ class NeoplexBlobArtificialIntelligence {
 	#core = 0;
 	#functions = 0;
 	constructor(parent, name, text, funcText) {
-		this.delRes = 0;
+		this.delRes = 10;
 		this.del = 0;
 		this.active = false;
 		this.pressStr = "";
@@ -460,10 +462,11 @@ class NeoplexBlobArtificialIntelligence {
 
 
 		while (rot !== best.rot) {
-			if (rot === 3) {
+			/*if (rot === 3) {
 				this.moves.push(4);
 				rot = 3;
-			} else {
+			}*/
+			{
 				this.moves.push(3);
 				rot++;
 			}
@@ -509,7 +512,7 @@ class Neoplex2BlobArtificialIntelligence {
 		this.active = false;
 		this.pressStr = "";
 		this.pressLast = "";
-		this.del = 0;
+		this.del = 10;
 		this.ai = {
 			x: 0,
 			y: 0,
@@ -523,7 +526,7 @@ class Neoplex2BlobArtificialIntelligence {
 	}
 
 	run(a) {
-		
+
 		this.pressStr = "";
 		if (this.parent.activeType !== 1) return;
 
@@ -533,7 +536,7 @@ class Neoplex2BlobArtificialIntelligence {
 		});
 
 		if (this.del < 0) {
-			this.del = Math.random() * 0 + (isTooMuchChain ? 0 : 20);
+			this.del = Math.random() * 0 + (isTooMuchChain ? 0 : 10);
 			for (let g = 0; g < this.moves.length; g++) {
 				let m = {
 					1: "Aa",
@@ -550,7 +553,7 @@ class Neoplex2BlobArtificialIntelligence {
 				if (h == 5) {
 					if (this.parent.blob.checkValid(this.parent.blob.piece.activeArr, 0, 1) && this.active) {
 						this.del = -999;
-						if (this.parent.blob.y <= 0) this.pressStr += "c";
+						if (this.parent.blob.y >= 0) this.pressStr += "c";
 						break;
 					} else {
 						this.pressStr += "c";
@@ -842,7 +845,7 @@ class NeoplexStaticFrenzyAI {
 			enableTspin: false,
 			grid: [],
 			ppsLimit: 289,
-			
+
 			extraMovements: [],
 			x: 0,
 			y: 0,
@@ -895,9 +898,9 @@ class NeoplexStaticFrenzyAI {
 			this.#core = a.worker;
 		});
 	}
-	
+
 	loadFrenzyMovements(file) {
-		
+
 	}
 
 	run(a) {
@@ -920,7 +923,7 @@ class NeoplexStaticFrenzyAI {
 			if (false) {
 				this.pressStr = "Dd";
 			} else if (this.ai.extraMovements.length > 0 && this.parent.block.frenzy.isOn) {
-				
+
 				let isSoftDrop = 0;
 				let j = {
 					1: "Aa",
@@ -949,33 +952,34 @@ class NeoplexStaticFrenzyAI {
 
 			}
 
-			else for (let g = 0; g < this.moves.length; g++) {
-				let j = {
-					1: "Aa",
-					2: "Bb",
-					4: "C",
-					8: "Dd",
-					16: "Ee",
-					32: "Gg",
-					64: "Ff",
-					128: "Hh"
-				}
-				let h = this.moves[g];
-
-				if (!this.parent.flagPresses.softdrop) this.pressStr += j[h];
-				if (h == 4) {
-					if (this.parent.block.checkValid(this.parent.block.piece.activeArr, 0, 1)) {
-						break;
-						this.pieceDelay = -999;
-					} else {
-						this.pieceDelay = -999;
-						this.pressStr += "c";
+			else
+				for (let g = 0; g < this.moves.length; g++) {
+					let j = {
+						1: "Aa",
+						2: "Bb",
+						4: "C",
+						8: "Dd",
+						16: "Ee",
+						32: "Gg",
+						64: "Ff",
+						128: "Hh"
 					}
+					let h = this.moves[g];
+
+					if (!this.parent.flagPresses.softdrop) this.pressStr += j[h];
+					if (h == 4) {
+						if (this.parent.block.checkValid(this.parent.block.piece.activeArr, 0, 1)) {
+							break;
+							this.pieceDelay = -999;
+						} else {
+							this.pieceDelay = -999;
+							this.pressStr += "c";
+						}
+					}
+					this.moves.shift();
+					g--;
+					break;
 				}
-				this.moves.shift();
-				g--;
-				break;
-			}
 		}
 		this.pieceDelay--;
 	}
@@ -1032,5 +1036,70 @@ class NeoplexStaticFrenzyAI {
 		for (let v = 0, len = this.moves.length; v < len; v++) {
 
 		}
+	}
+}
+
+class ArtificialIntelligenceRPG {
+	constructor(par) {
+		this.a = par;
+		this.skillTime = 0;
+		this.pressStr = "";
+	}
+	run() {
+		this.pressStr = "";
+		if (this.a.rpgAttr.isOn && this.a.rpgAttr.isRPG && this.a.rpgAttr.isUsableSkills) {
+			let a = this.a, //destructuring syntax for assignment? naah gonna go for the basic syntax...
+				b = a.rpgAttr;
+			
+			if (this.skillTime <= 0) {
+				do {
+					this.skillTime = 5;
+					if ((b.hp / b.maxHP) < 0.3) {
+						//console.log("lowhp")
+						if (this.useSkill(["immunity", "healing"]))
+							break;
+					}
+					if (((b.hpDamage) / b.hp) > 0.3) {
+						if (this.useSkill(["absorption", "defup"]))
+							break;
+					}
+					if (a.activeType == 0 && ((a.block.stackAltitude - a.block.fieldSize.hh) / a.block.fieldSize.vh) < 0.355) {
+						if (this.useSkill(["avalanche", "lineclear"]))
+							break;
+					}
+					this.skillTime = 50;
+				} while (false);
+
+			} else this.skillTime--;
+		}
+	}
+	useSkill(desc) {
+		let a = this.a.rpgAttr,
+			b = a.deck.characters;
+		for (let x = 0; x < 3; x++) {
+			let r = b[x];
+			if (r.skill.mana > a.mana || r.skill.cooldown > 0) continue;
+			for (let j of desc)
+				if (r.skill.rawDesc.indexOf(j) !== -1) {
+					this.pressStr += (`${x+1}N${x+1}n`);
+					return true;
+				}
+		}
+		return false;
+	}
+	useSkillWithExclusion(excludeDesc) {
+		let a = this.a.rpgAttr,
+			b = a.deck.characters;
+		for (let x = 0; x < 3; x++) {
+			let r = b[x];
+			
+			if (r.skill.mana > a.mana || r.skill.cooldown > 0) continue;
+			for (let j of excludeDesc)
+				if (r.skill.rawDesc.indexOf(j) === -1) {
+					this.pressStr += (`${x+1}N${x+1}n`);
+					return true;
+				}
+		}
+		return false;
 	}
 }

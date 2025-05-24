@@ -1,0 +1,27 @@
+{
+	"hp": 145,
+	"mana": 130,
+	"atk": 8.3,
+	"def": 18,
+	"regen": 1,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 1200,
+		"voice": "skill1",
+		"mana": 50,
+		"skill": "epicman1",
+		"desc": "assemble, absorption",
+		"rawdesc": "avalanche|gchange",
+		"attr": [
+			{
+				"type": "absorb",
+				"time": 600,
+				"parameters": {
+					"value": "3%hp"
+				}
+			}
+		]
+	}
+}

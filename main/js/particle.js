@@ -1,5 +1,7 @@
 class ObjectParticle {
- constructor(duration, imgRef, spriteRow, spriteCol, startX, startY, endX, endY, size, color, bezier, isOpaqueTrail, trailOptions, rotateOptions) {
+ constructor(type, duration, imgRef, spriteRow, spriteCol, startX, startY, endX, endY, size, color, bezier, isOpaqueTrail, trailOptions, rotateOptions) {
+  this.maintype = type;
+  
   this.x = startX;
   this.y = startY;
   this.startX = startX;
@@ -34,7 +36,7 @@ class ObjectParticle {
   this.color.isRandom = color == "random";
   this.bezier = bezier;
   this.isOpaqueTrail = isOpaqueTrail || false;
-  this.isBasic = false;
+  //this.isBasic = false;
   if (this.type === "randomEase") {
    this.random1 = (Math.random() * 2);
    this.random2 = (Math.random() * 2);
@@ -175,7 +177,7 @@ class ObjectParticle {
   return (Math.min(1, (this.duration * 2.5) / this.maxDuration));
  }
  basicParticle(ctx) {
-  let size = this.size * game.cellSize * 0.2;
+  let size = this.size * game.fontSize * 0.2;
   let color = !this.color.isRandom ? this.color : {
    r: ~~(Math.random() * 255),
    g: ~~(Math.random() * 255),
@@ -273,14 +275,11 @@ const particle = new class {
     this.intrv = -1;
     //this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
     if (this.particles.length > 0) {
-
-
-
      for (let i = 0, len = this.particles.length; i < len; i++) {
       if (typeof this.particles[i] !== "undefined") {
        this.particles[i].update();
        let reference = this.particles[i];
-       if (!this.particles[i].isBasic) {
+       if (this.particles[i].maintype == 0) {
         if (reference.isOpaqueTrail) {
          let path = this.ctx.beginPath();
 
@@ -371,6 +370,7 @@ const particle = new class {
   };
 
   this.particles.push(new ObjectParticle(
+  	0,
   	duration * this.refreshRate, 
   	imgRef,
   spriteRow, 
@@ -386,6 +386,32 @@ const particle = new class {
   trailOptions,
   rotateOptions));
  };
+ 
+ addBasicParticle(cellSize, startX, startY, endX, endY, duration, size, clr, bez, isTrail, trailOptions, rotateOptions) {
+  let color = clr ? clr : {
+   r: 255,
+   g: 255,
+   b: 255
+  };
+
+  this.particles.push(new ObjectParticle(
+  	1,
+  	duration * this.refreshRate, 
+  	null,
+  0, 
+  0, 
+  endX - ((size * cellSize) / 2),
+  endY - ((size * cellSize) / 2), 
+  startX - ((size * cellSize) / 2), 
+  startY - ((size * cellSize) / 2),
+  size * cellSize,
+  color,
+  bez, 
+  isTrail, 
+  trailOptions,
+  rotateOptions));
+ };
+ 
 
  customDraw(img, sx, sy, sw, sh, x, y, w, h) {
   this.ctx2.drawImage(img, sx, sy, sw, sh, x, y, w, h);

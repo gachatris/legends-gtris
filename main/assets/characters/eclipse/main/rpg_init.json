@@ -1,0 +1,23 @@
+{
+	"base": "eclipse",
+	"version": "main",
+	"sources": {
+		"image": {
+			"card": "images/rpg_card.png",
+			"use": "images/skill_use.png"
+		},
+		"voices": {
+			"skill1": "voices/rpg_skill1.ogg"
+		}
+	},
+	"init": {
+		"attributesJson": "rpg_attr.json",
+		"image": {
+			"card": "card",
+			"use": "use"
+		},
+		"voices": {
+			"skill1": "skill1"
+		}
+	}
+}

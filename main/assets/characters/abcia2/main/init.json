@@ -1,0 +1,290 @@
+{
+	"base": "eclipse",
+	"version": "main",
+
+	"sources": {
+		"image": {
+			"normal": "images/normal.png",
+			"warning": "images/warning.png",
+			"win": "images/win.png",
+			"lose": "images/lose.png",
+			"overhead": "images/counter_overhead.png"
+		},
+		"voice": {}
+	},
+
+	"init": {
+		"ca_overhead": {
+			"image": "overhead"
+		},
+		"main": {
+			"attributes": {
+				"hp": 374,
+				"def": 120,
+				"atk": 12,
+				"mp": 120,
+				"lifesteal": 0.2,
+				"atktol": 93,
+				"hpregen": 10,
+				"hpregentol": 10,
+				"hpregentime": 30
+			},
+			
+			"henshinCanCount": true,
+
+			"chainPower": [0, 8, 16, 28, 54, 77, 107, 152, 177, 292, 535, 621, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+			"feverPower": [0, 6, 9, 14, 20, 30, 42, 60, 73, 89, 103, 143, 175, 210, 255, 282, 310, 331, 395, 417, 452, 520, 627, 682],
+			"dropset": [2, 0, 0, 0, 0, 1, 0, 3, 4, 3, 0, 2, 0, 2, 0, 3]
+		},
+		  "animation": {
+   "sources": {
+    "winasset": {
+     "width": 1200,
+     "height": 800,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 21,
+     "src": "win",
+     "xbound": 3
+     
+     
+    },
+        "loseasset": {
+         "width": 400,
+         "height": 400,
+         "framewidth": 400,
+         "frameheight": 400,
+         "aspectwidth": 1,
+         "aspectheight": 1,
+         "cellsizemult": 21,
+         "src": "lose",
+         "xbound": 1
+    
+        }
+   },
+   
+   "triggers": {
+    "win": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "winasset",
+       "framemax": 2,
+       "framepos": 0,
+       "framedel": 8,
+       "loop": true,
+       "paused": true,
+       "targetid": "win"
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 4,
+       "y0": 20,
+       "x1": 4,
+       "y1": -4,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "20": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 4,
+       "y0": -4,
+       "x1": 4,
+       "y1": 3,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "40": [
+       
+      
+     ],
+     "60": [
+      
+      {
+       "action": "configureAnimLayer",
+       "framemax": 3,
+       "framepos": 1,
+       "framedel": 3,
+       "loop": true,
+       "paused": false,
+       "targetid": "win"
+      }
+     ],
+       
+     "65": [
+      
+      {
+       "action": "configureAnimLayer",
+       "framemax": 3,
+       "framepos": 2,
+       "framedel": 3,
+       "loop": true,
+       "paused": true,
+       "targetid": "win"
+      }
+     ],
+     "68": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 4,
+       "framepos": 3,
+       "framedel": 1,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 4,
+       "y0": 3,
+       "x1": 4,
+       "y1": 1,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "98": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos":3,
+       "framedel": 1,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      }
+      
+     ],
+     "133": [
+      {
+       "action": "configureAnimLayer",
+       "framemax": 1,
+       "framepos": 4,
+       "framedel": 1,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      }
+      
+     ],
+     "118": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 4,
+       "y0": 1,
+       "x1": 4,
+       "y1": 3,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "168": [
+      {
+       "action": "time",
+       "time": 67
+      }
+      
+     ]
+     
+    },
+    "lose": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetsrc": "loseasset",
+       "framemax": 0,
+       "framepos": 0,
+       "framedel": 0,
+       "loop": false,
+       "paused": true,
+       "targetid": "win"
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 4,
+       "y0": 25,
+       "x1": 4,
+       "y1": -2,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+     "20": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 4,
+       "y0": -2,
+       "x1": 4,
+       "y1": 2,
+       "duration": 20,
+       "timing": "linear"
+      }
+     ],
+
+     
+     "40": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 4,
+       "y0": 2,
+       "x1": 4,
+       "y1": 0,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     
+
+     "90": [
+      
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 4,
+       "y0": 0,
+       "x1": 4,
+       "y1": 2,
+       "duration": 50,
+       "timing": "linear"
+      }
+     ],
+     "140": [
+      {
+       "action": "time",
+       "time": 40
+      }
+      
+     ]
+     
+    }
+   }
+  },
+		"image": {
+			"normal": {
+				"src": "normal"
+			},
+			"warning": {
+				"src": "warning"
+			}
+		},
+
+		"voice": {}
+
+	}
+}

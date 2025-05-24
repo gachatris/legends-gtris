@@ -1,0 +1,33 @@
+{
+	"hp": 165,
+	"mana": 35,
+	"atk": 6.5,
+	"def": 25,
+	"regen": 0,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 2400,
+		"mana": 45,
+		"skill": "dominic1",
+		"desc": "random, purify",
+		"rawdesc": "random|purify",
+		"attr": [
+			{
+				"type": "atkbuff",
+				"time": 1200,
+				"parameters": {
+					"value": "10%attack"
+				}
+			},
+			{
+				"type": "purify",
+				"time": 2,
+				"parameters": {
+
+				}
+			}
+		]
+	}
+}

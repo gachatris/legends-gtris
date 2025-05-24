@@ -1,0 +1,32 @@
+{
+	"hp": 295,
+	"mana": 160,
+	"atk": 5,
+	"def": 50,
+	"regen": 2,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 1200,
+		"skill": "misty1",
+		"voice": "skill1",
+		"mana": 22,
+		"desc": "burning, absorption",
+		"rawdesc": "burning|absorption",
+		"skillvalues": {
+			"pdmgpercentage": 40,
+			"pdmgtime": 300,
+			"pdmginterval": 80
+		},
+		"attr": [
+			{
+				"type": "absorb",
+				"time": 600,
+				"parameters": {
+					"value": "50%hp"
+				}
+			}
+		]
+	}
+}

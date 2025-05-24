@@ -8,7 +8,9 @@
  *  MIT License
  */
  let MainHowler = {};
+ //EricLenovo: create MainHowler object variable for the Howler.JS components in the new Function() context
 !function () {
+  //EricLenovo: a bit of "refactoring" to embed all Howler components to an object
 	let _ = {};
 
   'use strict';

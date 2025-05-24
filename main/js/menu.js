@@ -9,10 +9,31 @@ const menu = new class {
 			lastSelection: 0,
 			name: name,
 			isAi: isAi,
-			canOK: false
+			canOK: false,
+			isCharacterCardSelect: 0,
+			characterCards: [
+			{
+				version: 0,
+				selection: 0,
+				lastSelection: 0,
+				isOK: 0,
+			},
+			{
+				version: 0,
+				selection: 1,
+				lastSelection: 0,
+				isOK: 0,
+			},
+			{
+				version: 0,
+				selection: 2,
+				lastSelection: 0,
+				isOK: 0,
+			}],
+			characterCardIndex: 0
 		};
 	}
-
+	
 	#SelectionGroup = class {
 		constructor(parent, parameters) {
 			this.parent = parent;
@@ -22,7 +43,7 @@ const menu = new class {
 			this.selectables = [];
 			this.mainElememt = parameters.element;
 		}
-
+		
 		changeSelectables(a) {
 			this.selectables.length = 0;
 			for (let h of a.selectables) {
@@ -30,13 +51,13 @@ const menu = new class {
 			}
 			this.selectedIndex = a.default || 0;
 		}
-
+		
 		showHide(bool) {
-
+			
 		}
-
+		
 	};
-
+	
 	#Selectable = class {
 		constructor(parent, parameters) {
 			this.parent = parent;
@@ -59,7 +80,7 @@ const menu = new class {
 			}
 			if (parameters.type === "range_list_specific") {
 				//console.log("specific" + JSON.stringify(parameters));
-
+				
 				for (let j of this.parent.storage.getList(parameters.property).choices) {
 					//console.log(j, language.settingTranslate(j)[0])
 					this.items.push(language.settingTranslate(j)[0]);
@@ -73,7 +94,7 @@ const menu = new class {
 					let r = mm[j].split(">")[0];
 					if (this.descProps.indexOf(r) === -1) this.descProps.push(r);
 				}
-
+				
 				for (let g of this.descProps) {
 					let temp = k.replace(new RegExp(`\\$\\<${g}\\>`, "gm"), this.parent.storage.getItem(g));
 					k = temp;
@@ -87,38 +108,49 @@ const menu = new class {
 		select() {
 			let a = this.parameters;
 			if (a.type === "button") switch (a.action) {
+				case "changelog": {
+					fsw.functions.Changelog.open();
+					break;
+				}
+				case "discord": {
+					let mm = document.createElement("a");
+					mm.href = "https://discord.com/invite/mnSQJQEuXy";
+					mm.target = "_blank";
+					mm.click();
+					break;
+				}
 				case "submenu": {
 					this.parent.changeMenuAsync(a.submenu, a.backable);
 					break;
 				}
-
+				
 				case "submenu_sync": {
 					this.parent.changeMenu(a.submenu, a.backable, false);
 					break;
 				}
-
+				
 				case "unpause": {
 					this.parent.game.unpauseGame();
-
+					
 					break;
 				}
-
+				
 				case "restart": {
 					this.parent.game.startGameSet("restart");
-
+					
 					break;
 				}
-
+				
 				case "end": {
 					game.endGame(true);
 					break;
 				}
-
+				
 				case "mainmenu": {
 					this.goToMainMenu();
 					break;
 				}
-
+				
 				case "init": {
 					let param = JSON.parse(JSON.stringify(a.charselect_param));
 					this.parent.characterMenu.setParameters(param);
@@ -129,7 +161,7 @@ const menu = new class {
 					//m.event_listeners.click.func = loo; //menu_global.game.initialize(${g.init})
 					break;
 				}
-
+				
 				case "actualinit": {
 					game.startGameSet("actual");
 					break;
@@ -146,14 +178,14 @@ const menu = new class {
 							result = result.replace(regExp, varInstance);
 						}
 					}
-
+					
 					let ne = new Function(["menu_global", "evt"], result);
 					//j.__event_functions[ats] = (event) => {
 					ne(__private.menu, event);
 					//	}
 					break;
 				}
-
+				
 				case "nameplate": {
 					let m = this.parent.storage.getItem("playername");
 					let a = prompt(language.translate("nameplate_note", [m]), m);
@@ -165,6 +197,12 @@ const menu = new class {
 					this.parent.saveFrame = 22;
 					break;
 				}
+				
+				case "keybindsetting": {
+					
+					fsw.functions.Keybinds.openSettings(a.keybind);
+					break;
+				}
 				case "choiceselect": {
 					this.parent.storage.setItem(a.select_property, a.select_choice);
 					let ay = this.parent.submenuSequence.pop();
@@ -173,12 +211,12 @@ const menu = new class {
 					this.parent.saveFrame = 60;
 					break;
 				}
-
+				
 				case "replaycenter": {
 					this.parent.openReplayCenter();
 					break;
 				}
-
+				
 				case "replaycurrent": {
 					this.parent.loadReplayData(game.replayDataToString(), false);
 					break;
@@ -194,7 +232,7 @@ const menu = new class {
 				
 				case "replayreplay": {
 					game.startReplay();
-
+					
 					break;
 				}
 				case "replayupload": {
@@ -209,11 +247,11 @@ const menu = new class {
 							reader.onload = (read) => {
 								var ctx = read.target.result;
 								try {
-									let test = atob(ctx);
+									let test = (ctx);
 									this.parent.loadReplayData(test, false);
 								} catch (e) {
 									this.parent.playSound("error");
-
+									
 								}
 							}
 						} else {
@@ -221,10 +259,10 @@ const menu = new class {
 						}
 					};
 					y.click();
-
+					
 					break;
 				}
-
+				
 				case "replayminmax": {
 					let lam = JSON.parse(this.parent.replayDataString);
 					let replays = lam.replays;
@@ -239,11 +277,11 @@ const menu = new class {
 						for (let i = min; i >= max; i--) {
 							selectedReplays.push(replays[i]);
 						}
-
+					
 					lam.replays = selectedReplays;
 					////console.log(lam);
-
-
+					
+					
 					game.parseReplayFile(JSON.stringify(lam), 0, 9999, this.parameters.is_file);
 					break;
 				}
@@ -256,27 +294,26 @@ const menu = new class {
 			if (a.type === "range_list_specific") {
 				this.parent.openChoices(language.translate(a.string, void 0), a.property, a.list, this.current, a.order)
 			}
-
+			
 			if (a.type === "switch") {
 				let prop = a.property;
 				//let temp = a.templist;
 				let b = this.parent.storage.getItem(prop);
 				//let preset = this.parent.storage.getList(prop);
 				b = [1, 0][this.parent.storage.getItem(prop)];
-
-
+				
+				
 				this.parent.storage.setItem(prop, b);
 				this.current = b;
-
 				this.parent.saveFrame = 60;
 			}
-
+			
 		}
-
+		
 		goToMainMenu() {
 			this.parent.changeMenu(JSON.stringify(this.parent.mainMenu), false);
 		}
-
+		
 		hover() {
 			if (this.description !== "") {
 				ih("MMC-FOOTER-TEXT", this.description);
@@ -290,18 +327,18 @@ const menu = new class {
 				let b = this.parent.storage.getItem(prop);
 				let preset = this.parent.presetSettings[setting];
 				b += number;
-
+				
 				if (b > preset.max) {
 					b = preset.max;
-
+					
 				}
 				if (b < preset.min) {
 					b = preset.min;
-
+					
 				}
 				this.parent.storage.setItem(prop, b);
 				this.current = b;
-
+				
 				this.parent.saveFrame = 60;
 			}
 			if (a.type === "session_range_minmax") {
@@ -310,18 +347,18 @@ const menu = new class {
 				let b = this.parent.sessionStorage.getItem(prop);
 				let preset = this.parent.sessionStorage.getTempList(temp);
 				b += number;
-
+				
 				if (b > preset.max) {
 					b = preset.max;
-
+					
 				}
 				if (b < preset.min) {
 					b = preset.min;
-
+					
 				}
 				this.parent.sessionStorage.setItem(prop, b);
 				this.current = b;
-
+				
 				//this.parent.saveFrame = 60;
 			}
 			if (a.type === "range_list_specific") {
@@ -330,17 +367,17 @@ const menu = new class {
 				let b = this.parent.storage.getItem(prop);
 				let preset = this.parent.storage.getList(setting);
 				b += number;
-
+				
 				if (b > preset.max) {
 					b = preset.max;
-
+					
 				}
 				if (b < preset.min) {
 					b = preset.min;
 				}
 				this.parent.storage.setItem(prop, b);
 				this.current = b;
-
+				
 				this.parent.saveFrame = 60;
 			}
 		}
@@ -349,63 +386,81 @@ const menu = new class {
 		constructor() {
 			this.fixedData = {
 				playername: "Player 1",
-				lang: "en-US"
+				lang: "en-US",
+				"keyboard": {
+					
+				},
+				patchnote_is_seen: 0,
+				version: ""
 			};
 			//this.userDataStr= "";
 			this.data = JSON.parse(JSON.stringify(this.fixedData));
 			this.stringFetchData = "";
 			this.lists = {};
 		}
-
+		
+		initialize() {
+			
+			this.data.keyboard = (keypressManager.defaultToSortedJSON());
+			//console.log(this.data.keyboard)
+		}
+		
 		setItem(prop, val) {
 			this.data[prop] = val;
 			////console.log(val);
-
 		}
-
+		
 		loadData(jsonString) {
 			let evaluator = JSON.parse(jsonString);
+			
+			
+			//console.log(this.data)
 			let func = (base, check) => {
 				if (typeof check !== "undefined")
 					for (let a in base) {
-						if (typeof base[a] !== "object") {
-							if (typeof check[a] !== "object") base[a] = check[a];
-						} else func(base[a], check[a]);
+						if ((base[a] instanceof Object)) {
+							func(base[a], check[a]);
+						} else if ((typeof check[a] == typeof base[a])) base[a] = check[a];
 					}
 			}
 			func(this.data, evaluator);
-			////console.log("LOAF",this.data, evaluator)
+		
+		
+			
+			
 		}
-
+		
 		loadUserData(lo) {
 			this.stringFetchData = lo;
+			//console.log(this.stringFetchData)
 		}
-
+		
 		createList(name, obj) {
 			this.lists[name] = obj;
 		}
-
+		
 		getList(a) {
 			return this.lists[a];
 		}
-
-
+		
+		
 		getItem(prop, substitute) {
 			if (prop in this.data) return this.data[prop];
 			if (substitute !== void 0) return substitute;
 			return null;
 		}
-
-
+		
+		
 		getValueFromRangeListSpecific(prop) {
 			return this.getList(prop).choices[this.getItem(prop, 0)].split("||")[1];
 		}
-
+		
 		save() {
 			database.write("local_data", "userdata", JSON.stringify(this.data));
 		}
-
+		
 	}();
+	
 	sessionStorage = new class {
 		constructor() {
 			this.data = {
@@ -418,65 +473,64 @@ const menu = new class {
 		createTempList(name, obj) {
 			this.tempLists[name] = obj;
 		}
-
+		
 		getTempList(a) {
 			return this.tempLists[a];
 		}
 		setItem(prop, val) {
 			this.data[prop] = val;
 			////console.log(val);
-
+			
 		}
-
+		
 		getItem(prop, substitute) {
 			if (prop in this.data) return this.data[prop];
 			if (substitute !== void 0) return substitute;
 			return null;
 		}
-
+		
 	}();
-
+	
 	constructor() {
 		this.canvas = {};
-
+		
 		this.game = game;
-
+		
 		this.pauseSels = {
 			def: 0,
 			name: "pause",
 			title: "pause_title",
 			sel: [
-				{
-					"string": "pause_resume",
-					"type": "button",
-					"action": "unpause",
-					"onstate": "#ffff",
-					"offstate": "#fff2",
-					"desc": "pause_resume_desc"
-    			},
-				{
-					"string": "pause_restart",
-					"type": "button",
-					"action": "restart",
-					"onstate": "#ffff",
-					"offstate": "#fff2",
-					"desc": "pause_restart_desc"
-    			},
-				{
-					"string": "pause_end",
-					"type": "button",
-					"action": "end",
-					"onstate": "#f00f",
-					"offstate": "#f002",
-					"desc": "pause_end_desc"
-			}
-			],
+			{
+				"string": "pause_resume",
+				"type": "button",
+				"action": "unpause",
+				"onstate": "#ffff",
+				"offstate": "#fff2",
+				"desc": "pause_resume_desc"
+			},
+			{
+				"string": "pause_restart",
+				"type": "button",
+				"action": "restart",
+				"onstate": "#ffff",
+				"offstate": "#fff2",
+				"desc": "pause_restart_desc"
+			},
+			{
+				"string": "pause_end",
+				"type": "button",
+				"action": "end",
+				"onstate": "#f00f",
+				"offstate": "#f002",
+				"desc": "pause_end_desc"
+			}],
 			"background": {
 				"type": "rgba",
 				"color": "#222F"
 			}
 		};
-
+		
 		this.pauseReplaySels = {
 			def: 0,
 			name: "pause",
@@ -489,8 +543,8 @@ const menu = new class {
 					"onstate": "#ffff",
 					"offstate": "#fff2",
 					"desc": "pause_replay_resume_desc"
-    			},
-
+				},
+				
 				{
 					"string": "pause_restart",
 					"type": "button",
@@ -498,7 +552,7 @@ const menu = new class {
 					"onstate": "#ffff",
 					"offstate": "#fff2",
 					"desc": "pause_replay_restart_desc"
-    			},
+				},
 				{
 					"string": "pause_replay_end",
 					"type": "button",
@@ -506,17 +560,18 @@ const menu = new class {
 					"onstate": "#f00f",
 					"offstate": "#f002",
 					"desc": "pause_replay_end_desc"
-			}
+				}
 			],
 			"background": {
 				"type": "rgba",
 				"color": "#222F"
 			}
 		};
-
 		
-
-
+		this.isControlsEdit = false;
+		this.controlsEditCancelTime = 0; // max is 60
+		this.isPressed = false;
+		
 		let main = [
 			{
 				"string": "menu_start",
@@ -527,7 +582,7 @@ const menu = new class {
 				"offstate": "#fff2",
 				"backable": true,
 				"submenu": "start/start.json"
-	},
+			},
 			{
 				"string": "menu_replaycenter",
 				"desc": "menu_replaycenter_desc",
@@ -536,7 +591,7 @@ const menu = new class {
 				"onstate": "#ffff",
 				"offstate": "#fff2",
 				"backable": true,
-	},
+			},
 			{
 				"string": "menu_settings",
 				"desc": "menu_settings_desc",
@@ -547,10 +602,25 @@ const menu = new class {
 				"offstate": "#fff2",
 				"backable": true,
 				"submenu": "settings/list.json"
-	},
-
-				];
-
+			},
+			{
+				"string": "menu_changelog",
+				"desc": "menu_changelog_desc",
+				"type": "button",
+				"action": "changelog",
+				"onstate": "#ffff",
+				"offstate": "#fff2",
+			},
+			{
+				"string": "menu_discord",
+				"desc": "menu_discord_desc",
+				"type": "button",
+				"action": "discord",
+				"onstate": "#ffff",
+				"offstate": "#fff2",
+			}
+		];
+		
 		let gson = {
 			def: 0,
 			sel: main,
@@ -561,58 +631,58 @@ const menu = new class {
 				"color": "#222F"
 			}
 		};
-
+		
 		this.mainMenu = JSON.parse(JSON.stringify(gson));
-
+		
 		this.sounds = {};
-
+		
 		this.saveFrame = -1;
-
+		
 		elem("canvas", canvas => {
 			canvas.width = 1280;
 			canvas.height = 720;
 			this.canvas = canvas;
 			this.ctx = canvas.getContext("2d");
 		});
-
+		
 		this.presetSettings = {};
 		this.center = {
 			x: 1280 / 2,
 			y: 720 / 2
 		};
-
+		
 		//this.cellSize = 6;
 		this.landscape = {
 			w: 0,
 			h: 0,
 		};
-
+		
 		this.cellSize = 0;
-
+		
 		this.layout = {
-
+			
 		};
-
+		
 		this.isMenu = false;
 		this.isControllable = true;
 		this.transitionFrame = 0;
-
+		
 		this.submenuSequence = [];
-
+		
 		this.menus = {};
-
+		
 		this.hold = {
 			frame: 0,
 			on: false,
 			press: "",
 		};
-
+		
 		this.touchArea = {
 			x: 0,
 			y: 0,
 			isPress: false
 		};
-
+		
 		this.touchSensitivity = {
 			x: 3,
 			y: 30,
@@ -622,81 +692,88 @@ const menu = new class {
 			},
 			direction: 0
 		};
-
+		
 		this.temporaryElements = {
 			elements: {},
-
+			
 			elementObjects: {},
-
+			
 			resizeObjects: {},
 		}
-
+		
 		this.menuList = {
-
+			
 		};
-
+		
 		this.elementObjects = {};
-
+		
 		this.resizeObjects = {};
-
+		
 		this.mainElement = document.createElement("GTRIS-MENU-SCREEN");
-
+		
 		this.mainElement.style = "display: flex; justify-content: center; align-items: center; flex-direction: column;";
-
+		
 		this.container = id("MENU-MAIN-CONTENT");
-
+		
 		this.pauseContainer = id("MENU-PAUSE-DIV");
-
+		
 		this.headerContainer = id("MENU-HEADER");
-
+		
 		this.characterContainer = id("MENU-CHARSELECT-DIV");
-
+		
 		this.core = id("GTRIS-MENU-DIV");
-
+		
 		this.canvas = id("MM-CONTENT-CANVAS");
-
+		
 		this.ctx = getCanvasCtx(this.canvas);
-
+		
 		this.canvasDims = {
 			ar: 16 / 9,
 			w: 1280,
 			h: 720,
 			c: 1280 / 30
 		};
-
+		
 		this.canvas.width = this.canvasDims.w;
 		this.canvas.height = this.canvasDims.h;
-
+		
 		this.elements = {};
-
+		
 		this.selectables = [];
-
+		
 		this.selectionGroupName = "";
-
+		
 		this.selectableActive = 0;
-
+		
 		this.selectedJson = "";
 		//this.lastSelectionGroupNumber = 0;
-
+		
 		this.scroll = {
 			y: 0
 		}
-
-		this.isLoading = false
+		
+		this.isLoading = false;
+		
 		this.replayDataString = "";
-
+		
 		this.characterMenu.showHide(0);
+		this.keybindChange = {
+			duration: 45,
+			isActive: false,
+			change: 0,
+			index: 0, //index
+		}
 	}
-
+	
 	loadReplayData(dataString, isFile) {
-
+		
 		let a = JSON.parse(dataString);
 		this.replayDataString = dataString;
 		//console.log(a);
 		let replays = a.replays;
 		let max = replays.length - 1;
-
-
+		
+		
 		let sel = [
 			{
 				string: "replayload_playall",
@@ -706,19 +783,19 @@ const menu = new class {
 				offstate: "#fff2",
 				is_file: isFile,
 				desc: "replayload_playall_desc"
-		}
-		/*{ for future versions
-			"string": "replayload_details",
-			type: "submenu_sync",
-			action: "unpause",
-			onstate: "#ffff",
-			offstate: "#fff2",
-			desc: "replayload_playall_desc"
-		}*/
+			}
+			/*{ for future versions
+				"string": "replayload_details",
+				type: "submenu_sync",
+				action: "unpause",
+				onstate: "#ffff",
+				offstate: "#fff2",
+				desc: "replayload_playall_desc"
+			}*/
 		];
-
-
-
+		
+		
+		
 		if (max > 0) {
 			this.sessionStorage.setItem("replay_start_round", 0);
 			this.sessionStorage.setItem("replay_end_round", max);
@@ -737,34 +814,34 @@ const menu = new class {
 				"offset": 1
 			});
 			let h = [{
-					"string": "replayloadmm_range_start_slider",
-					"type": "session_range_minmax",
-					"action": "unpause",
-					"onstate": "#ffff",
-					"offstate": "#fff2",
-					"property": "replay_start_round",
-					"templist": "replay_start_round",
-					"desc": "replayload_range_start_slider_desc"
+				"string": "replayloadmm_range_start_slider",
+				"type": "session_range_minmax",
+				"action": "unpause",
+				"onstate": "#ffff",
+				"offstate": "#fff2",
+				"property": "replay_start_round",
+				"templist": "replay_start_round",
+				"desc": "replayload_range_start_slider_desc"
 			},
-				{
-					"string": "replayloadmm_range_end_slider",
-					"type": "session_range_minmax",
-					"action": "unpause",
-					"onstate": "#ffff",
-					"offstate": "#fff2",
-					"property": "replay_end_round",
-					"templist": "replay_end_round",
-					"desc": "replayload_range_end_slider_desc"
+			{
+				"string": "replayloadmm_range_end_slider",
+				"type": "session_range_minmax",
+				"action": "unpause",
+				"onstate": "#ffff",
+				"offstate": "#fff2",
+				"property": "replay_end_round",
+				"templist": "replay_end_round",
+				"desc": "replayload_range_end_slider_desc"
 			}, {
-
-					string: "replayloadmm_play",
-					type: "button",
-					action: "replayminmax",
-					onstate: "#ffff",
-					offstate: "#fff2",
-					is_file: isFile,
-					desc: "replayload_playall_desc"
-
+				
+				string: "replayloadmm_play",
+				type: "button",
+				action: "replayminmax",
+				onstate: "#ffff",
+				offstate: "#fff2",
+				is_file: isFile,
+				desc: "replayload_playall_desc"
+				
 			}];
 			let shel = {
 				def: 0,
@@ -776,7 +853,7 @@ const menu = new class {
 					"color": "#225F"
 				}
 			};
-
+			
 			sel.push({
 				string: "replayload_minmax",
 				type: "button",
@@ -787,9 +864,9 @@ const menu = new class {
 				desc: "replayload_minmax_desc",
 				backable: true
 			});
-
+			
 		}
-
+		
 		let mel = {
 			def: 0,
 			name: "replaymenu",
@@ -800,24 +877,24 @@ const menu = new class {
 				"color": "#222F"
 			}
 		};
-
-
+		
+		
 		this.changeMenu(JSON.stringify(mel), true);
-
+		
 	}
-
+	
 	openChoices(title, prop, current, setting, order) {
-
+		
 		let a = this.storage.getList(prop);
 		//console.log(a);
 		let j = a.choices;
 		let max = a.max;
-
-
+		
+		
 		let sel = [];
-
-
-
+		
+		
+		
 		for (let y = 0; y < j.length; y++) {
 			let p = j[y];
 			let h = language.settingTranslate(p);
@@ -833,7 +910,7 @@ const menu = new class {
 				raw_desc: h[1]
 			});
 		}
-
+		
 		let mel = {
 			def: this.storage.getItem(prop, 0),
 			name: "selector",
@@ -844,30 +921,29 @@ const menu = new class {
 				"color": "#222F"
 			}
 		};
-
-
+		
+		
 		this.changeMenu(JSON.stringify(mel), true);
-
+		
 	}
-
+	
 	openReplayCenter() {
-
-
-
+		
+		
+		
 		let sel = [
-			{
-				string: "replaycenter_upload",
-				type: "button",
-				action: "replayupload",
-				onstate: "#ffff",
-				offstate: "#fff2",
-				desc: "replaycenter_upload_desc",
-				backable: true
-		}
-		];
-
+		{
+			string: "replaycenter_upload",
+			type: "button",
+			action: "replayupload",
+			onstate: "#ffff",
+			offstate: "#fff2",
+			desc: "replaycenter_upload_desc",
+			backable: true
+		}];
+		
 		if (this.replayDataString !== "") {
-
+			
 			sel.push({
 				string: "replaycenter_current",
 				type: "button",
@@ -877,9 +953,9 @@ const menu = new class {
 				desc: "replaycenter_current_desc",
 				backable: true
 			});
-
+			
 		}
-
+		
 		let mel = {
 			def: 0,
 			name: "replaycenter",
@@ -890,12 +966,12 @@ const menu = new class {
 				"color": "#222F"
 			}
 		};
-
-
+		
+		
 		this.changeMenu(JSON.stringify(mel), true);
-
+		
 	}
-
+	
 	downloadReplayData() {
 		let u = game.replayDataToString();
 		let a = document.createElement("a");
@@ -904,7 +980,7 @@ const menu = new class {
 		a.setAttribute("download", `gtrislegends-${Date.now()}.gtlrx`);
 		a.click();
 	}
-
+	
 	MenuElementFrameAnimationRenderer = class {
 		constructor(element, initial, max, fps, param, addFunc) {
 			this.param = param || {};
@@ -912,11 +988,11 @@ const menu = new class {
 			this.a = new FrameRenderer(initial, max + paramDel, (frame, maxFrame) => {
 				let tminus = maxFrame - Math.max(0, frame - paramDel);
 				////console.log("played pi")
-
+				
 				if (tminus >= 0)
 					styleelem(this.element, "animation-delay", `${~~((1000 / (60 * (-1))) * Math.min(maxFrame,Math.max(frame + 1 - paramDel, 1)))}ms`);
-
-
+				
+				
 			}, addFunc, "loop" in param ? param.loop : false);
 			this.element = element;
 			this.fps = fps;
@@ -924,7 +1000,7 @@ const menu = new class {
 			this.isLoop = "loop" in param ? param.loop : false;
 			//styleelem(this.element, "opacity", `${this.param.opacity||0}%`);
 		}
-
+		
 		play() {
 			this.element.offsetHeight;
 			styleelem(this.element, "animation-name", this.param.name);
@@ -933,7 +1009,7 @@ const menu = new class {
 			styleelem(this.element, "animation-iteration-count", this.isLoop ? "infinite" : "1");
 			styleelem(this.element, "animation-play-state", "paused");
 			this.a.reset();
-
+			
 		}
 		run() {
 			this.a.run();
@@ -941,32 +1017,32 @@ const menu = new class {
 		reset() {
 			styleelem(this.element, "animation-name", "none");
 			this.a.toggleEnable(false);
-
+			
 		}
 	};
-
+	
 	load() {
 		return new Promise(async res => {
 			let a = await load("./assets/menu/menu.json", "text");
 			let json = JSON.parse(a);
-
-
-
-
-
-
+			
+			
+			
+			
+			
+			
 			//this.container.appendChild(this.mainElement);
-
+			
 			this.changeMenu(JSON.stringify(this.mainMenu), false);
-
+			
 			id("HEADER-BACK").addEventListener("click", () => {
 				this.backButton();
 			}, false);
-
+			
 			for (let g in json.sounds) {
 				let a = await load(`/assets/menu/${json.sounds[g]}`, "blob");
 				let blob = URL.createObjectURL(a);
-
+				
 				this.sounds[g] = new MainHowler.Howl({
 					src: blob,
 					format: "ogg",
@@ -975,15 +1051,16 @@ const menu = new class {
 				});
 				this.sounds[g].load();
 			}
-
-
-
+			
+			
+			
 			res();
 		});
 	}
-
+	
 	saveData() {
 		this.storage.save();
+		//console.log(this.storage.data)
 		this.checkData();
 	}
 	checkData() {
@@ -991,13 +1068,13 @@ const menu = new class {
 		if (mfxvol !== music.volume) {
 			music.volumeSet(mfxvol);
 		}
-
+		
 		let sfxvol = this.storage.getItem("set_global_sfx", 0);
 		if (sfxvol !== sound.volume) {
 			sound.volumeSet(sfxvol);
 		}
 	}
-
+	
 	checkStorageSettings() {
 		//console.log(this.storage.stringFetchData)
 		let data = {};
@@ -1005,32 +1082,32 @@ const menu = new class {
 		for (let b in this.presetSettings) {
 			let c = this.presetSettings[b];
 			//console.log(b,c)
-
-
+			
+			
 			if (c.type === "range_list_specific") {
 				c.min = 0;
 				c.max = c.choices.length - 1;
-
+				
 			}
 			if (c.type === "switch") {
 				c.min = 0;
 				c.max = 1;
-
+				
 			}
 			this.storage.setItem(b, (b in data) ? data[b] : c.default);
-
+			
 			for (let h in c.default_obj) {
 				let t = `${b}(${h})`;
-
+				
 				this.storage.setItem(t, (t in data) ? data[t] : c.default_obj[h]);
 			}
-
+			
 			this.storage.createList(b, c);
 			//console.log(c);
 		}
 		//console.log(this.presetSettings)
 	}
-
+	
 	changeSelectables(_json) {
 		this.selectables.length = 0;
 		let json = JSON.parse(JSON.stringify(_json));
@@ -1040,57 +1117,62 @@ const menu = new class {
 			ref.order = u;
 		}
 		for (let g of json.sel) {
-
-
+			
+			
 			this.selectables.push(new this.#Selectable(this, g));
-
+			
 		}
-
+		
 		for (let u = 0; u < this.selectables.length; u++) {
 			let ref = this.selectables[u];
 			ref.size = 1;
-
+			
 		}
 		let def = json.def || 0;
 		if (this.selectables[json.def]) {
 			this.switchSelectionNumber(json.def);
-
+			
 		}
-
+		
 		this.checkSelectables();
-
-
+		
+		
 	}
 	changeMenu(_json, backable, isBack) {
 		////console.log(_json)
 		let json = JSON.parse(_json);
 		if (backable) {
 			this.submenuSequence.push(this.selectedJson);
-			//console.
+			style("HEADER-BACK", "display", "flex");
 		} else {
-			if (!isBack) this.submenuSequence.length = 0;
+			if (!isBack) {
+				this.submenuSequence.length = 0;
+			} else {
+				
+			}
+			style("HEADER-BACK", "display", this.submenuSequence.length > 0 ? "flex" : "none");
 		}
-
+		
 		if ("title" in json) {
 			ih("HEADER-TITLE-TEXT", language.translate(json.title))
 		}
-
+		
 		if ("title_raw" in json) {
 			ih("HEADER-TITLE-TEXT", json.title_raw);
 		}
-
+		
 		this.selectedJson = _json;
-
+		
 		this.changeSelectables(json);
 	}
-
+	
 	refreshMenu() {
 		let sel = this.selectableActive;
 		this.changeSelectables(JSON.parse(this.selectedJson));
 		this.selectableActive = sel;
 		this.selectables[this.selectableActive].hover();
 	}
-
+	
 	changeMenuAsync(url, backable) {
 		this.isLoading = true;
 		load(`assets/menu/sections/${url}`, "text").then((m) => {
@@ -1101,7 +1183,7 @@ const menu = new class {
 	switchSelectionNumber(number) {
 		this.selectableActive = number;
 	}
-
+	
 	refreshSelectionGroup() {
 		this.selectionGroup = {};
 		//let ht = {};
@@ -1109,7 +1191,7 @@ const menu = new class {
 			let a = this.elementObjects[h];
 			if ("default_attributes" in a) {
 				if (("id_selectable" in a.default_attributes) && ("number_selectable" in a.default_attributes)) {
-
+					
 					if (!(a.default_attributes.id_selectable in this.selectionGroup)) {
 						this.selectionGroup[a.default_attributes.id_selectable] = {
 							def: 0,
@@ -1132,16 +1214,16 @@ const menu = new class {
 		}
 		////console.log(this.selectionGroup);
 	}
-
+	
 	playSound(name) {
 		this.sounds[name].stop();
 		this.sounds[name].play();
 	}
-
+	
 	run() {
 		this.draw();
 	}
-
+	
 	runInBackground() {
 		if (this.hold.on) {
 			this.hold.frame--;
@@ -1149,7 +1231,7 @@ const menu = new class {
 				this.controlsListen(this.hold.press, "hold");
 			}
 		}
-
+		
 		if (this.saveFrame >= 0) {
 			this.saveFrame--;
 			if (this.saveFrame == 0) {
@@ -1157,64 +1239,64 @@ const menu = new class {
 			}
 		}
 	}
-
+	
 	draw() {
 		this.characterMenu.draw();
 		let my = 0;
 		let gy = 0;
 		this.ctx.clearRect(0, 0, 1280, 720);
-
+		
 		for (let g = 0; g < this.selectables.length; g++) {
 			let mm = this.selectables[g];
 			let reference = mm.parameters;
-
-
+			
+			
 			let le = "#fff6";
-
+			
 			if (g == this.selectableActive) {
 				gy = -my;
 				le = "#ffff";
 				this.scroll.y += 0.1 * ((this.canvasDims.h / 2) - this.scroll.y + gy);
 			}
-
+			
 			if (reference.type === "button") {
 				this.ctx.font = `${reference.size * this.canvasDims.c}px default-ttf`;
 				this.ctx.strokeStyle = "#000";
-
+				
 				this.ctx.lineWidth = 10;
 				this.ctx.strokeText(mm.string, this.canvasDims.w * 0.15, this.scroll.y + (my));
-
-
+				
+				
 				this.ctx.fillStyle = le;
 				this.ctx.fillText(mm.string, this.canvasDims.w * 0.15, this.scroll.y + (my));
 				my += reference.size * this.canvasDims.c;
 			}
-
+			
 			if (reference.type === "range_minmax") {
 				let prop = this.presetSettings[reference.list];
-
+				
 				this.ctx.font = `${reference.size * this.canvasDims.c * 0.8}px default-ttf`;
 				this.ctx.strokeStyle = "#000";
 				let lo = `${mm.string}: ${language.translate(prop.text, [mm.current])}`;
-
-
+				
+				
 				this.ctx.lineWidth = 10;
 				this.ctx.strokeText(lo, this.canvasDims.w * 0.15, this.scroll.y + (my));
-
-
+				
+				
 				this.ctx.fillStyle = le;
 				this.ctx.fillText(lo, this.canvasDims.w * 0.15, this.scroll.y + (my));
-
+				
 				my += reference.size * this.canvasDims.c * 0.6;
-
+				
 				let lsd = this.canvasDims.w - ((this.canvasDims.w * 0.1) * 2);
 				this.ctx.fillRect(this.canvasDims.w * 0.1,
 					my + this.scroll.y,
 					lsd,
 					reference.size * this.canvasDims.c * 1);
-
+				
 				let pad = (0.1) * this.canvasDims.c * reference.size;
-
+				
 				this.ctx.clearRect(
 					(this.canvasDims.w * 0.1) + (pad / 2),
 					this.scroll.y + my + (pad / 2),
@@ -1227,38 +1309,38 @@ const menu = new class {
 					((mm.current - prop.min) / (prop.max - prop.min)) * (lsd - pad),
 					reference.size * this.canvasDims.c * 1 * (0.9)
 				);
-
+				
 				my += reference.size * this.canvasDims.c * 1 * 2;
 			}
-
-
+			
+			
 			if (reference.type === "session_range_minmax") {
 				let prop = this.sessionStorage.getTempList(reference.templist);
-
+				
 				this.ctx.font = `${reference.size * this.canvasDims.c * 0.8}px default-ttf`;
 				this.ctx.strokeStyle = "#000";
 				let off = ("offset" in prop) ? prop.offset : 0;
-
+				
 				let lo = `${mm.string}: ${language.translate(prop.text, [mm.current + off, prop.max + off])}`;
-
-
+				
+				
 				this.ctx.lineWidth = 10;
 				this.ctx.strokeText(lo, this.canvasDims.w * 0.15, this.scroll.y + (my));
-
-
+				
+				
 				this.ctx.fillStyle = le;
 				this.ctx.fillText(lo, this.canvasDims.w * 0.15, this.scroll.y + (my));
-
+				
 				my += reference.size * this.canvasDims.c * 0.6;
-
+				
 				let lsd = this.canvasDims.w - ((this.canvasDims.w * 0.1) * 2);
 				this.ctx.fillRect(this.canvasDims.w * 0.1,
 					my + this.scroll.y,
 					lsd,
 					reference.size * this.canvasDims.c * 1);
-
+				
 				let pad = (0.1) * this.canvasDims.c * reference.size;
-
+				
 				this.ctx.clearRect(
 					(this.canvasDims.w * 0.1) + (pad / 2),
 					this.scroll.y + my + (pad / 2),
@@ -1271,35 +1353,35 @@ const menu = new class {
 					((mm.current - prop.min) / (prop.max - prop.min)) * (lsd - pad),
 					reference.size * this.canvasDims.c * 1 * (0.9)
 				);
-
+				
 				my += reference.size * this.canvasDims.c * 1 * 2;
 			}
-
+			
 			if (reference.type === "range_list_specific") {
-				let prop = this.presetSettings[reference.property];
-
+				let prop = this.presetSettings[reference.list];
+				
 				this.ctx.font = `${reference.size * this.canvasDims.c * 0.8}px default-ttf`;
 				this.ctx.strokeStyle = "#000";
 				let lo = `${mm.string}: ${mm.items[mm.current]}`;
-
-
+				
+				
 				this.ctx.lineWidth = 10;
 				this.ctx.strokeText(lo, this.canvasDims.w * 0.15, this.scroll.y + (my));
-
-
+				
+				
 				this.ctx.fillStyle = le;
 				this.ctx.fillText(lo, this.canvasDims.w * 0.15, this.scroll.y + (my));
-
+				
 				my += reference.size * this.canvasDims.c * 0.6;
-
+				
 				let lsd = this.canvasDims.w - ((this.canvasDims.w * 0.1) * 2);
 				this.ctx.fillRect(this.canvasDims.w * 0.1,
 					my + this.scroll.y,
 					lsd,
 					reference.size * this.canvasDims.c * 1);
-
+				
 				let pad = (0.1) * this.canvasDims.c * reference.size;
-
+				
 				this.ctx.clearRect(
 					(this.canvasDims.w * 0.1) + (pad / 2),
 					this.scroll.y + my + (pad / 2),
@@ -1312,53 +1394,54 @@ const menu = new class {
 					((mm.current - prop.min) / (prop.max - prop.min)) * (lsd - pad),
 					reference.size * this.canvasDims.c * 1 * (0.9)
 				);
-
+				
 				my += reference.size * this.canvasDims.c * 1 * 2;
 			}
 			
 			if (reference.type === "switch") {
-				let prop = this.presetSettings[reference.property];
-
+				let prop = this.presetSettings[reference.list];
+				
 				this.ctx.font = `${reference.size * this.canvasDims.c * 0.8}px default-ttf`;
 				this.ctx.strokeStyle = "#000";
+				
 				let lo = `${mm.string}: ${(mm.current == 1 ? prop.on : prop.off)}`;
 				let lc = reference.size * this.canvasDims.c * 1.4;
-
+				
 				this.ctx.drawImage(game.misc[mm.current == 1 ? "menu_switch_on" : "menu_switch_off"],
 					this.canvasDims.w * 0.15, this.scroll.y + (my) - (lc / 1.6),
 					lc, lc
 				)
-
+				
 				this.ctx.lineWidth = 10;
 				this.ctx.strokeText(lo, this.canvasDims.w * 0.16 + lc, this.scroll.y + (my));
-
-
+				
+				
 				this.ctx.fillStyle = le;
 				this.ctx.fillText(lo, this.canvasDims.w * 0.16 + lc, this.scroll.y + (my));
-
+				
 				my += reference.size * this.canvasDims.c * 2;
 			}
 		}
 	}
-
+	
 	moveUp() {
 		if (this.characterMenu.isActive) {
 			this.characterMenu.controlsListen(("arrowup"));
 			return
 		}
 		if (!this.isControllable) return;
-
+		
 		if (this.selectables.length === 0) return;
 		this.selectableActive--;
 		if (this.selectableActive < 0) {
 			this.selectableActive = 0;
 			return;
 		}
-
+		
 		this.checkSelectables();
-
+		
 		this.playSound("move");
-
+		
 	}
 	moveDown() {
 		if (this.characterMenu.isActive) {
@@ -1374,44 +1457,44 @@ const menu = new class {
 		this.checkSelectables();
 		this.playSound("move");
 	}
-
+	
 	checkSelectables() {
 		let reference = this.selectables[this.selectableActive];
 		reference.hover();
 	}
-
+	
 	moveLeft() {
 		if (this.characterMenu.isActive) {
 			this.characterMenu.controlsListen(("arrowleft"));
 			return
 		}
 		if (!this.isControllable) return;
-
+		
 		if (this.selectables.length === 0) return;
-
+		
 		let reference = this.selectables[this.selectableActive];
 		reference.adjust(-1);
-
+		
 		this.playSound("move");
-
+		
 	}
-
+	
 	moveRight() {
 		if (this.characterMenu.isActive) {
 			this.characterMenu.controlsListen(("arrowright"));
 			return;
 		}
 		if (!this.isControllable) return;
-
+		
 		if (this.selectables.length === 0) return;
-
+		
 		let reference = this.selectables[this.selectableActive];
 		reference.adjust(1);
 		this.playSound("move");
-
+		
 	}
-
-
+	
+	
 	pressAButton() {
 		if (this.characterMenu.isActive) {
 			this.characterMenu.controlsListen(("enter"));
@@ -1425,41 +1508,41 @@ const menu = new class {
 			this.playSound("select");
 		}
 	}
-
+	
 	pressBButton() {
 		if (!this.isControllable) return;
 		this.backButton();
 	}
-
+	
 	controlsListen(name, k) {
-		if (!this.isLoading && !splash.isActive && game.startGameParameters.frame <= 0) {
+		if (!this.isLoading && !this.characterMenu.isWait && !splash.isActive && game.startGameParameters.frame <= 0 && !fsw.isShown) {
 			let preventHold = false;
 			switch (name) {
 				case "up": {
 					if (k !== "up") {
 						this.moveUp();
-
+						
 					}
 					break;
 				}
 				case "down": {
 					if (k !== "up") {
 						this.moveDown();
-
+						
 					}
 					break;
 				}
 				case "left": {
 					if (k !== "up") {
 						this.moveLeft();
-
+						
 					}
 					break;
 				}
 				case "right": {
 					if (k !== "up") {
 						this.moveRight();
-
+						
 					}
 					break;
 				}
@@ -1478,7 +1561,7 @@ const menu = new class {
 					break;
 				}
 			}
-
+			
 			if (!preventHold) {
 				this.hold.press = name;
 				if (k == "down") {
@@ -1494,80 +1577,81 @@ const menu = new class {
 			}
 		}
 	}
-
+	
 	getID(elementID) {
 		let h = 0;
 		if (elementID in this.elements) h = this.elements[elementID];
 		return h;
 	}
-
+	
 	isExistingElement(elementID) {
 		return elementID in this.elements;
 	}
-
+	
 	isExistingObj(elementID) {
 		return elementID in this.elementObjects;
 	}
-
-
+	
+	
 	getIDTemp(elementID) {
 		let h = 0;
 		if (elementID in this.temporaryElements.elements) h = this.temporaryElements.elements[elementID];
 		return h;
 	}
-
+	
 	isExistingElementTemp(elementID) {
 		return elementID in this.temporaryElements.elements;
 	}
-
-	resize(cellSize, w, h) {
+	
+	resize(cellSize, fontSize, w, h) {
 		this.cellSize = cellSize;
-
+		this.fontSize = fontSize;
+		
 		this.landscape.w = w;
 		this.landscape.h = h;
-
+		
 		let header = id("MENU-HEADER");
 		let charselect = id("MENU-HEADER");
-
+		
 		styleelem(this.container, "width", `${w}px`);
 		styleelem(this.container, "height", `${h}px`);
-
+		
 		styleelem(this.pauseContainer, "width", `${w}px`);
 		styleelem(this.pauseContainer, "height", `${h}px`);
-
+		
 		styleelem(this.characterContainer, "width", `${w}px`);
 		styleelem(this.characterContainer, "height", `${h}px`);
-
+		
 		styleelem(this.core, "width", `${w}px`);
 		styleelem(this.core, "height", `${h}px`);
-
+		
 		styleelem(this.canvas, "width", `${w}px`);
 		styleelem(this.canvas, "height", `${h}px`);
-
+		
 		styleelem(header, "width", `${w}px`);
 		styleelem(header, "height", `${this.cellSize * 2}px`);
-
+		
 		styleelem(this.mainElement, "width", `${w}px`);
 		styleelem(this.mainElement, "height", `${h}px`);
-
+		
 		styleelem(this.core, "fontSize", `${this.cellSize}px`);
-
+		
 		style("HEADER-BACK", "width", `${this.cellSize * 2}px`);
 		style("HEADER-BACK", "height", `${this.cellSize * 2}px`);
-
+		
 		style("HEADER-TITLE-DIV", "padding-left", `${this.cellSize * 0.5}px`);
-
-		style("HEADER-TITLE-TEXT", "font-size", `${this.cellSize * 1.5}px`);
-
+		
+		style("HEADER-TITLE-TEXT", "font-size", `${this.fontSize * 1.5}px`);
+		
 		style("MM-CONTENT-FOOTER", "width", `${w}px`);
 		style("MM-CONTENT-FOOTER", "height", `${this.cellSize * 5}px`);
-		style("MM-CONTENT-FOOTER", "font-size", `${this.cellSize * 1.2}px`);
+		style("MM-CONTENT-FOOTER", "font-size", `${this.fontSize * 1}px`);
 		style("MMC-FOOTER-TEXT", "width", `${w * 0.9}px`);
-
-
+		
+		
 		//styleelem(this.mainElement, "background", "#fff5");
-
-		for (let _w in this.resizeObjects) {
+		
+		/*for (let _w in this.resizeObjects) {
 			let gh = this.resizeObjects[_w];
 
 			if (gh.t === "whole") {
@@ -1587,8 +1671,8 @@ const menu = new class {
 			let gh = this.elementObjects[_w];
 
 
-			if ("font_size" in gh) styleelem(this.elements[_w], "fontSize", `${gh.font_size * this.cellSize}px`);
-			else styleelem(this.elements[_w], "fontSize", `${this.cellSize}px`);
+			if ("font_size" in gh) styleelem(this.elements[_w], "font-size", `${gh.font_size * this.fontSize}px`);
+			else styleelem(this.elements[_w], "font-size", `${this.fontSize}px`);
 
 
 		}
@@ -1620,11 +1704,12 @@ const menu = new class {
 
 
 			}
-		}
-
+		}*/
+		
+		
 		this.characterMenu.resize();
 	}
-
+	
 	convertJSONSimpleToJSONComplex(simple) {
 		let complex = [];
 		let n = 0;
@@ -1639,7 +1724,7 @@ const menu = new class {
 					"height": 2
 				},
 				"id": lo,
-
+				
 				"tag": "menu-object",
 				"inner_html": "",
 				"default_attributes": {
@@ -1647,22 +1732,22 @@ const menu = new class {
 					"mouseover_color": "#0000"
 				},
 				"style": { "display": "flex", "justify-content": "center", "align-items": "center" },
-
+				
 				"attributes": {
-
+					
 				},
-
+				
 				"event_listeners": {
-
+					
 				},
-
+				
 				"children": {
-
+					
 				}
 			};
 			let m = complex[n];
 			if (g.type == "textbox") {
-
+				
 				m.children[0] = {
 					"type": "none",
 					"font_size": 1,
@@ -1679,7 +1764,7 @@ const menu = new class {
 						height: "100%",
 					},
 					"attributes": {
-
+						
 					},
 					"event_listeners": {
 						change: {
@@ -1688,12 +1773,12 @@ const menu = new class {
 						}
 					}
 				};
-
-
+				
+				
 				m.children[0].event_listeners.change.func = `let __value__ = evt.target.value; ${g.change};`
 			}
 			if (g.type == "button") {
-
+				
 				m.children[0] = {
 					"type": "none",
 					"font_size": 1,
@@ -1701,13 +1786,13 @@ const menu = new class {
 					"tag": "menu-object",
 					"inner_html": g.string,
 					"default_attributes": {
-
+						
 					},
 					"attributes": {
 						"style": "pointer-events: none; position: absolute"
 					},
 				};
-
+				
 				m.style["justify-content"] = "left";
 				m.style["flex-direction"] = "column"
 				m.event_listeners = {
@@ -1727,28 +1812,28 @@ const menu = new class {
 				m.default_attributes.id_selectable = g.selectname;
 				m.default_attributes.number_selectable = g.selectnumber;
 				m.default_attributes.is_default_select = g.is_default;
-
-
+				
+				
 				m.style.background = g.offstate;
-
+				
 				if ("init" in g) {
 					let param = JSON.parse(JSON.stringify(g.charselect_param));
 					let loo = `menu_global.characterMenu.setParameters(${JSON.stringify(param)});`;
 					loo += `menu_global.characterMenu.showHide(1);menu_global.setInit(${g.init});`;
-
+					
 					m.event_listeners.click.func = loo; //menu_global.game.initialize(${g.init})
 				}
-
-
-
+				
+				
+				
 			}
 			if (g.type == "button2") {
-
+				
 				m.size.type = "whole";
 				m.size.width = 1;
 				m.size.height = 0.14;
-
-
+				
+				
 				m.style["clip-path"] = "polygon(0 0, 92% 0, 86% 97%, 0% 97%)";
 				m.style["align-items"] = "left";
 				m.style["padding-left"] = "1.3em";
@@ -1763,13 +1848,13 @@ const menu = new class {
 					"tag": "menu-object",
 					"inner_html": g.string,
 					"default_attributes": {
-
+						
 					},
 					"attributes": {
 						"style": "pointer-events: none; position: relative; display: inline-block",
 					},
 				};
-
+				
 				m.children[1] = {
 					"type": "none",
 					"font_size": 1,
@@ -1777,8 +1862,8 @@ const menu = new class {
 					"tag": "menu-object",
 					"inner_html": g.hint || "  ",
 					"default_attributes": {
-
-
+						
+						
 					},
 					"attributes": {
 						"style": "pointer-events: none; position: relative; display: inline-block",
@@ -1798,20 +1883,20 @@ const menu = new class {
 						"func": mfunc
 					}
 				};
-
+				
 				m.style.background = g.offstate;
-
+				
 				if ("init" in g) {
 					let param = JSON.parse(JSON.stringify(g.charselect_param));
 					let loo = `menu_global.characterMenu.setParameters(${JSON.stringify(param)});`;
 					loo += `menu_global.characterMenu.showHide(1);menu_global.setInit(${g.init});`;
-
+					
 					m.event_listeners.click.func = loo; //menu_global.game.initialize(${g.init})
 				}
-
+				
 				if ("function" in g) {
-
-
+					
+					
 					let result = g.function;
 					if ("args" in g) {
 						let args = JSON.parse(JSON.stringify(g.args));
@@ -1823,24 +1908,24 @@ const menu = new class {
 							result = result.replace(regExp, varInstance);
 						}
 					}
-
+					
 					m.event_listeners.click.func = result; //menu_global.game.initialize(${g.init})
 				}
-
+				
 			}
-
-
+			
+			
 			n++;
 		}
-
+		
 		return complex;
 	}
-
+	
 	setInit(g) {
 		game.actualParameters.mode = g;
-
+		
 	}
-
+	
 	resetTemp() {
 		for (let j in this.temporaryElements.elements) {
 			delete this.temporaryElements.elements[j];
@@ -1852,14 +1937,14 @@ const menu = new class {
 			delete this.temporaryElements.resizeObjects[j];
 		}
 	}
-
+	
 	showMenu(bool) {
 		this.isMenu = bool;
 		this.isControllable = bool;
 		styleelem(this.container, "display", bool ? "flex" : "none");
 		styleelem(this.headerContainer, "display", bool ? "flex" : "none");
 	}
-
+	
 	hoverButton(id, on) {
 		let j = {};
 		let exist = false;
@@ -1876,28 +1961,10 @@ const menu = new class {
 			j.style.background = on;
 		}
 	}
-
+	
 	backButton() {
 		if (this.characterMenu.isActive) {
-			let a = this.characterMenu;
-			let isSelActive = false;
-			for (let g = a.activeSelection.length - 1; g >= 0; g--) {
-				let hh = a.activeSelection[g];
-				if (hh.isOK) {
-					isSelActive = true;
-					hh.isOK = 0;
-				}
-
-
-				if (isSelActive) break;
-				else if (a.parameters.ai == !(g - 1 < 0)) a.selectUnderControl = g - 1;
-				////console.log(g);
-
-			}
-			if (!isSelActive) {
-				a.showHide(0);
-			}
-			this.playSound("cancel");
+			this.characterMenu.back();
 			return;
 		}
 		if (this.submenuSequence.length > 0) {
@@ -1906,47 +1973,48 @@ const menu = new class {
 		}
 		this.playSound("cancel");
 	}
-
+	
 	jsonMenuManager = new class {
 		constructor() {
 			this.loadedJson = {};
 			/*this.loop = new DateSynchronizedLoopHandler(60, (l) => {
 			 
 			});*/
-
+			
 			this.isLoaded = false;
-
-
+			
+			
 		}
 	}();
-
-
+	
+	
 	characterMenu = new class {
-
+		
 		constructor(a, b) {
 			this.parents = {
 				main: a,
 				char: b
 			};
-
+			
 			this.isActive = 0;
-
+			
 			this.touchPanelSystem = new DOMTouchInteractivity(id("CSFRONT-PANEL"), (event) => {
+				
 				this.panelInteractListen(event);
 			})
-
+			
 			this.animations = {
-
+				
 			}
-
+			
 			this.animNames = [];
 			//for (let aa in this.animations) this.animNames.push(aa);
 			this.charNames = {
-
+				
 			};
-
+			
 			this.charSidesSelector = {};
-
+			
 			for (let kl of ["left", "right"]) {
 				let ll = {
 					left: 1,
@@ -1958,7 +2026,7 @@ const menu = new class {
 					let isNegative = ~~split[0] < 0;
 					style(`CSBEHIND-P${ll}-CHARNAME`, "display", (isNegative) ? "nome" : "block");
 					style(`CSBEHIND-P${ll}-VERSIONNAME`, "display", (isNegative) ? "nome" : "block");
-
+					
 					if (split[0] > -1) {
 						//this.versionNames[kl].execute();
 						if (~~(split[0]) > this.parents.char.characters.length - 1) return;
@@ -1966,13 +2034,13 @@ const menu = new class {
 						ih(`CSBEHIND-P${ll}-CHARNAME`, language.charTranslate(`${reference.core.name}`));
 						let ver = reference.versions[~~split[1]];
 						ih(`CSBEHIND-P${ll}-VERSIONNAME`, language.charTranslate(`${ver.lang_path}>${ver.name}`));
-
+						
 					} else {
-
+						
 					}
 				});
 			}
-
+			
 			/*this.versionNames = {
 			 
 			};
@@ -2000,73 +2068,74 @@ const menu = new class {
 			  }
 			 });
 			}*/
-
+			
 			this.canvasDims = {
 				panel: [20 * 35, 20 * 20],
 				background: [1280, 720],
 			};
-
+			
 			this.panelSize = {
 				x: 0,
 				y: 0,
 				w: 0,
 				h: 0
 			};
-
+			
 			this.panelInteraction = {
 				x: 0,
 				y: 0
 			};
-
+			
 			this.panelInteractionDown = {
 				x: 0,
 				y: 0
 			};
-
+			
 			this.selSqSzMrg = {
 				w: 20 * 3 * 1.2,
 				h: 20 * 2 * 1.2,
 				m: 20 * 0.14
 			};
-
+			
 			this.modeSqSzMrg = {
 				w: 20 * 5 * 1.2,
 				h: 20 * 5 * 1.2,
 				m: 20 * 0.14
 			};
-
+			
 			this.checkSqSzMrg = {
 				w: 20 * 3 * 1.2,
 				h: 20 * 3 * 1.2,
 				m: 20 * 0.14
 			};
-
+			
 			this.canvasses = {};
 			this.canvassesCtx = {};
-
+			
 			this.selectUnderControl = 0;
-
+			
 			this.isPanelPressed = 0;
-
+			
 			this.isPanelPressedDown = 0;
-
+			
 			this.activeSelection = [];
-
+			
 			for (let st = 0; st < 2; st++) {
 				this.activeSelection[st] = this.parents.main.#charselectCreateSelector();
 			}
-
+			
 			this.parameters = {
 				dual: 1,
 				ai: 1,
 				modePick: true,
 				players: 2,
+				rpg: false,
 				modeparams: []
 			};
-
+			
 			this.page = 0;
 			this.isOkaySelection = {};
-
+			
 			this.characterSelectBoxes = {};
 			for (let h = 0; h < 8 * 4; h++) {
 				this.characterSelectBoxes[h] = ({
@@ -2084,14 +2153,14 @@ const menu = new class {
 					}
 				});
 			}
-
+			
 			this.modeSelectBoxes = {};
-
+			
 			for (let h = 0; h < 2; h++) {
 				this.modeSelectBoxes[h] = ({
 					mode: h,
 					x: h,
-
+					
 					selected: {},
 					poscent: {
 						x: 0,
@@ -2101,15 +2170,17 @@ const menu = new class {
 					}
 				});
 			}
-
+			
 			this.selectImages = {};
 			this.introductionSounds = {};
-
+			
 			this.canvasTemp = {
 				background: "CSBEHIND-BG-CANVAS",
 				panel: "CSFRONT-PANEL-CANVAS"
 			};
-
+			this.isWait = false;
+			
+			
 			for (let g in this.canvasTemp) {
 				let h = this.canvasTemp[g];
 				let cid = id(h);
@@ -2119,10 +2190,10 @@ const menu = new class {
 				cid.height = this.canvasDims[g][1];
 			}
 		}
-
+		
 		setupAnims() {
 			////console.log(this.parents.main.characterContainer);
-
+			
 			this.animations = {
 				csShow: new AnimationFrameRenderer(this.parents.main.characterContainer, 0, 25, 1000 / 60, {
 					name: "menu-layer-in",
@@ -2132,26 +2203,31 @@ const menu = new class {
 					name: "menu-layer-out",
 					timing: "cubic-bezier(0,0,0,1)",
 				}),
-
+				
 			}
-
+			
 			this.animNames = [];
 			for (let aa in this.animations) this.animNames.push(aa);
-
+			
 		}
-
+		
 		playAnimation(name) {
 			if (name in this.animations) this.animations[name].play();
 		}
-
+		
 		showHide(toggle) {
 			this.isPanelPressed = false;
 			this.isActive = toggle ? 1 : 0;
 			this.playAnimation("cs" + (this.isActive ? "Show" : "Hide"));
 			styleelem(this.parents.main.characterContainer, "display", this.isActive ? "flex" : "none");
 		}
-
+		
 		setParameters(param) {
+			this.parameters.dual = false;
+			this.parameters.ai = false;
+			this.parameters.modePick = false;
+			this.parameters.rpg = false
+			this.parameters.activepos = "first";
 			if ("is_dual" in param) {
 				this.parameters.dual = param.is_dual;
 			}
@@ -2161,56 +2237,90 @@ const menu = new class {
 			if ("is_pick_mode" in param) {
 				this.parameters.modePick = param.is_pick_mode;
 			}
+			if ("rpg" in param) {
+				this.parameters.rpg = param.rpg;
+			}
 			if ("playerpos" in param) {
 				this.parameters.activepos = param.playerpos;
 			}
-
+			this.loadImages();
+			if (this.parameters.rpg) this.loadRPGCards();
+			
 			this.activeSelection.length = 0;
 			let pos = 0;
 			if (this.parameters.activepos == "first") pos = 0;
 			game.actualParameters.active = pos;
 			this.parameters.players = param.players;
 			this.selectUnderControl = 0;
+			
 			for (let h = 0; h < param.players; h++) {
 				let name = "Computer " + h;
-
+				
 				let ai = this.parameters.ai;
-
+				
 				if (pos == h) name = this.parents.main.storage.getItem("playername", "Player 1")
 				this.activeSelection.push(this.parents.main.#charselectCreateSelector(name, pos == h ? 0 : ai));
-
-				if (this.parameters.dual) ih(`CSBEHIND-P${h + 1}-PLAYERNAME`, name);
-
-
+				
+				ih(`CSBEHIND-P${h + 1}-PLAYERNAME`, name);
+				
+				
 			}
 			style("CSBEHIND-DET-P2-DIV", "display", this.parameters.dual ? "flex" : "none")
 			
 		}
-
-
+		
+		
 		async loadImages() {
 			for (let char of this.parents.char.characters) {
 				for (let ver in char.versions) {
-
+					
 					let version = char.versions[ver];
 					let base = `${char.core.path}/${version.path}`;
 					let selectSrc = `${base}/${version.select_image}`;
 					////console.log(selectSrc)
 					try {
 						let img = await loadImage(`assets/characters/${selectSrc}`);
-
+						
 						this.selectImages[`${char.core.path}||${version.path}`] = img;
-
-
-
+						
+						
+						
 						////console.log(selectSrc, img);
 					} catch (e) {
 						//console.log(e)
-
-						let version = char.versions[ver];
+						
+						/*let version = char.versions[ver];
 						let base = `${char.core.path}/${version.path}`;
-						let selectSrc = `${base}/${version.select_image}`;
+						let selectSrc = `${base}/${version.select_image}`;*/
 						this.selectImages[`${char.core.path}||${version.path}`] = new Image();
+					}
+				}
+			}
+		}
+		
+		async loadRPGCards() {
+			for (let char of this.parents.char.characters) {
+				for (let ver in char.versions) {
+					
+					let version = char.versions[ver];
+					let base = `${char.core.path}/${version.path}`;
+					let selectSrc = `${base}/${version.rpg_card}`;
+					////console.log(selectSrc)
+					try {
+						let img = await memoryManager.asyncLoad(`assets/characters/${selectSrc}`, "image");
+						
+						this.selectImages[`${char.core.path}||${version.path}(rpg)`] = img;
+						
+						
+						
+						////console.log(selectSrc, img);
+					} catch (e) {
+						//console.log(e)
+						
+						/*let version = char.versions[ver];
+						let base = `${char.core.path}/${version.path}`;
+						let selectSrc = `${base}/${version.rpg_card}`;*/
+						this.selectImages[`${char.core.path}||${version.path}(rpg)`] = new Image();
 					}
 				}
 			}
@@ -2220,11 +2330,13 @@ const menu = new class {
 			let ctx = this.canvassesCtx[canvas];
 			ctx.clearRect(0, 0, c.width, c.height);
 		}
-
-		setupPlayerGame() {
+		
+		async setupPlayerGame() {
+			this.isWait = true;
 			let a = game.actualParameters,
 				b = this.activeSelection;
 			a.players.length = 0;
+			let professionalExists = false;
 			let main = this.parents.main;
 			let isPlayer = {};
 			let isOccupied = {};
@@ -2234,7 +2346,7 @@ const menu = new class {
 				//console.log(game.activePlayer);
 			} else game.activePlayer = 0;
 			let count = 0;
-
+			
 			for (let u = 0; u < b.length; u++) {
 				let h = b[u];
 				if (!h.isAi) {
@@ -2243,11 +2355,11 @@ const menu = new class {
 					isPlayer[u] = g;
 					isOccupied[g] = 1;
 				} else count++;
-
+				
 				//order[g] = (u);
 			}
 			//console.log(order)
-
+			
 			let i = 0; // board
 			let t = 0; // player
 			while (count >= t) {
@@ -2260,35 +2372,85 @@ const menu = new class {
 						i++
 					}
 				} else t++;
-
+				
 			}
-
+			
 			//console.log(b, order)
 			for (let u = 0; u < b.length; u++) {
 				let h = b[order[u]];
-				a.players.push(game.createPlayerParam(h.name, h.selection, h.version, h.mode, h.ai));
+				let rpg = {
+					hp: 0,
+					mana: 0,
+					atk: 0,
+					def: 0,
+					lifesteal: 0,
+					lfa: 0,
+					deflect: 0,
+					cards: {
+						
+					}
+				}
+				if (this.parameters.rpg) {
+					let characterCards = {
+						
+					};
+					for (let ua = 0; ua < 3; ua++) {
+						let oo = h.characterCards[ua];
+						let sel = this.parents.char.characters[oo.selection];
+						let ver = sel.versions[oo.version];
+						rpg.cards[ua] = {
+							cd: 0,
+							mana: 0,
+							name: "",
+							desc: "",
+							char: `${oo.selection}|${oo.version}`,
+							//attr: []
+						}
+						let rpgString = await memoryManager.asyncLoad(`assets/characters/${sel.core.path}/${ver.path}/${ver.rpg_attr_init}`);
+						//console.log(rpgString);
+						let rpgJson = JSON.parse(rpgString);
+						let skill = rpg.cards[ua];
+						skill.cd = rpgJson?.skill.cooldown || 0;
+						skill.voice = rpgJson?.skill.voice || "";
+						skill.mana = rpgJson?.skill.mana || 0;
+						skill.name = rpgJson?.skill.skill || "";
+						skill.rawdesc = rpgJson?.skill.rawdesc || "";
+						skill.attr = rpgJson?.skill.attr || [];
+						skill.skillvalues = rpgJson?.skill.skillvalues;
+						skill.desc = rpgJson?.skill.desc || "";
+						//character.skill
+						rpg.hp += rpgJson?.hp || 0;
+						rpg.mana += rpgJson?.mana || 0;
+						rpg.atk += rpgJson?.atk || 0;
+						rpg.def += rpgJson?.def || 0;
+						rpg.lifesteal += 0.01 * (rpgJson?.lifesteal || 0);
+						rpg.lfa += (rpgJson?.lfa || 0) * 0.01;
+					}
+				}
+				
+				a.players.push(game.createPlayerParam(h.name, h.selection, h.version, h.mode, h.isAi, rpg));
+				//console.log(rpg)
 			}
-
+			
 			//setTimeout(() => game.initialize("actualparameter", false), 500);
-
+			
 			//let a = JSON.parse(dataString);
-
+			
 			let sel = [
-				{
-					string: "gameprep_start",
-					type: "button",
-					action: "actualinit",
-					onstate: "#ffff",
-					offstate: "#fff2",
-					desc: "replaycenter_loadexternal_desc",
-					backable: true
-		}
-		];
-
+			{
+				string: "gameprep_start",
+				type: "button",
+				action: "actualinit",
+				onstate: "#ffff",
+				offstate: "#fff2",
+				desc: "replaycenter_loadexternal_desc",
+				backable: true
+			}];
+			
 			for (let g of this.parameters.modeparams) {
 				let w = g.split("|");
 				let setting = main.storage.getList(`set_prep_${w[0]}`);
-				//console.log(setting, w);
+				if (w[0] == "professional") professionalExists = true;
 				sel.push({
 					"string": `gameprepset_${w[2]}`,
 					"type": setting.type,
@@ -2299,7 +2461,15 @@ const menu = new class {
 					"desc": `gameprepset_${w[2]}_desc`
 				});
 			}
-
+			let ms = this.parents.main.sessionStorage;
+			ms.createTempList("das", {
+				
+			});
+			
+			if (professionalExists) {
+				
+			}
+			
 			let mel = {
 				def: 0,
 				name: "gameprep_start",
@@ -2310,65 +2480,164 @@ const menu = new class {
 					"color": "#222F"
 				}
 			};
-
-
-
-
+			
+			
+			
+			
 			main.changeMenu(JSON.stringify(mel), true);
-
-
-
+			
+			
+			
 			//game.startGameSet("actual");
 			this.showHide(0);
 			this.activeSelection.length = 0;
+			this.isWait = false;
 		}
-
+		
 		checkButton(select) {
 			let g = this.characterSelectBoxes[select.selection];
 			if (!g.canOK) {
 				this.parents.main.playSound("error");
 				return;
 			}
-			select.isOK = 1;
+			if (this.parameters.rpg) {
+				let chars = {};
+				for (let cardIndex = 0; cardIndex < select.characterCards.length; cardIndex++) {
+					
+					let card = select.characterCards[cardIndex];
+					let str = `${card.selection}`;
+					chars[str] = 0;
+				}
+				for (let cardIndex = 0; cardIndex < select.characterCards.length; cardIndex++) {
+					
+					let card = select.characterCards[cardIndex];
+					let str = `${card.selection}`;
+					if ((str in chars)) {
+						chars[str]++;
+						if (chars[str] > 1 && cardIndex == select.characterCardIndex) {
+							this.parents.main.playSound("error");
+							return;
+						}
+						
+					}
+				}
+				//console.log(chars)
+				if (select.characterCardIndex < 2) {
+					select.characterCardIndex++;
+					let newSel = select.characterCards[select.characterCardIndex];
+					//let mn = newSel.
+					//console.log(newSel)
+					newSel.lastSelection = newSel.selection;
+					
+				} else {
+					select.isOK = 1;
+					this.checkSel();
+				}
+				
+			} else {
+				
+				select.isOK = 1;
+				this.checkSel();
+			}
 			this.parents.main.playSound("select");
+			
+			//this.parents.main.playSound("select");
+		}
+		back() {
+			let a = this;
+			let isSelActive = false;
+			if (a.parameters.rpg) {
+				let isBack = false;
+				for (let g = a.activeSelection.length - 1; g >= 0; g--) {
+					let hh = a.activeSelection[g];
+					
+					if (isBack) {
+						hh.characterCardIndex++;
+					}
+					if (hh.characterCardIndex > 0) {
+						isSelActive = true;
+						hh.characterCardIndex--;
+						hh.isOK = 0;
+						if (hh.characterCardIndex == 0) {
+							hh.isOK = 0;
+							
+						}
+						
+					} else {
+						hh.isOK = 0;
+						
+					}
+					
+					
+					if (isSelActive) break;
+					if (a.selectUnderControl == g) isBack = true;
+					if (a.parameters.ai == !(g - 1 < 0)) {
+						a.selectUnderControl = g - 1;
+						//hh.characterCardIndex++;
+					}
+					////console.log(g);
+					
+				}
+			} else
+				for (let g = a.activeSelection.length - 1; g >= 0; g--) {
+					let hh = a.activeSelection[g];
+					if (hh.isOK) {
+						isSelActive = true;
+						hh.isOK = 0;
+					}
+					
+					
+					if (isSelActive) break;
+					else if (a.parameters.ai == !(g - 1 < 0)) a.selectUnderControl = g - 1;
+					////console.log(g);
+					
+				}
+			if (!isSelActive) {
+				a.showHide(0);
+			}
+			this.parents.main.playSound("cancel");
+		}
+		checkSel() {
 			if (this.selectUnderControl < this.activeSelection.length - 1) {
-
+				
 				////console.log(select);
 				this.selectUnderControl++;
+				if (this.parameters.rpg) {
+					
+				}
 				//if (this.selectUnderControl >= this.activeSelection.length) this.selectUnderControl--;
 			} else {
 				this.setupPlayerGame();
 			}
-			//this.parents.main.playSound("select");
 		}
-
+		
 		draw() {
 			if (!this.isActive) return;
 			for (let h = 0, m = this.animNames.length; h < m; h++)
 				this.animations[this.animNames[h]].run();
-
+			
 			////console.log(this.activeSelection);
-
-
+			
+			
 			this.#clearCanvas("background");
 			this.#clearCanvas("panel");
-
-
+			
+			
 			for (let g = 0; g < (8 * 4); g++) {
-
+				
 				let gw = g % 8;
-
+				
 				let boxref = this.characterSelectBoxes[g];
-
+				
 				let lx = ((this.canvasDims.panel[0] / 2) - (((this.selSqSzMrg.w * 8) + (this.selSqSzMrg.m * 7)) / 2) + ((this.selSqSzMrg.w * (gw)) + (this.selSqSzMrg.m * (gw + 1)))),
 					ly = ((this.selSqSzMrg.h + this.selSqSzMrg.m) * (~~(g / 8)) + this.selSqSzMrg.m * 3),
 					lw = this.selSqSzMrg.w,
 					lh = this.selSqSzMrg.h;
 				this.canvassesCtx.panel.fillStyle = "#f833";
-
+				
 				this.canvassesCtx.panel.fillRect(lx, ly, lw, lh);
 				
-
+				
 				let charref = this.parents.char.characters[boxref.character];
 				boxref.canOK = false;
 				if (!charref) continue;
@@ -2376,12 +2645,12 @@ const menu = new class {
 					continue;
 				}
 				boxref.canOK = true;
-
-
+				
+				
 				let reference = this.selectImages[`${charref.core.path}||${charref.versions[boxref.version].path}`];
-
+				
 				this.canvassesCtx.panel.drawImage(reference, 600, 0, 140, 140 * (2 / 3), lx, ly, lw, lh);
-
+				
 				boxref.poscent.x = lx / this.canvasDims.panel[0];
 				boxref.poscent.y = ly / this.canvasDims.panel[1];
 				boxref.poscent.w = (lw + lx) / this.canvasDims.panel[0];
@@ -2390,15 +2659,15 @@ const menu = new class {
 				if (boxref.poscent.x <= this.panelInteraction.x && (boxref.poscent.w) >= this.panelInteraction.x &&
 					boxref.poscent.y <= this.panelInteraction.y && (boxref.poscent.h) >= this.panelInteraction.y) {
 					hover = game.misc.menu_cs_border_yellow;
-
+					
 					////console.log(g);
 				}
-
+				
 				this.canvassesCtx.panel.drawImage(hover, 0, 0, 150, 100, lx, ly, lw, lh);
-
-
+				
+				
 				if (this.isPanelPressedDown > 0) {
-
+					
 					////console.log(this.panelInteraction.x, boxref.poscent.x, this.panelInteraction.y, boxref.poscent.y)
 					if (boxref.poscent.x <= this.panelInteractionDown.x && (boxref.poscent.w) >= this.panelInteractionDown.x &&
 						boxref.poscent.y <= this.panelInteractionDown.y && (boxref.poscent.h) >= this.panelInteractionDown.y) {
@@ -2407,16 +2676,16 @@ const menu = new class {
 						////console.log(g);
 					}
 				}
-
-
-
-
+				
+				
+				
+				
 				////console.log(boxref.poscent.x)
-
+				
 			}
-
-
-
+			
+			
+			
 			if (this.parameters.modePick) {
 				let selected1 = 0,
 					selected0 = 0;
@@ -2431,15 +2700,15 @@ const menu = new class {
 					if (boxref.mode == 0) selected0++;
 					if (boxref.mode == 1) selected1++;
 				}
-
-
+				
+				
 				for (let g = 0; g < (2); g++) {
-
+					
 					let gw = g % 8;
-
+					
 					let boxref = this.modeSelectBoxes[g];
-
-
+					
+					
 					let lx = ((0.05 * this.canvasDims.panel[0]) + ((this.modeSqSzMrg.w * (gw)) + (this.modeSqSzMrg.m * (gw + 1)))),
 						ly = (0.535 * this.canvasDims.panel[1]),
 						lw = this.modeSqSzMrg.w,
@@ -2447,32 +2716,32 @@ const menu = new class {
 					/*this.canvassesCtx.panel.fillStyle = "#f83";
 					
 					this.canvassesCtx.panel.fillRect(lx,ly,lw,lh);*/
-
-
-
+					
+					
+					
 					//this.canvassesCtx.panel.drawImage(game.misc.menu_cs_border_black, 0, 0, 150, 100, lx,ly,lw,lh);
-
-
+					
+					
 					boxref.poscent.x = lx / this.canvasDims.panel[0];
 					boxref.poscent.y = ly / this.canvasDims.panel[1];
 					boxref.poscent.w = (lw + lx) / this.canvasDims.panel[0];
 					boxref.poscent.h = (lh + ly) / this.canvasDims.panel[1];
-
+					
 					let hover = 0;
-
+					
 					if (boxref.poscent.x <= this.panelInteraction.x && (boxref.poscent.w) >= this.panelInteraction.x &&
 						boxref.poscent.y <= this.panelInteraction.y && (boxref.poscent.h) >= this.panelInteraction.y) {
 						hover = 1;
 						if (this.isPanelPressing) hover = 2;
 						////console.log(g);
 					}
-
+					
 					this.canvassesCtx.panel.drawImage(game.misc.menu_cs_mode_pick, (100 * ((hover > 0) ? hover : ((selected0 && g == 0) || (selected1 && g == 1)) ? 3 : 0)), 100 + (g * 100), 100, 100, lx, ly, lw, lh);
-
+					
 					if (this.isPanelPressedDown > 0) {
-
-
-
+						
+						
+						
 						////console.log(this.panelInteraction.x, boxref.poscent.x, this.panelInteraction.y, boxref.poscent.y)
 						if (boxref.poscent.x <= this.panelInteractionDown.x && (boxref.poscent.w) >= this.panelInteractionDown.x &&
 							boxref.poscent.y <= this.panelInteractionDown.y && (boxref.poscent.h) >= this.panelInteractionDown.y) {
@@ -2481,16 +2750,16 @@ const menu = new class {
 							////console.log(g);
 						}
 					}
-
-
-
-
+					
+					
+					
+					
 					////console.log(boxref.poscent.x)
-
+					
 				}
 			}
-
-
+			
+			
 			{
 				let lx = ((this.canvasDims.panel[0] / 2) - (this.checkSqSzMrg.w / 2)),
 					ly = (0.8 * this.canvasDims.panel[1]),
@@ -2504,22 +2773,22 @@ const menu = new class {
 				let by = ly / this.canvasDims.panel[1];
 				let bw = (lw + lx) / this.canvasDims.panel[0];
 				let bh = (lh + ly) / this.canvasDims.panel[1];
-
+				
 				let hover = 0;
-
+				
 				if (bx <= this.panelInteraction.x && (bw) >= this.panelInteraction.x &&
 					by <= this.panelInteraction.y && (bh) >= this.panelInteraction.y) {
 					hover = 1;
 					if (this.isPanelPressing) hover = 2;
 					////console.log(g);
 				}
-
+				
 				this.canvassesCtx.panel.drawImage(game.misc.menu_cs_mode_pick, (100 * ((hover > 0) ? hover : (0) ? 3 : 0)), 0, 100, 100, lx, ly, lw, lh);
-
+				
 				if (this.isPanelPressedDown > 0) {
-
-
-
+					
+					
+					
 					////console.log(this.panelInteraction.x, boxref.poscent.x, this.panelInteraction.y, boxref.poscent.y)
 					if (bx <= this.panelInteractionDown.x && (bw) >= this.panelInteractionDown.x &&
 						by <= this.panelInteractionDown.y && (bh) >= this.panelInteractionDown.y) {
@@ -2530,49 +2799,69 @@ const menu = new class {
 						this.checkButton(select);
 					}
 				}
-
-
-
-
+				
+				
+				
+				
 				////console.log(boxref.poscent.x)
-
+				
 			}
-
+			
 			if (typeof this.activeSelection[this.charSidesSelector.left] !== "undefined") {
 				let select = this.activeSelection[this.charSidesSelector.left];
-				let g = select.selection,
+				let g = this.parameters.rpg ? select.characterCards[select.characterCardIndex].selection : select.selection,
 					gw = g % 8;
+				let v = this.parameters.rpg ? select.characterCards[select.characterCardIndex].version : select.version;
+				
 				//game.frames += 0.1;
 				let lx = ((this.canvasDims.panel[0] / 2) - (((this.selSqSzMrg.w * 8) + (this.selSqSzMrg.m * 7)) / 2) + ((this.selSqSzMrg.w * (gw)) + (this.selSqSzMrg.m * (gw + 1)))),
 					ly = ((this.selSqSzMrg.h + this.selSqSzMrg.m) * (~~(g / 8)) + this.selSqSzMrg.m * 3),
 					lw = this.selSqSzMrg.w,
 					lh = this.selSqSzMrg.h;
-
-
-
-
+				
+				
+				
+				
 				this.canvassesCtx.panel.drawImage(game.misc.menu_cs_border_green, 0, 0, 150, 100, lx, ly, lw, lh);
 				//let boxref = this.characterSelectBoxes[g];
 				let charref = this.parents.char.characters[g];
-
-
-				if ((charref?.core) && (`${charref.core.path}||${charref.versions[select.version].path}` in this.selectImages)) {
+				
+				
+				if (!this.parameters.rpg && (charref?.core) && (`${charref.core.path}||${charref.versions[select.version].path}` in this.selectImages)) {
 					let reference = this.selectImages[`${charref.core.path}||${charref.versions[select.version].path}`];
-
+					
 					this.canvassesCtx.background.drawImage(reference, 0, 0, 600, 600, -140, 0, 720, 720);
-
-
+					
+					
+				}
+				
+				if (this.parameters.rpg) {
+					for (let kr = 0; kr < 3; kr++) {
+						let rcharref = this.parents.char.characters[select.characterCards[kr].selection];
+						if ((rcharref?.core) && (`${rcharref.core.path}||${rcharref.versions[select.characterCards[kr].version].path}(rpg)` in this.selectImages)) {
+							let reference = this.selectImages[`${rcharref.core.path}||${rcharref.versions[select.characterCards[kr].version].path}(rpg)`];
+							let aspect = 550 / 250;
+							this.canvassesCtx.background.drawImage(reference, 0, 0, 550, 250, 10, 60 + 122 * kr, 120 * aspect, 120);
+						}
+						
+					}
 				}
 				if (this.parameters.modePick) this.canvassesCtx.background.drawImage(game.misc.menu_cs_mode_pick, (100 * ((select.isOK) ? 3 : 0)), (100 + (100 * select.mode)), 100, 100, 20, 420, 120, 120);
 				else if (select.isOK) this.canvassesCtx.background.drawImage(game.misc.menu_cs_mode_pick, (100 * 3), (0), 100, 100, 20, 420, 120, 120);
-				this.charNames.left.assign(`${select.selection}|${select.version}`);
+				let kse = select.isOK ? select.selection : g;
+				let kve = select.isOK ? select.version : v;
+				this.charNames.left.assign(`${kse}|${kve}`);
+				
 				////console.log(`${select.selection}|${select.version}`)
 			}
-
+			
+			
+			
 			if (typeof this.activeSelection[this.charSidesSelector.right] !== "undefined" && this.parameters.dual) {
 				let select = this.activeSelection[this.charSidesSelector.right];
-				let g = select.selection,
+				let g = this.parameters.rpg ? select.characterCards[select.characterCardIndex].selection : select.selection,
 					gw = g % 8;
+				let v = this.parameters.rpg ? select.characterCards[select.characterCardIndex].version : select.version;
 				//game.frames += 0.1;
 				let lx = ((this.canvasDims.panel[0] / 2) - (((this.selSqSzMrg.w * 8) + (this.selSqSzMrg.m * 7)) / 2) + ((this.selSqSzMrg.w * (gw)) + (this.selSqSzMrg.m * (gw + 1)))),
 					ly = ((this.selSqSzMrg.h + this.selSqSzMrg.m) * (~~(g / 8)) + this.selSqSzMrg.m * 3),
@@ -2581,161 +2870,200 @@ const menu = new class {
 				this.canvassesCtx.panel.drawImage(game.misc.menu_cs_border_green, 0, 0, 150, 100, lx, ly, lw, lh);
 				//let boxref = this.characterSelectBoxes[g];
 				let charref = this.parents.char.characters[g];
-
-
-				if ((charref?.core) && (`${charref.core.path}||${charref.versions[select.version].path}` in this.selectImages)) {
+				
+				
+				if (!this.parameters.rpg && (charref?.core) && (`${charref.core.path}||${charref.versions[select.version].path}` in this.selectImages)) {
 					let reference = this.selectImages[`${charref.core.path}||${charref.versions[select.version].path}`];
-
+					
 					this.canvassesCtx.background.drawImage(reference, 0, 600, 600, 600, 1280 - 580, 0, 720, 720);
+				}
+				if (this.parameters.rpg) {
+					for (let kr = 0; kr < 3; kr++) {
+						let rcharref = this.parents.char.characters[select.characterCards[kr].selection];
+						if ((rcharref?.core) && (`${rcharref.core.path}||${rcharref.versions[select.characterCards[kr].version].path}(rpg)` in this.selectImages)) {
+							let reference = this.selectImages[`${rcharref.core.path}||${rcharref.versions[select.characterCards[kr].version].path}(rpg)`];
+							let aspect = 550 / 250;
+							this.canvassesCtx.background.save();
+							this.canvassesCtx.background.translate((1280 - (120 * aspect + 10)) + (120 * aspect / 2), (60 + 122 * kr) + (120 / 2));
+							this.canvassesCtx.background.scale(-1, 1);
+							this.canvassesCtx.background.drawImage(reference, 0, 0, 550, 250, -(120 * aspect / 2), -(120 / 2), 120 * aspect, 120);
+							//this.canvassesCtx.background.setTransform(1,0,0,1,0,0)
+							this.canvassesCtx.background.restore();
+						}
+						
+					}
 				}
 				if (this.parameters.modePick) this.canvassesCtx.background.drawImage(game.misc.menu_cs_mode_pick, (100 * ((select.isOK) ? 3 : 0)), (100 + (100 * select.mode)), 100, 100, 1280 - 140, 420, 120, 120);
 				else if (select.isOK) this.canvassesCtx.background.drawImage(game.misc.menu_cs_mode_pick, (100 * (3)), 0, 100, 100, 1280 - 140, 420, 120, 120);
-				this.charNames.right.assign(`${select.selection}|${select.version}`);
-
+				let kse = select.isOK ? select.selection : g;
+				let kve = select.isOK ? select.version : v;
+				this.charNames.right.assign(`${kse}|${kve}`);
+				
 			}
 			if (this.isPanelPressed > 0) this.isPanelPressed--;
 			if (this.isPanelPressedDown > 0) this.isPanelPressedDown--;
-
+			
 		}
-		changeSelectionChar(select, n) {
+		changeSelectionChar(_select, n) {
+			let select = _select;
+			if (this.parameters.rpg) {
+				if (_select.characterCardIndex == 0) {
+					if (select.lastSelection !== n) {
+						select.selection = n;
+						select.lastSelection = n;
+						select.version = 0;
+					}
+				}
+				select = _select.characterCards[_select.characterCardIndex];
+				if (select.lastSelection !== n) {
+					select.selection = n;
+					select.lastSelection = n;
+					select.version = 0;
+				}
+				//console.log(select)
+				return;
+			}
+			
 			if (select.lastSelection !== n) {
 				select.selection = n;
 				select.lastSelection = n;
 				select.version = 0;
 			}
-
+			
 		}
 		resize() {
 			let size = this.parents.main.cellSize;
+			let font = this.parents.main.fontSize;
 			let ls = this.parents.main.landscape;
 			let bg = this.canvasses.background;
 			let pn = id("CSFRONT-PANEL");
 			let pnc = this.canvasses.panel;
-
+			let lm = 1;
+			
 			styleelem(bg, "width", `${ls.w}px`);
 			styleelem(bg, "height", `${ls.h}px`);
 			for (let ll of ["FRONT", "BEHIND"]) {
 				style(`CHARSELECT-${ll}-DIV`, "width", `${ls.w}px`);
 				style(`CHARSELECT-${ll}-DIV`, "height", `${ls.h}px`);
 			}
-
+			
 			style(`CSBEHIND-DETAILS-DIV`, "width", `${ls.w}px`);
 			style(`CSBEHIND-DETAILS-DIV`, "height", `${ls.h}px`);
-
+			
 			for (let ll of [1, 2]) {
 				style(`CSBEHIND-DET-P${ll}-DIV`, "width", `${ls.w}px`);
 				style(`CSBEHIND-DET-P${ll}-DIV`, "height", `${size * 5.6}px`);
-
-				//for (let hh of [])
-
-				style(`CSBEHIND-P${ll}-VERSIONNAME`, "font-size", `${~~(size * 1.3)}px`);
-				style(`CSBEHIND-P${ll}-CHARNAME`, "font-size", `${~~(size * 2.7)}px`);
-				style(`CSBEHIND-P${ll}-PLAYERNAME`, "font-size", `${~~(size * 1.6)}px`);
-
+				
+				
+				
+				style(`CSBEHIND-P${ll}-VERSIONNAME`, "font-size", `${~~(font*lm * 1.3)}px`);
+				style(`CSBEHIND-P${ll}-CHARNAME`, "font-size", `${~~(font*lm * 2.7)}px`);
+				style(`CSBEHIND-P${ll}-PLAYERNAME`, "font-size", `${~~(font*lm * 1.6)}px`);
+				
 				style(`CSBEHIND-P${ll}-VERSIONNAME`, "width", `${ls.w}px`);
 				style(`CSBEHIND-P${ll}-VERSIONNAME`, "height", `${~~(size * 1.3)}px`);
-
+				
 				style(`CSBEHIND-P${ll}-CHARNAME`, "width", `${ls.w}px`);
 				style(`CSBEHIND-P${ll}-CHARNAME`, "height", `${~~(size * 2.6)}px`);
-
+				
 				style(`CSBEHIND-P${ll}-PLAYERNAME`, "width", `${ls.w}px`);
 				style(`CSBEHIND-P${ll}-PLAYERNAME`, "height", `${~~(size * 1.7)}px`);
-
-				style(`CSBEHIND-P${ll}-CHARNAME`, "font-family", "josefinsans");
-
+				
+				//style(`CSBEHIND-P${ll}-CHARNAME`, "font-family", "josefinsans");
+				
 				for (let hh of ["VERSIONNAME", "PLAYERNAME", "CHARNAME"]) {
 					style(`CSBEHIND-P${ll}-${hh}`, "text-align", ["left", "right"][ll - 1]);
 					style(`CSBEHIND-P${ll}-${hh}`, "vertical-align", "center");
 					style(`CSBEHIND-P${ll}-${hh}`, "position", "relative");
-
+					
 					style(`CSBEHIND-P${ll}-${hh}`, "bottom", "0");
 					style(`CSBEHIND-P${ll}-${hh}`, ["left", "right"][ll - 1], `${size * 1}px`);
-
-
+					
+					
 				}
-
+				
 			}
-
+			
 			styleelem(pn, "width", `${size * 35}px`);
 			styleelem(pn, "height", `${size * 20}px`);
 			styleelem(pn, "top", `${size * 2}px`);
-
+			
 			this.panelSize.w = size * 35;
 			this.panelSize.h = size * 20;
-
+			
 			styleelem(pnc, "width", `${size * 35}px`);
 			styleelem(pnc, "height", `${size * 20}px`);
-
+			
 			let rect = pn.getBoundingClientRect();
 			this.panelSize.x = rect.x;
 			this.panelSize.y = rect.y;
 		}
-
+		
 		panelInteractListen(evt) {
-
+			
 			//evt.preventDefault();
-			if (!this.isActive) return;
+			if (!this.isActive || fsw.isShown) return;
 			let rect = id("CSFRONT-PANEL").getBoundingClientRect();
 			this.panelSize.x = rect.x;
 			this.panelSize.y = rect.y;
 			if (evt.type == "mousemove" || evt.type == "touchstart") {
-
+				
 				let x = (evt.pageX - this.panelSize.x) / this.panelSize.w;
 				let y = (evt.pageY - this.panelSize.y) / this.panelSize.h;
 				////console.log(this.panelSize.x, this.panelSize.y)
-
+				
 				this.panelInteraction.x = x;
 				this.panelInteraction.y = y;
-
+				
 				//ih("MENU-HEADER-TITLE", `${x} ${y}`);
-
+				
 				this.isPanelPressed = 1;
 			}
 			if (evt.type == "mousedown") {
-
+				
 				this.isPanelPressedDown = 1;
 				this.isPanelPressing = 1;
-
+				
 				let x = (evt.pageX - this.panelSize.x) / this.panelSize.w;
 				let y = (evt.pageY - this.panelSize.y) / this.panelSize.h;
 				////console.log(this.panelSize.x, this.panelSize.y)
-
+				
 				this.panelInteractionDown.x = x;
 				this.panelInteractionDown.y = y;
 			}
-
+			
 			if (evt.type == "mouseup") {
 				this.isPanelPressing = 0;
 			}
-
+			
 			if (evt.type == "laf&& " || evt.type == "hdjdj") {
 				this.showHide(0);
 			}
 			if (this.isPanelPressed || true) {
-
-
-
+				
+				
+				
 				////console.log(evt.type, x, y, evt.pageX - this.panelSize.x, evt.pageY - this.panelSize.y, this.panelSize.w, this.panelSize.h);
 			}
-
+			
 		}
-
+		
 		setupPanelIntListener() {
 			for (let pp of [ /*"touchstart", "touchmove", "touchend", */ "mouseover", "contextmenu", "mousedown", "mouseup", "mousemove"]) id("CSFRONT-PANEL").addEventListener(pp, (ee) => {
 				ee.preventDefault();
 				this.panelInteractListen(ee);
 			}, true);
-
+			
 			//this.touchPanelSystem.initialize();
 		}
-
-
-
+		
+		
+		
 		controlsListen(key) {
-
+			
 			let addition = 0;
 			let select = this.activeSelection[this.selectUnderControl];
-			let change = select.selection;
+			let change = this.parameters.rpg ? select.characterCards[select.characterCardIndex].selection : select.selection;
 			if (key === "arrowleft") {
 				addition = -1;
 				if ((((~~(change / 8)) - ~~(((change + addition)) / 8))) == 1) {
@@ -2758,6 +3086,7 @@ const menu = new class {
 				//let select = this.activeSelection[this.selectUnderControl];
 				this.checkButton(select);
 				
+				
 			}
 			if (key === "m") {
 				//let select = this.activeSelection[this.selectUnderControl];
@@ -2768,9 +3097,9 @@ const menu = new class {
 			}
 			
 			//if ()
-
+			
 			change += addition;
-
+			
 			if (change >= (8 * 4)) {
 				change -= 8;
 			}
@@ -2779,24 +3108,20 @@ const menu = new class {
 			}
 			
 			if (change !== -1) {
-				this.changeSelectionChar(select, change);
+				
+				if (key !== "enter") this.changeSelectionChar(select, change);
 				if (addition !== 0) this.parents.main.playSound("move");
 			}
 			
 			
 		}
-
+		
 	}(this, gtcharacter);
-
-
-
-
+	
+	
+	
+	
 }();
-
-
-
-
-
 
 __private.menu = menu;
 if (appinfo.android) {

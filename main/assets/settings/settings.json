@@ -27,6 +27,8 @@
 		"default": 75,
 		"text": "text_percent"
 	},
+	
+	
 	"set_global_musicbank": {
 		"type": "range_list_specific",
 		"choices": [
@@ -35,7 +37,8 @@
 			"music_fever1||./assets/music/insane2",
 			"music_fever2||./assets/music/insane",
 			"music_warning||./assets/music/warning",
-			"music_wormhole||./assets/music/wmw_eval"
+			"music_wormhole||./assets/music/wmw_eval",
+			"music_music2||./assets/music/music2"
 		],
 		"default": 0,
 		"text": "text_text"
@@ -64,8 +67,9 @@
 			"vs": 2,
 			"swap": 2,
 			"wmw": 1,
-			"fever": 2
-		} ,
+			"fever": 2,
+			"rpg": 1
+		},
 		"text": "text_text"
 	},
 	"set_prep_margintime": {
@@ -91,8 +95,25 @@
 		],
 		"default": 0,
 		"text": "text_text"
+	},
+	
+	"set_prep_professional": {
+		"type": "switch",
+		"on": "option_on",
+		"off": "option_off",
+		"default_obj": {
+			"vs": 0,
+			"zen": 0
+		}
+	},
+	"set_prep_tsdonly": {
+		"type": "switch",
+		"on": "option_on",
+		"off": "option_off",
+		"default_obj": {
+			"vs": 0,
+			"zen": 0
+		}
 	}
-	
-	
 	
 }

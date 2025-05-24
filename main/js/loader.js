@@ -1,11 +1,15 @@
-
 function load(entity, type) {
+	if (appinfo.android) return new Promise(async (res, rej) => {
+		let result = xhrFetch(entity, type);
+		res(result);
+	});
 	return new Promise(async (res, rej) => {
 		database.read("assets", entity, async (read) => {
-			let result = {};
+			let result = null;
 			if (typeof read === "undefined") {
-				result = await xhrFetch(entity, type);
 				try {
+				result = await xhrFetch(entity, type);
+				
 					database.write("assets", entity, result);
 				} catch (e) {
 
@@ -18,9 +22,27 @@ function load(entity, type) {
 			res(result);
 		});
 	});
+
+
 }
 
 function loadImage(directory) {
+	if (appinfo.android) return new Promise(async (res, rej) => {
+		try{
+		let result = await xhrFetch(directory, "blob");
+		//console.log(result)
+		let img = new Image();
+		img.src = URL.createObjectURL(result);
+		////console.log(img.src)
+		img.onload = () => {
+			URL.revokeObjectURL(result);
+			res(img);
+		}
+		} catch(e) {
+			console.log(e.stack)
+		}
+		//res(result)
+	});
 	return new Promise((res, rej) => {
 
 		database.read("assets", directory, async (read) => {
@@ -47,6 +69,7 @@ function loadImage(directory) {
 			img.src = URL.createObjectURL(result);
 			////console.log(img.src)
 			img.onload = () => {
+				URL.revokeObjectURL(result);
 				res(img);
 			}
 		});
@@ -55,3 +78,6 @@ function loadImage(directory) {
 	});
 }
 /**/
+
+__private.loadImage = loadImage;
+__private.load = load;

@@ -146,3 +146,4 @@ const language = new class {
 
 	}
 }();
+__private.language = language;

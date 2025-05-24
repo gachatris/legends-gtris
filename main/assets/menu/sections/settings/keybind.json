@@ -1,0 +1,42 @@
+{
+	"def": 0,
+	"sel": [
+	  
+	{
+			"string": "keybind_gachatris",
+			"desc": "keybind_gachatris_desc",
+			"type": "button",
+			"action": "keybindsetting",
+			"onstate": "#ffff",
+			"offstate": "#fff2",
+			"backable": true,
+			"keybind": 0
+	},
+	{
+			"string": "keybind_linkblobs",
+			"desc": "keybind_linkblobs_desc",
+			"type": "button",
+			"action": "keybindsetting",
+			"onstate": "#ffff",
+			"offstate": "#fff2",
+			"backable": true,
+			"keybind": 1
+	},
+	{
+	  "string": "keybind_general",
+	  "desc": "keybind_general_desc",
+	  "type": "button",
+	  "action": "keybindsetting",
+	  "onstate": "#ffff",
+	  "offstate": "#fff2",
+	  "backable": true,
+	  "keybind": "general"
+	}
+	],
+	"title": "keybind_title",
+	"name": "keybind",
+	"background": {
+		"type": "rgba",
+		"color": "#030F"
+	}
+}

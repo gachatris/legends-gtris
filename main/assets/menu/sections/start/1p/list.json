@@ -19,7 +19,9 @@
 			"playerpos": "first"
 		},
 		"mode_param": [
-			"insane_start|insane_start|insane_start"
+			"insane_start|insane_start|insane_start",
+			"professional|professional(zen)|gachatris_professional",
+			"tsdonly|tsdonly(zen)|gachatris_tsdonly"
 		]
 				}
 				

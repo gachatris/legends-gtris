@@ -1,9 +1,9 @@
 {
 "start": {
  "category": "assets",
- "js": ["howler", "memory_manager", "shortcuts", "characters", "worker", "loader", "locals", "touch", "data", "particle", "ai",  "music",  "sound", "player", "loading_screen",  "game", "onevone", "splash", "background", "menu"],
+ "js": ["howler", "memory_manager", "shortcuts", "characters", "worker", "loader", "locals", "touch", "data", "particle", "ai",  "music",  "sound", "player", "loading_screen",  "game", "onevone", "splash", "background", "menu", "fsw", "alertwindow", "log"],
  "xml":"index.xml",
- "css": "css.css",
+ "css": "style.css",
  "script_folder": "js",
  "font_folder": "assets/fonts",
  

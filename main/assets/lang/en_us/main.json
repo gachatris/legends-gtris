@@ -1,7 +1,7 @@
 {
 	"title": "Gachatris Legends",
 
-	"alpha_note": "This Game is under Alpha stage, version 0.0.1 A1q2 Alpha. If you have any suggestions, go contact the developer through the official Gachatris Discord Server.",
+	"alpha_note": "This Game is under Alpha stage, version 0.0.1 A1q3. If you have any suggestions, go contact the developer through the official Gachatris Discord Server.",
 
 	"splash_note": "Press any key, tap, or click anywhere to start.",
 
@@ -11,6 +11,8 @@
 
 	"combo": "var=0 Combo",
 	"b2b": "Back-to-back xvar=0",
+	"tsd_singular": "1 T-Spin Double",
+	"tsd_plural": "var=0 T-Spin Doubles",
 	"tspinmini": "Mini T-Spin",
 	"jspinmini": "Mini J-Spin",
 	"ispinmini": "Mini I-Spin",
@@ -31,7 +33,20 @@
 	"line3": "Triple",
 	"line0": "Zero",
 	"line4": "Gachatris",
-
+	"line5": "Gachatris Plus",
+	"linedx": "Deluxe Gachatris",
+	
+	"line6": "Hexa",
+	"line7": "Hepta",
+	"line8": "Octa",
+	"line9": "Nona",
+	"line10": "Deca",
+	"line11": "Undeca",
+	"line12": "Dodeca",
+	"line13": "Trideca",
+	"line14": "Tetradeca",
+	"line15": "Pentadeca",
+	"line16": "Ultera",
 	"chain": "-chain",
 	"chainpos": "var=0",
 
@@ -39,14 +54,98 @@
 	"pc_spam": "Perfect Clear Spam",
 
 	"first_to": "FTvar=0",
+	
+	"fsw_update_notes": "Update Notes (var=0)",
+	"fsw_patch_notes_full": "See Full Patch Notes",
+	"fsw_patch_notes_close": "Close",
+	
+	"fsw_patch_notes_coming_soon": "Full Patch Notes to reveal soon!",
+	"fsw_patch_notes_coming_soon_desc": "You'll see almost every single version detail of the Game after some updates. Coming soon!",
+	
+	"fsw_keybinds": "Key Bindings",
+	"fsw_keybinds_ingame_gtris_title": "Key Bindings (Gachatris)",
+	"fsw_keybinds_ingame_gtris_desc": "Adjust key bindings for Gachatris",
+	"fsw_keybinds_ingame_blob_title": "Key Bindings (Gachae Linkblobs)",
+	"fsw_keybinds_ingame_blob_desc": "Adjust key bindings for Gachae Linkblobs",
+	"fsw_keybinds_ingame_general_title": "General",
+	"fsw_keybinds_ingame_general_desc": "Map keys for when you're playing a session.",
 
-	"menu_main": "Gachatris Legends v0.0.1 A1q1 Alpha",
+	"fsw_kb_buttonslist_text": "Keys Used",
+	"fsw_kb_ig_add": "ADD KEY",
+	"fsw_kb_adding_text_you": "You are adding a key to this flag: [nl]var=0[nl][nl]- Press any key and hold for one second to bind it to this flag;[nl]- press a key or click anywhere to cancel.",
+	"fsw_kb_changing_text_you": "You are changing one of the keys to this flag: [nl]var=0[nl]Active: [var=1][nl][nl]- Press and hold [var=1] for one second to remove it;[nl]- press and hold any other key for one second to bind it to this flag;[nl]- press only or click anywhere to cancel.",
+	"fsw_kb_adding_binding_you": "Keep holding key [var=0] to add. Release immediately to cancel.",
+	"fsw_kb_changing_binding_you": "Keep holding key [var=0] to set. Release immediately to cancel.",
+	"fsw_kb_changing_nothing_you": "Keep holding key [var=0] or release immediately to cancel.",
+	"fsw_kb_changing_removing_you": "Keep holding key [var=0] to remove. Release immediately to cancel.",
+	
+	"fsw_kb_setting_saving_you": "Key [var=0] has been successfully bound to this flag. Please wait while the game tries to save your settings to your local database.",
+	"fsw_kb_already_existing_you": "Key [var=0] already exists in this flag. Cancelling...",
+	"fsw_kb_removing_saving_you": "Key [var=0] has been successfully removed from this flag. Please wait while the game tries to save your settings to your local database.",
+
+	"fsw_kb_ig_gtris": "Keybinding (Gachatris)",
+	"fsw_kb_ig_gtris_left": "Move Leftwards",
+	"fsw_kb_ig_gtris_left_desc": "Moves the active Gachaquadromino, unit by unit, to the left of the board.",
+	"fsw_kb_ig_gtris_right": "Move Rightwards",
+	"fsw_kb_ig_gtris_right_desc": "Moves the active Gachaquadromino, unit by unit, to the right of the board.",
+	"fsw_kb_ig_gtris_softdrop": "Soft Drop",
+	"fsw_kb_ig_gtris_softdrop_desc": "Increases the falling speed of a Gachaqudromino until a button is released.",
+	"fsw_kb_ig_gtris_harddrop": "Hard Drop",
+	"fsw_kb_ig_gtris_harddrop_desc": "Instantly drops the active Gachaquadromino to the surface of the Stack and locks it down completely.",
+	"fsw_kb_ig_gtris_cw": "CW (Clockwise)",
+	"fsw_kb_ig_gtris_cw_desc": "Rotates the active Gachaquadromino to the same direction as the way the hands of an analog clock are rotating (rightwards).",
+	"fsw_kb_ig_gtris_ccw": "CCW (Reverse Clockwise)",
+	"fsw_kb_ig_gtris_ccw_desc": "Rotates the active Gachaquadromino to the direction opposite to how the hands of an analog clock are rotating (leftwards).",
+	"fsw_kb_ig_gtris_c180w": "C180W (180° Rotation) [PROFESSIONAL MODE]",
+	"fsw_kb_ig_gtris_c180w_desc": "Flips the active Gachaquadromino with respect to the rotation of its axis. This is great for crazy spins in the Professional Mode.",
+	"fsw_kb_ig_gtris_hold": "Hold",
+	"fsw_kb_ig_gtris_hold_desc": "Holds the active Gachaquadromino into the Hold queue. If there is already a held Gachaquadromino, it'll be inserted to the board as an active Gachaquadromino.",
+	"fsw_kb_ig_gtris_s1": "Activate Skill 1",
+	"fsw_kb_ig_gtris_s1_desc": "Activate the first skill in your deck",
+	"fsw_kb_ig_gtris_s2": "Activate Skill 2",
+	"fsw_kb_ig_gtris_s2_desc": "Activate the second skill in your deck",
+	"fsw_kb_ig_gtris_s3": "Activate Skill 3",
+	"fsw_kb_ig_gtris_s3_desc": "Activate the third skill in your deck",
+
+	
+	"fsw_kb_ig_blob": "Keybinding (Linkblobs)",
+	"fsw_kb_ig_blob_left": "Move Leftwards",
+	"fsw_kb_ig_blob_left_desc": "Moves the active Linkblob Segment, unit by unit, to the left of the board.",
+	"fsw_kb_ig_blob_right": "Move Rightwards",
+	"fsw_kb_ig_blob_right_desc": "Moves the active Linkblob Segment, unit by unit, to the right of the board.",
+	"fsw_kb_ig_blob_softdrop": "Soft Drop",
+	"fsw_kb_ig_blob_softdrop_desc": "Increases the falling speed of a Linkblob Segment until a button is released. When it lands on the surface whilst holding a button, it'll momentarily be locked down.",
+	"fsw_kb_ig_blob_harddrop": "Quick Drop",
+	"fsw_kb_ig_blob_harddrop_desc": "Instantly drops the active Linkblob Segment to the surface of the Stack and locks it down completely.",
+	"fsw_kb_ig_blob_cw": "CW (Clockwise)",
+	"fsw_kb_ig_blob_cw_desc": "Rotates the active Linkblob Segment to the same direction as the way the hands of an analog clock are rotating (rightwards). If the Segment is unable to rotate and a button is pressed twice in a rapid succession, it'll rotate by 180°.",
+	"fsw_kb_ig_blob_ccw": "CCW (Reverse Clockwise)",
+	"fsw_kb_ig_blob_ccw_desc": "Rotates the active Linkblob Segment to the direction opposite to how the hands of an analog clock are rotating (leftwards). If the Segment is unable to rotate and a button is pressed twice in a rapid succession, it'll rotate by 180°.",
+	"fsw_kb_ig_blob_s1": "Activate Skill 1",
+	"fsw_kb_ig_blob_s1_desc": "Activate the first skill in your deck",
+	"fsw_kb_ig_blob_s2": "Activate Skill 2",
+	"fsw_kb_ig_blob_s2_desc": "Activate the second skill in your deck",
+	"fsw_kb_ig_blob_s3": "Activate Skill 3",
+	"fsw_kb_ig_blob_s3_desc": "Activate the third skill in your deck",
+
+	"fsw_kb_ig_general": "Keybinding (General)",
+	"fsw_kb_ig_general_pause": "Pause",
+	"fsw_kb_ig_general_pause_desc": "Pause the current session",
+
+	"error_kb_duplicate": "Key [var=0] already exists in this flag",
+	"error_kb_duplicate_desc": "Duplicate keys cannot exist in the same flag.",
+		
+	"menu_main": "Gachatris Legends v0.1.0 Alpha",
 	"menu_start": "Play Game",
 	"menu_start_desc": "Start a new game session.",
 	"menu_replaycenter": "Replay Center",
 	"menu_replaycenter_desc": "Head over to the Replay Center to watch your game replays from files.",
 	"menu_settings": "Settings",
 	"menu_settings_desc": "Tweak game settings yourself.",
+	"menu_changelog": "Changelogs (Patch Notes)",
+	"menu_changelog_desc": "See how far the Game has gone through.",
+	"menu_discord": "Gachatris + Linkblobs Discord",
+	"menu_discord_desc": "Enter this Discord server so you can communicate with Gachatris users and report bugs there. Be civil!",
 
 	"pause_title": "Paused",
 	"pause_resume": "Resume",
@@ -82,9 +181,10 @@
 
 	"gameend_replay_title": "Replay Ended",
 	"gameend_replay_again": "Rewatch Replay",
-
+	"gameend_replay_download": "Download Replay",
+	
 	"gameend_replay_again_desc": "Restart the current replay.",
-
+	"gameend_replay_download_desc": "Download the replay of the current session as a \".gtlrx\" file. In case this replay has not been saved, select this.",
 	"replayload_playall": "Play All",
 	"replayload_minmax": "Select Subreplays by Range",
 	"replayload_playall_desc": "Play the whole replay.",
@@ -107,6 +207,8 @@
 	"settings_audiovolume_desc": "Adjust audio volumes like sound effects, music, and interface sounds. You can also override in-game music.",
 	"settings_nameplate": "Edit Nameplate",
 	"settings_nameplate_desc": "Edit your displayed nameplate. Your nameplate is shown under your playing field in a game session. Your in-game name is $<playername>.",
+	"settings_keybind": "Key Mappings",
+	"settings_keybind_desc": "Bind the buttons of your keyboard/gamepad to speicific triggers.",
 	"settings_miscellaneous": "Miscellaneous",
 	"settings_miscellaneous_desc": "Adjust miscellaneous settings like enabling the in-session stack warning system or enabling result animations.",
 
@@ -123,6 +225,14 @@
 	"miscellaneous_title": "Miscellaneous Settings",
 	"miscellaneous_fieldwarning": "Field Stack Warning",
 	"miscellaneous_boardpos_2p": "Board Position (1v1)",
+	
+	"keybind_title": "Keybinds / Key Mapping",
+	"keybind_gachatris": "Gachatris",
+	"keybind_gachatris_desc": "Adjust Gachatris-specific keybinding.",
+	"keybind_linkblobs": "Linkblobs",
+	"keybind_linkblobs_desc": "Adjust Linkblobs-specific keybinding.",
+	"keybind_general": "General",
+	"keybind_general_desc": "Adjust general keybinding. General keybinds are applied to both Gachatris and Linkblobs.",
 
 	"start_title": "Start - Select Amount of Player Slots",
 	"start_1p": "Solo Player",
@@ -141,18 +251,18 @@
 	"1pstart_block_modes_desc": "Open game modes featuring Gachatris.",
 	"1pstart_blob_modes_desc": "Open game modes featuring Gachae Linkblobs",
 
-	"2pstart_title": "Multiplayer Modes",
+	"2pstart_title": "Double Player Modes",
 	"2pstart_versus": "Versus",
 	"2pstart_swap": "Swap",
 	"2pstart_wormhole": "Wormhole Mayhem War",
 	"2pstart_fever": "Linkblob Fever",
-	"2pstart_professional": "Professional Gachatris",
+	"2pstart_rpg": "RPG Skill Combat [ALPHA]",
 
 	"2pstart_versus_desc": "Play this plain mode against Computer. You have the freedom to choose either Gachatris or Linkblobs.",
 	"2pstart_swap_desc": "Play this confusing yet fun game mode where you have Gachatris and Linkblobs take turns over a certain amount of time.",
 	"2pstart_wormhole_desc": "Play this exciting mode where your board gets an upgrade that lasts a certain amount of time. After the time expires, the game will then evaluate your total garbage collected. You have the freedom to choose either Gachatris or Linkblobs.",
 	"2pstart_fever_desc": "Play this Linkblob-only mode featuring its own upgrade mode, the Fever.",
-	"2pstart_professional_desc": "Try to play a fast-paced Gachatris-only mode, hence \"Professional.\" Some settings for Gachatris will be changed.",
+	"2pstart_rpg_desc": "This is in Alpha stage where there are bugs present in this mode. Players have special skills using three of what's called \"Character Cards\". Each card adds up attributes and a specific skill. You have the freedom to choose either Gachatris or Linkblobs.",
 	
 	"gameprep_title": "Preparation",
 	
@@ -186,11 +296,12 @@
 	"gameprepset_fever_maxtime_desc": "Adjust the maximum collected time length for a Fever mode.",
 	"gameprepset_fever_inittime_desc": "Adjust the starting duration or time length for a Fever mode.",
 	"gameprepset_fever_gaugeadd_desc": "Adjust the number of Fever orbs to activate every time a player deflects garbage.",
-	"gameprepset_swap_time_desc": "Adjust the countdown time for every time swap happens.",
+	"gameprepset_swap_time_desc": "Adjust the countdown time every time swap happens.",
 	"gameprepset_swap_initialmode_desc": "Select which mode to start with.",
 	"gameprepset_insane_start_desc": "Adjust which mode of Enhancement state to start with.",
 
 	"gameprepset_gachatris_professional": "[Gtris] Professional Mode",
+	"gameprepset_gachatris_tsdonly": "[Gtris] T-Spin Double (TSD) Only",
 	"gameprepset_gachatris_spin": "[Gtris] Spin Detection Type",
 	"gameprepset_gachatris_holdenable": "[Gtris] Enable Hold",
 	"gameprepset_gachatris_b2b_type": "[Gtris] Back-to-back Type",
@@ -202,6 +313,7 @@
 	"gameprepset_linkblob_color": "[Linkblob] Nunber of Colors",
 
 	"gameprepset_gachatris_professional_desc": "Professional Gachatris Mode changes some settings for Gachatris, making it a fast-paced mode. This only applies to Gachatris-only sessions.",
+	"gameprepset_gachatris_tsdonly_desc": "In Gachatris-only sessions, this challenge limits you to only clearing 2 lines with a T-Spin (or a Mini T-Spin.) To win, you need to do 20 TSD's in a row. You can also do T-Spins without even clearing a line.",
 	"gameprepset_gachatris_spin_desc": "Spins (and minis) reward bonuses (especially Back-to-backs.) They work by rotating a piece tucking into a tight slot.",
 	"gameprepset_gachatris_holdenable_desc": "Enabling this option gives Gachatris the ability to hold pieces. Adjust how a piece is held.",
 	"gameprepset_gachatris_b2b_type_desc": "Spins, minis, and Gachatrises add up a B2B (Bsck-to-back) chain when done consecutively. B2Bs reward extra points and garbage. Select which type of B2B to use.",
@@ -210,6 +322,21 @@
 
 	"gameprepset_linkblob_quickdrop_desc": "This option is off by default. If turned on, Blob segments will land and lock itself down immediately.",
 	"gameprepset_linkblob_chainlimit_desc": "Adjust how long enough a chain should be for a player to send garbage.",
-	"gameprepset_linkblob_color_desc": "Adjust the number of colors existing in a session."
-
+	"gameprepset_linkblob_color_desc": "Adjust the number of colors existing in a session.",
+	
+	"rpg_skilldesc_atkup": "ATK+",
+	"rpg_skilldesc_defup": "DEF+",
+	"rpg_skilldesc_healing": "Heal",
+	"rpg_skilldesc_absorption": "Absorb",
+	"rpg_skilldesc_lifesteal": "Lifesteal",
+	"rpg_skilldesc_immunedmg": "Immune to DMG",
+	"rpg_skilldesc_immunegarbage": "Immune to Garbage",
+	"rpg_skilldesc_immunity": "Immunity",
+	"rpg_skilldesc_immunedebuff": "Immune to Debuffs",
+	"rpg_skilldesc_deflect": "Deflect",
+	
+	"rpg_skilldesc_burning": "Burn",
+	"rpg_skilldesc_assemble": "Assemble",
+	"rpg_skilldesc_random": "Random",
+	"rpg_skilldesc_purify": "Purify"
 }

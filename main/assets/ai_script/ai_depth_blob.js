@@ -17,9 +17,9 @@ class Node {
   this.obj = obj;
   nodes.push(this.obj);
  }
- makePossibleMoves(depth, maxDepth) {
+ makePossibleMoves(depth) {
   /*let stack = new Int8Array(width, height);*/
-  if (depth >= maxDepth) return;
+  if (depth <= 0) return;
   let s = this.obj.grid;
   let prevArr = JSON.parse(this.obj.preview);
   let active = prevArr.shift();
@@ -27,13 +27,13 @@ class Node {
   let blobs = setBlob(active.type, active.color1, active.color2);
   let possibleMoves = [];
   let mx = 1;
-  let my = this.obj.hh - 2;
+  let my = 0;
   
   for (let rot = 0; rot < 4; rot++) {
    mx = 1;
    let q = 0;
    while (isPieceValid(blobs.matrix[rot], s, this.obj.width, this.obj.height, mx, my, -1, 0)) mx--;
-   while (q < 16) {
+   while (q < this.obj.width) {
     let grid = [...s];
     //throw new Error(`${prevArr}, ${active}, ${preview}, ${this.obj.grid}`)
     for (let gx = 0; gx < 3; gx++) {
@@ -43,6 +43,8 @@ class Node {
       //if (BLOBSET[(active * 4 * 3 * 3) + (rot * 3 * 3) + (gx * 3) + gy] - 3 > 0) grid[((gx + mx) * this.obj.height) + (gy + my)] = BLOBSET[(active * 4 * 3 * 3) + (rot * 3 * 3) + (gx * 3) + gy] - 3;
      }
     }
+    mx++;
+    if (!isPieceValid(blobs.matrix[rot], s, this.obj.width , this.obj.height, mx, my, 1, 0)) break;
     let childNode = new Node({
      grid: grid,
      x: this.obj.x, 
@@ -56,10 +58,10 @@ class Node {
     });
     this.children.push(childNode);
     checkHoles(grid, this.obj.width, this.obj.height, this.obj.vh);
-    mx++;
+    
     q++;
-    childNode.makePossibleMoves(depth + 1, maxDepth);
-    if (!isPieceValid(blobs.matrix[rot], s, this.obj.width , this.obj.height, mx, my, 1, 0)) break;
+    childNode.makePossibleMoves(depth - 1);
+    
    } 
   }
 
@@ -349,8 +351,8 @@ function setBlob(type, color1, color2) {
 function make(data) {
  let [sm, preview, w, h, hh, vh] = data;
  let mn = [];
- let depth = 0;
- let maxDepth =  -1;
+ let depth = 3;
+ let maxDepth =  2;
  nodes.length = 0;
  let prev = JSON.stringify(preview);
  let stack = new Int8Array(w * h);
@@ -372,7 +374,7 @@ function make(data) {
  let zeroDepthNodes = makePossibleMoves(stack, w, h, hh, vh, prev);
  //throw JSON.stringify(preview)
  for (let n = 0, len = zeroDepthNodes.length; n < len; n++) {
-  zeroDepthNodes[n].makePossibleMoves(depth, maxDepth);
+  zeroDepthNodes[n].makePossibleMoves(depth);
  }
 
 

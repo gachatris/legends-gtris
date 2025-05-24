@@ -18,6 +18,33 @@
 	}
 }
 
+@keyframes blur-out-in {
+	0% {
+		filter: blur(0em);
+		opacity: 100%;
+	}
+	
+	50% {
+		filter: blur(1em);
+		opacity: 0%;
+	}
+
+	100% {
+		filter: blur(0em);
+		opacity: 100%;
+	}
+}
+
+@keyframes out-cb {
+	from {
+		--cb: 0%;
+	}
+
+	to {
+		--cb: 100%;
+	}
+}
+
 
 @keyframes blackfade-inout {
 	0% {
@@ -651,6 +678,28 @@
 	}
 }
 
+@keyframes damage-text-animation {
+ 0% {
+  opacity: 0%;
+  margin-top: 0%;
+ }
+
+ 7% {
+  opacity: 100%;
+ }
+
+ 50% {
+  opacity: 100%;
+ }
+
+ 100% {
+  opacity: 0%;
+  margin-top: -2em;
+ }
+
+}
+
+
 @keyframes shake-upon-hit {
 	0% {
 		transform: translateX(calc(var(--shakehit-x) * 1px));
@@ -948,7 +997,36 @@
 	}
 }
 
+@keyframes board-stomp {
+	0% {
+		transform: translateY(0px)
+	}
+	
+	70% {
+		transform: translateY(-2em);
+	}
+	75% {
+		transform: translateY(2.3em);
+	}
+	100% {
+		transform: translateY(0em);
+	}
+}
 
+@keyframes error-slide {
+	0% {
+		transform: translateX(50%);
+		opacity: 0%;
+	}
+	50% {
+		transform: translateX(0%);
+		opacity: 100%;
+	}
+	100% {
+		transform: translateX(50%);
+		opacity: 0%;
+	}
+}
 
 html,
 body {
@@ -959,6 +1037,7 @@ body {
 	font-family: default-ttf;
 	color: #fff;
 	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+	-webkit-text-size-adjust: none
 }
 
 #CORE {
@@ -989,6 +1068,11 @@ body {
 	background: linear-gradient(0deg, #0000, #4440);
 }
 
+#GTRIS-FADE {
+	position: absolute;
+	pointer-events: none;
+}
+
 #GTRIS-BEHIND-OVERLAY {
 	display: flex;
 	justify-content: center;
@@ -998,6 +1082,115 @@ body {
 	height: 100%;
 }
 
+
+#GTRIS-SECONDARY-WINDOW-BACKGROUND {
+	width: 100vw;
+	height: 100vh;
+	backdrop-filter: blur(2px);
+	background: #0000;
+	position: absolute;
+	z-index: 101;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden hidden;
+}
+
+#GTRIS-SECONDARY-WINDOW {
+	width: 100%;
+	height: 100%;
+	
+	background: #0000;
+	position: absolute;
+	display: block;
+	border-radius: 5px;
+	overflow: hidden hidden;
+	box-shadow: 0 0 3px #fff;
+}
+
+#SW-HEADER {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: left;
+	width: 100%;
+	height: 2em;
+	background: #838;
+	position: relative;
+	overflow: hidden hidden;
+}
+
+#SW-LOGO, #SW-LOGO-DIV {
+	position: relative;
+	background: #dd0;
+	width: 2em;
+	height: 2em;
+}
+
+#SW-BACK, #SW-BACK-DIV {
+	position: relative;
+	background: #fd0;
+	overflow: hidden hidden;
+}
+
+#SW-TITLE-DIV {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: left;
+	padding-left: 1em;
+}
+
+#SW-TITLE {
+	vertical-align: center;
+}
+
+#SW-CONTENT {
+	display: block;
+	position: relative;
+	background: #fff7;
+	width: 100%;
+	height: calc(100% - 2em);
+}
+
+#GTRIS-ALERT-WINDOW {
+	width: 100vw;
+	height: 100vh;
+	backdrop-filter: blur(2px);
+	background: #0000;
+	position: absolute;
+	z-index: 102;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden hidden;
+}
+
+#AW-TEXT{
+  vertical-align: center;
+  text-align: center;
+  width: 90%;
+  position: absolute;
+}
+
+#GTRIS-ERROR-SCREEN {
+	position: absolute;
+ width: 100%;
+ height: 100%;
+ overflow-y: hidden;
+ overflow-x: hidden;
+ pointer-events: none;
+}
+#ERROR-STACK {
+	position: absolute;
+ bottom: 0;
+ right: 0;
+ width: 60%;
+ padding-bottom: 1em;
+ display: grid;
+ grid-template-rows: auto
+}
 
 #BEHIND-OVERLAY-BACKGROUND {
 	display: flex;
@@ -1101,6 +1294,7 @@ body {
 	background: linear-gradient(to bottom, #0007, #ddda, #0007);
 	width: 10em;
 	height: 10em;
+	border: 0.05em solid #000;
 }
 
 #OVERLAY-1V1-OVERHEAD-DIV {
@@ -1116,12 +1310,11 @@ body {
 
 #GTRIS-PARTICLE-SCREEN {
 	position: absolute;
-	z-index: 3;
 }
 
 #GTRIS-HTMLEFF-SCREEN {
 	position: absolute;
-	z-index: 4;
+	
 }
 
 #GTRIS-TOUCH {
@@ -1200,6 +1393,7 @@ body {
 	top: 0.2em;
 	
 }
+
 #MENU-PAUSE-DIV {
 	display: none;
 	flex-direction: column;
@@ -1280,8 +1474,10 @@ body {
 }
 
 #HEADER-BACK {
-	background: #944;
-
+	background: #464;
+	display: none;
+	justify-content: center;
+	align-items: center;
 }
 
 
@@ -1296,7 +1492,7 @@ body {
 	height: 10%;
 	justify-content: center;
 	align-items: center;
-	z-index: 915;
+	z-index: 100;
 	bottom: 0;
 	position: absolute;
 	background: #0000;
@@ -1331,7 +1527,6 @@ body {
 	height: 20%;
 	bottom: 0;
 	padding-top: 1%;
-	background: rgba(0, 0, 0, 0.6);
 	display: flex;
 	justify-content: center;
 }

@@ -10,28 +10,33 @@ const manager = new class {
 			if (this.delay == 0) this.func();
 		}
 	};
+	#customLoops = new ObjectFunctionIterator((obj) => {
+		for (let ob in obj) {
+			obj[ob]();
+		}
+	});
 	constructor() {
 		this.FPS = 60;
-
+		
 		this.synchroLoop = new DateSynchronizedLoopHandler(this.FPS, () => {
 			this.frameLoop();
 		})
-
+		
 		this.presets = {
 			block: {},
 			blobNormal: {},
 			blobMicro: {}
 		}
-
+		
 		this.resQualityMult = 2;
-
+		
 		this.isRunning = false;
-
+		
 		this.pause = {
 			on: true,
 			frame: 0
 		};
-
+		
 		this.matchEndHandler = {
 			frame: -9,
 			on: false,
@@ -39,9 +44,11 @@ const manager = new class {
 			isFinishActual: false,
 			hasEnded: false
 		};
-
-
-
+		
+		this.fontSize = 1;
+		
+		
+		
 		Object.freeze(this.FPS);
 		this.frames = 0;
 		this.countdown = 120;
@@ -69,83 +76,83 @@ const manager = new class {
 		this.orientation = null;
 		this.cellSize = null;
 		this.playerAreaSizeMult = 0.36; //0.56;
-
+		
 		this.activePlayer = 0;
 		this.playerCount = null;
 		this.players = {};
-
+		
 		this.isSolo = false;
-
+		
 		this.skinTemp = {
 			canvas: void 0,
 			ctx: void 0,
 		};
-
+		
 		this.skin = {
 			canvas: void 0,
 			ctx: void 0,
 		};
-
+		
 		this.skinBlob = {
 			canvas: void 0,
 			ctx: void 0,
 		};
-
+		
 		this.skinBlobTemp = {
 			canvas: void 0,
 			ctx: void 0,
 		};
-
+		
 		this.skinGarbTemp = {
 			canvas: void 0,
 			ctx: void 0,
 		};
-
+		
 		this.skinParticle = {
 			canvas: void 0,
 			ctx: void 0,
 		};
-
+		
 		this.skinParticleTemp = {
 			canvas: void 0,
 			ctx: void 0,
 		};
-
+		
 		this.skinGarb = {
 			canvas: void 0,
 			ctx: void 0,
 		};
-
+		
 		this.skinAppear = {
 			canvas: new OffscreenCanvas(70 * 10, 70 * 4),
 			ctx: void 0,
 		};
 		this.skinAppear.ctx = this.skinAppear.canvas.getContext("2d");
-
+		
 		this.skinClear = {
 			canvas: new OffscreenCanvas(70 * 10, 70 * 6),
 			ctx: void 0,
 		};
 		this.skinClear.ctx = this.skinClear.canvas.getContext("2d");
-
-
+		
+		
 		this.loadCanvas = {
 			canvas: void 0,
 			ctx: void 0,
 		};
-
+		
 		this.loadCanvas.canvas = id("LOAD-TRIVIA-CANVAS");
 		this.loadCanvas.ctx = this.loadCanvas.canvas.getContext("2d");
-
+		
 		this.loadDiv = {
 			main: id("GTRIS-LOAD-SCREEN"),
 		};
-
+		
 		this.seeds = {
 			preview: new ParkMillerPRNG(),
 			main: new ParkMillerPRNG(),
 		};
-
+		
 		elem("CANVAS", canvas => {
 			canvas.width = 250 * 16;
 			canvas.height = 250 * 16;
@@ -153,7 +160,7 @@ const manager = new class {
 			let ctx = canvas.getContext("2d");
 			this.skinBlob.ctx = ctx;
 		});
-
+		
 		elem("CANVAS", canvas => {
 			canvas.width = 250 * 16;
 			canvas.height = 250 * 16;
@@ -161,8 +168,8 @@ const manager = new class {
 			let ctx = canvas.getContext("2d");
 			this.skinBlobTemp.ctx = ctx;
 		});
-
-
+		
+		
 		elem("CANVAS", canvas => {
 			canvas.width = 130 * 4;
 			canvas.height = 130 * 12;
@@ -170,8 +177,8 @@ const manager = new class {
 			let ctx = canvas.getContext("2d");
 			this.skin.ctx = ctx;
 		});
-
-
+		
+		
 		elem("CANVAS", canvas => {
 			canvas.width = 130 * 4;
 			canvas.height = 130 * 12;
@@ -179,7 +186,7 @@ const manager = new class {
 			let ctx = canvas.getContext("2d");
 			this.skinTemp.ctx = ctx;
 		});
-
+		
 		elem("CANVAS", canvas => {
 			canvas.width = 1100;
 			canvas.height = 100;
@@ -187,7 +194,7 @@ const manager = new class {
 			let ctx = canvas.getContext("2d");
 			this.skinParticle.ctx = ctx;
 		});
-
+		
 		elem("CANVAS", canvas => {
 			canvas.width = 1100;
 			canvas.height = 100;
@@ -195,7 +202,7 @@ const manager = new class {
 			let ctx = canvas.getContext("2d");
 			this.skinParticleTemp.ctx = ctx;
 		});
-
+		
 		elem("CANVAS", canvas => {
 			canvas.width = 130 * 6;
 			canvas.height = 130 * 4;
@@ -203,7 +210,7 @@ const manager = new class {
 			let ctx = canvas.getContext("2d");
 			this.skinGarb.ctx = ctx;
 		});
-
+		
 		elem("CANVAS", canvas => {
 			canvas.width = 1600;
 			canvas.height = 400;
@@ -211,31 +218,31 @@ const manager = new class {
 			let ctx = canvas.getContext("2d");
 			this.skinGarbTemp.ctx = ctx;
 		});
-
+		
 		this.henshinBg = {};
 		this.feverBg = {};
-
+		
 		this.wormholeBg = {};
-
+		
 		this.insaneEye = {
 			canvas: new OffscreenCanvas(200, 200),
 			ctx: void 0
 		};
 		this.insaneEye.ctx = this.insaneEye.canvas.getContext("2d");
-
+		
 		this.pressStr = "";
-
+		
 		this.isRoundNext = false;
-
+		
 		this.isRoundActive = false;
 		this.roundNextTime = -20;
-
+		
 		this.pressFlagInput = {
-
+			
 		};
-
+		
 		this.misc = {};
-
+		
 		//this.inGameParameters.mode = null;
 		let earlyStart = 30;
 		this.matchSignal = {
@@ -252,7 +259,7 @@ const manager = new class {
 					let array = this.matchSignal.separator.ready.a;
 					let length = array.length;
 					//let mframe = frame - Math.min(0, Math.max(frame - 30, 10));
-
+					
 					if (frame < 140 - earlyStart) styleelem(this.matchSignal.html.ready, "animation-delay", `${~~((1000 / (-1 * 60)) * Math.max(0, frame - (30)))}ms`);
 					if (frame == 30) sound.play("ready");
 					////console.log(~~((1000 / (-1 * 60)) * (91)), ~~((1000 / (-1 * 60)) * (frame)), frame)
@@ -268,17 +275,17 @@ const manager = new class {
 				}
 				if (frame <= (210 - earlyStart) && frame > (89 - earlyStart)) {
 					let o = frame - (150 - earlyStart);
-
+					
 					if (o == 7) sound.play("start");
 					styleelem(this.matchSignal.html.start, "animation-delay", `${~~((1000 / (-1 * 60)) * Math.max(0, o))}ms`);
 					////console.log(~~((1000 / (-1 * 60)) * (91)), ~~((1000 / (-1 * 60)) * (frame)), frame)
 					////console.log(frame);
-
+					
 				}
 			}),
-
+			
 		};
-
+		
 		this.replay = {
 			data: {},
 			isOn: false,
@@ -286,9 +293,9 @@ const manager = new class {
 			replays: [],
 			replaysIndex: 0
 		};
-
+		
 		this.animations = {
-			fade: new AnimationFrameRenderer(id("GTRIS-FADE"), 0, 14, 1000 / 60, {
+			fade: new AnimationFrameRenderer(id("GTRIS-OVERLAY"), 0, 14, 1000 / 60, {
 				name: "blackfade-inout",
 				timing: "linear",
 			}),
@@ -300,17 +307,19 @@ const manager = new class {
 				name: "matchsignal-wormhole-start",
 				timing: "linear",
 			}),
-
+			
 		};
-
+		
 		this.animationNames = Object.keys(this.animations);
-
+		
 		this.delayHandlers = [];
-
+		
+		
+		
 		this.isGameLoaded = true;
-
+		
 		this.isPlayerJsonLoaded = true;
-
+		
 		this.targetPointSystem = {
 			initial: 70,
 			previous: 70,
@@ -318,14 +327,14 @@ const manager = new class {
 			iterIncDel: 16 * this.FPS,
 			marginTime: 1 * this.FPS,
 			targetPoint: 90,
-
+			on: false,
 			prep: {
 				marginTime: 1 * this.FPS,
 				initial: 70,
 			}
-
+			
 		}
-
+		
 		this.numberExecHandlers = {
 			insaneMFX: new NumberChangeFuncExec(-1, (am) => {
 				//music.stopAll();
@@ -333,11 +342,10 @@ const manager = new class {
 				if (am == 1) {
 					music.play("insane", true);
 					background.setFGColor(0, 0, 0, 0.5);
-
 				}
 				if (am == 3) {
 					music.play("wmw_eval");
-
+					
 				} //else music.stopAll();
 				if (am == 2) {
 					music.play("insane_transform");
@@ -356,19 +364,31 @@ const manager = new class {
 				//music.stopAll();
 				if (am == 1) {
 					sound.play("wormhole_loop");
-
+					
 				}
 				if (am == 0) {
 					sound.stop("wormhole_loop");
-
+					
 				} //else music.stopAll();
-
+				
+			}),
+			zerohp: new NumberChangeFuncExec(-1, (am) => {
+				//music.stopAll();
+				if (am >= 1) {
+					sound.play("rpg_zerohp");
+					
+				} else
+				{
+					sound.stop("rpg_zerohp");
+					
+				} //else music.stopAll();
+				
 			}),
 		}
-
+		
 		this.isFinish = false;
-
-
+		
+		
 		this.swapMode = {
 			on: false,
 			pickDel: 120,
@@ -378,7 +398,7 @@ const manager = new class {
 			maxTime: 30 * this.FPS,
 			swapDel: -90
 		}
-
+		
 		this.woiMode = {
 			isEvaluation: false,
 			shoot: 0,
@@ -386,10 +406,10 @@ const manager = new class {
 			restart: -9,
 			timeDelay: -9,
 			maxTime: 80 * this.FPS,
-
+			
 			loopRate: -1,
 		}
-
+		
 		this.timer = new FunctionTimer(this, (q, p) => {
 			switch (this.inGameParameters.mode) {
 				case 3: {
@@ -399,7 +419,7 @@ const manager = new class {
 						player.block.insane.isCommandedEnd = true;
 						player.blob.insane.isCommandedEnd = true;
 					});
-
+					
 					if (q <= 10 * this.FPS && q >= 0) {
 						if ((q % this.FPS) == 0 && q > 0) {
 							if (q >= 4 * this.FPS) sound.play("timer2_1");
@@ -413,7 +433,7 @@ const manager = new class {
 				}
 			}
 		});
-
+		
 		this.timerDisplay = new class {
 			constructor(w) {
 				this.parent = w;
@@ -425,65 +445,84 @@ const manager = new class {
 				this.isActive = toggle;
 				styleelem(this.container, "display", this.isActive ? "flex" : "none")
 			}
-
+			
 			display(frame) {
 				let seconds = Math.ceil((frame / game.FPS));
 				let minutes = ~~(seconds / 60);
-
+				
 				ihelem(this.timer, `${minutes}:${~~(seconds/10) % 6}${seconds%10}`);
 			}
-
+			
 		}(this);
-
+		
 		this.timerDisplay.showHide(false);
-
+		
 		this.actualParameters = {
 			mode: 0,
 			active: 0,
 			players: [],
 			data: {
-
+				
 			},
 			maxWins: 5
 		};
-
+		
 		this.inGameParameters = {
 			mode: null,
 			active: 0,
 			players: {},
 			data: {},
+			isRPG: false,
 			round: 0,
 			maxWins: 5
 		};
-
+		
 		this.round = 0;
-
+		
 		this.startGameParameters = {
 			frame: -28,
 			type: "",
 		};
-
+		
 		this.enableWarning = false;
-
-
+		
+		
 	}
-
+	
+	addLoop(id, func) {
+		if (typeof this.#customLoops.getItem(id) === "object") {
+			throw "a loop with this id \"" + id + "\" already exists! Yhrowing an error..."
+		}
+		this.#customLoops.addItem(id, func);
+	}
+	
+	removeLoop(id) {
+		if (!this.#customLoops.getItem(id) === "undefined") {
+			throw "a loop with this id \"" + id + "\" already exists! Yhrowing an error..."
+		}
+		this.#customLoops.remove(id);
+	}
+	getLoop(id) {
+		return this.#customLoops.getItem(id);
+	}
+	
 	setupPlayers() {
-
+		
 	}
-
-	createPlayerParam(name, char, ver, mode, isAi, params) {
+	
+	createPlayerParam(name, char, ver, mode, isAi, rpg, params) {
 		let a = {
 			character: char,
 			version: ver,
 			name: name,
 			isAi: isAi,
 			mode: mode,
-			other: params
+			other: params,
+			rpg: rpg
 		};
 		return a;
 	}
-
+	
 	setupAnimationElement(e, opacity, name, duration, timing) {
 		styleelem(e, "opacity", opacity);
 		styleelem(e, "animation-name", name);
@@ -491,9 +530,9 @@ const manager = new class {
 		styleelem(e, "animation-timing-function", timing);
 		styleelem(e, "animation-play-state", "paused");
 	}
-
+	
 	resetReadyMatchSignal(state) {
-
+		
 		let element = "OVERLAY-MS-READY";
 		let f = id(element);
 		let l = id("OVERLAY-MS-START");
@@ -501,17 +540,17 @@ const manager = new class {
 			styleelem(e, "animation", "none");
 			e.offsetHeight;
 		}
-
+		
 		styleelem(f, "animation", "none");
-
+		
 		f.offsetHeight;
 		styleelem(f, "animation-play-state", "paused");
-
+		
 		styleelem(l, "animation", "none");
-
+		
 		l.offsetHeight;
 		styleelem(l, "animation-play-state", "paused");
-
+		
 		if (state == 1) {
 			/*styleelem(f, "opacity", "100%");
 			styleelem(f, "animation-name", "matchSignal-body-anim-spacing");
@@ -524,11 +563,11 @@ const manager = new class {
 					styleelem(e, "font-family", "copd-bold");
 				}
 				else this.setupAnimationElement(e, "100%", "matchsignal-let-anim", 150 - 30, "linear");
-
+				
 			}
 			this.setupAnimationElement(l, "0%", "matchsignal-body-anim-start", 50, "linear")
-
-
+			
+			
 			this.matchSignal.main.reset(0);
 		} else if (state == 2) {
 			styleelem(f, "opacity", "0%");
@@ -538,19 +577,19 @@ const manager = new class {
 			this.matchSignal.main.toggleEnable(false);
 			styleelem(f, "opacity", "0%");
 			styleelem(l, "opacity", "0%");
-
+			
 		}
 	}
-
+	
 	addDelayHandler(delay, func) {
 		this.delayHandlers.push(new this.#DelayHandler(delay, func));
 	}
-
+	
 	runDelayHandler() {
 		let a = this.delayHandlers;
 		let b = a.length;
 		//let c = 0;
-
+		
 		for (let c = 0; c < b; c++) {
 			a[c].delay--;
 			if (a[c].delay == 0) {
@@ -561,49 +600,67 @@ const manager = new class {
 				////console.log(JSON.stringify(a))
 			}
 		}
-
+		
 	}
-
+	
 	#fetchLoaded = {};
-
+	
 	#fetchLoad(directory, type) {
 		return this.#fetchLoaded[directory];
 	}
-
+	
 	initGame() {
 		//await language.loadLanguage("assets/lang/en_us/main.json");
-
-		splash.showHide(true);
-
-		database.read("local_data", "userdata", async (ev) => {
+		
+		splash.showHide(true, appinfo.android);
+		alertWindow.showhide(false);
+		
+		if (appinfo.android) {
+			accessible.callSyncJava(k => {
+				k.switchLanguage(menu.storage.getItem("lang", ""));
+			});
+			/*accessible.callAsyncJava("callback_promise", (l, k) => {
+				k.getData(l, "user_data");
+			}).then(() => {
+				this.loadAssets();
+			});*/
+			
+			database.read("local_data", "userdata", async (ev) => {
+				if (typeof ev !== "undefined") {
+					//console.log(ev)
+					menu.storage.loadUserData(ev.value);
+					menu.storage.loadData(ev.value);
+				}
+				this.loadAssets();
+				
+			});
+			
+			
+		} else database.read("local_data", "userdata", async (ev) => {
 			if (typeof ev !== "undefined") {
 				//console.log(ev)
 				menu.storage.loadUserData(ev.value);
 				menu.storage.loadData(ev.value);
 			}
-
-			if (appinfo.android) {
-				accessible.callSyncJava(k => {
-					k.switchLanguage(menu.storage.getItem("lang", ""));
-				});
-				let h = await accessible.callAsyncJava("callback_promise", (l, k) => {
-					k.getData(l, "user_data");
-				});
-				accessible.callSyncJava(k => {
-					k.crash(h);
-				});
-
+			
+			let version = menu.storage.getItem("version");
+			let newVersion = appinfo.version;
+			if (version != newVersion) {
+				menu.storage.setItem("version", newVersion);
+				menu.storage.setItem("patchnote_is_seen", 0);
+				menu.storage.save();
 			}
-
+			
+			
 			this.loadAssets();
-
-
-
-
-
+			
 		});
+		this.synchroLoop.confirmIsAsync = true;
+		this.synchroLoop.start();
+		
+		menu.storage.initialize();
 	}
-
+	
 	endGame(isForce) {
 		if (this.replay.isOn) {
 			touchButtons.enableControllers(true);
@@ -621,10 +678,10 @@ const manager = new class {
 		}
 		this.showEndGameMenu();
 	}
-
+	
 	showEndGameMenu() {
 		let selectors = [];
-
+		
 		if (!this.replay.isOn) {
 			for (let lo of [{
 						string: "gameend_startover",
@@ -633,7 +690,7 @@ const manager = new class {
 						onstate: "#ffff",
 						offstate: "#fff2",
 						desc: "gameend_startover_desc"
-			},
+					},
 					{
 						string: "gameend_watchreplay",
 						type: "button",
@@ -641,7 +698,7 @@ const manager = new class {
 						onstate: "#ffff",
 						offstate: "#fff2",
 						desc: "gameend_watchreplay_desc"
-			},
+					},
 					{
 						string: "gameend_replaycenter",
 						type: "button",
@@ -650,9 +707,9 @@ const manager = new class {
 						offstate: "#fff2",
 						backable: true,
 						desc: "gameend_replaycenter_desc"
-},
-
-			]) selectors.push(lo);
+					},
+					
+				]) selectors.push(lo);
 			if (!this.replay.isFile) {
 				selectors.push({
 					string: "gameend_downloadreplay",
@@ -665,26 +722,26 @@ const manager = new class {
 			}
 		} else {
 			if (!this.replay.isFile) selectors.push({
-
+				
 				string: "gameend_startover",
 				type: "button",
 				action: "restart",
 				onstate: "#ffff",
 				offstate: "#fff2",
 				desc: "gameend_startover_desc"
-
+				
 			});
 			for (let lo of [
 					{
-
+						
 						string: "gameend_replay_again",
 						type: "button",
 						action: "replayreload",
 						onstate: "#ffff",
 						offstate: "#fff2",
 						desc: "gameend_replay_again_desc"
-
-				},
+						
+					},
 					{
 						string: "gameend_replaycenter",
 						type: "button",
@@ -693,31 +750,31 @@ const manager = new class {
 						offstate: "#fff2",
 						backable: true,
 						desc: "gameend_replaycenter_desc"
-			},
-
-			]) selectors.push(lo);
+					},
+					
+				]) selectors.push(lo);
 			if (!this.replay.isFile) {
 				selectors.push({
-					string: "gameend_downloadreplay",
+					string: "gameend_replay_download",
 					type: "button",
 					action: "replaydownload",
 					onstate: "#ffff",
 					offstate: "#fff2",
-					desc: "gameend_dowmloadreplay_desc"
+					desc: "gameend_replay_download_desc"
 				});
 			}
 		}
-
+		
 		selectors.push({
 			string: "gameend_mainmenu",
 			type: "button",
 			action: "mainmenu",
 			onstate: "#ffff",
 			offstate: "#fff2",
-
+			
 			desc: "gameend_mainmenu_desc"
 		});
-
+		
 		let gson = {
 			def: 0,
 			sel: selectors,
@@ -730,18 +787,18 @@ const manager = new class {
 		};
 		menu.changeMenu(JSON.stringify(gson), false);
 		menu.showMenu(true);
-
+		
 	}
-
+	
 	async loadAssets() {
 		try {
 			////console.log(this)
 			menu.characterMenu.setupAnims();
 			//IS_LOAD_LISTER = true;
-
-
+			
+			
 			await language.load("en-US");
-
+			
 			let h = await load("./assets/init/init.json", "text");
 			let hh = JSON.parse(h);
 			let count = 0;
@@ -754,7 +811,7 @@ const manager = new class {
 			};
 			let files = Object.keys(hh);
 			let fmax = files.length;
-			////console.log(fmax)
+			
 			for (let ge = 0; ge < fmax; ge++) {
 				let g = hh[files[ge]];
 				//console.log(g)
@@ -763,36 +820,39 @@ const manager = new class {
 						this.#fetchLoaded[g.path] = img;
 						evt(fmax, g.path);
 					});
-
+					
 				} else {
 					load(g.path, g.type).then(o => {
 						this.#fetchLoaded[g.path] = o;
 						evt(fmax, g.path);
 					});
-
+					
 				}
 				////console.log((100 * (count / hh.length)).toFixed(2));
-
+				
 			}
 		} catch (e) {
 			//console.log(e.stack)
 		}
+		
 	}
-
+	
 	async checkGameLoad(count, max) {
 		if (count >= max) {
-
+			
 			menu.presetSettings = JSON.parse(this.#fetchLoad("./assets/settings/settings.json"));
 			menu.checkStorageSettings();
 			menu.checkData();
-
+			
 			this.assetHTML = this.#fetchLoad("./assets/field/main2.xml", "text");
 			this.assetStyle = this.#fetchLoad("./assets/field/main2.css", "text");
 			let bpres = this.#fetchLoad("./assets/field/blobs_preset.json", "text");
 			let mbpres = this.#fetchLoad("./assets/field/microblob_preset.json", "text");
 			let gpres = this.#fetchLoad("./assets/field/blocks_preset.json", "text");
 			let jpres = this.#fetchLoad("./assets/field/blocks_preset_javascriptus.json", "text");
-
+			
+			
+			
 			this.presets.blobNormal = JSON.parse(bpres);
 			this.presets.blobMicro = JSON.parse(mbpres);
 			this.presets.blockNormal = JSON.parse(gpres);
@@ -812,51 +872,51 @@ const manager = new class {
 			let feverImg = this.#fetchLoad("./assets/field/fever.png");
 			let frenzyImg = this.#fetchLoad("./assets/field/frenzy.png");
 			let wormholeImg = this.#fetchLoad("./assets/field/wormhole.png");
-
-
+			
+			
 			this.misc.menu_cs_border_black = this.#fetchLoad("./assets/menu/images/cs_border_black.png");
 			this.misc.menu_cs_border_yellow = this.#fetchLoad("./assets/menu/images/cs_border_yellow.png");
 			this.misc.menu_cs_border_green = this.#fetchLoad("./assets/menu/images/cs_border_green.png");
-
+			
 			this.misc.menu_cs_mode_pick = this.#fetchLoad("./assets/menu/images/cs_mode_pick.png");
 			this.misc.menu_switch_on = this.#fetchLoad("./assets/menu/images/switch_on.png");
 			this.misc.menu_switch_off = this.#fetchLoad("./assets/menu/images/switch_off.png");
-
+			
 			let image = this.#fetchLoad("./assets/skins/default/block.png");
 			this.skinTemp.ctx.drawImage(image, 0, 0, 130 * 4, 130 * 12, 0, 0, 130 * 4, 130 * 12);
-
+			
 			let imageBlob = this.#fetchLoad("./assets/skins/default/blob.png");
 			this.skinBlobTemp.ctx.drawImage(imageBlob, 0, 0, 250 * 16, 250 * 16, 0, 0, 250 * 16, 250 * 16);
-
+			
 			let imageGarb = this.#fetchLoad("./assets/skins/default/garbage_block.png");
 			this.skinGarbTemp.ctx.drawImage(imageGarb, 0, 0, 1600, 200, 0, 0, 1600, 200);
-
+			
 			this.skinGarbTemp.ctx.drawImage(this.#fetchLoad("./assets/skins/default/garbage_blob.png"), 0, 0, 1600, 200, 0, 200, 1600, 200);
-
-
+			
+			
 			let imageParticle = this.#fetchLoad("./assets/skins/default/particle.png");
 			//console.log(imageParticle.width, imageParticle.height)
 			particle.addImage("attack", imageParticle, 100, 100);
 			//this.skinParticleTemp.ctx.drawImage(imageParticle, 0, 0, 1100, 100, 0, 0, 1100, 100);
-
+			
 			let imageAppear = this.#fetchLoad("./assets/field/appear_block.png");
 			this.skinAppear.ctx.drawImage(imageAppear, 0, 0, 70 * 10, 70 * 4, 0, 0, 70 * 10, 70 * 4);
-
+			
 			let imageClear = this.#fetchLoad("./assets/field/clear_block.png");
 			this.skinClear.ctx.drawImage(imageClear, 0, 0, 70 * 10, 70 * 6, 0, 0, 70 * 10, 70 * 6);
-
+			
 			elem("CANVAS", n => {
 				let particleBlobCtx = getCanvasCtx(n);
 				n.width = 100 * 11;
 				n.height = 100 * 2;
-
+				
 				for (let y = 0; y < 5; y++) {
 					particleBlobCtx.drawImage(
 						imageBlob,
 						0, 250 * y, 250, 250, 100 * y, 0, 100, 100
 					);
 				}
-
+				
 				for (let y = 0; y < 11; y++) {
 					particleBlobCtx.drawImage(
 						image,
@@ -868,155 +928,153 @@ const manager = new class {
 					imageBlob,
 					0, 250 * 5, 250, 250, 100 * 5, 0, 100, 100
 				);
-
+				
 				particle.addImage("blobblock", n, 100, 100);
-
+				
 			});
-
-
-
+			
+			
+			
 			this.henshinBg = henshinImg; //.ctx.drawImage(henshinImg, 0, 0, 1800, 2160, 0, 0, 1800, 2160);
 			////console.log(this.assetHTML)
 			this.feverBg = feverImg;
-
+			
 			this.frenzyBg = frenzyImg;
 			this.wormholeBg = wormholeImg;
-
+			
 			this.misc.tspin = tspinImg;
 			this.misc.tspinmini = tspinminiImg;
-
+			
 			this.misc.menu_cs_border_black = this.#fetchLoad("./assets/menu/images/cs_border_black.png");
-
-
+			
+			
 			//this.insaneEye.ctx.drawImage(insaneEyeImg, 0, 0, 200, 200);
-
+			
 			loadingScreen.images.gate1 = this.#fetchLoad("./assets/menu/loading/images/gate1.png");
 			loadingScreen.images.gate2 = this.#fetchLoad("./assets/menu/loading/images/gate2.png");
-
+			
 			language.loadImgsByJson(this.#fetchLoad("./assets/init/lang_images.json"));
 			
 			let faviconURL = URL.createObjectURL(this.#fetchLoad("./assets/favicon/favicon.png"));
+			id("SW-LOGO").src = faviconURL;
 			elem("LINK", (ma) => {
 				ma.setAttribute("rel", "icon");
 				ma.setAttribute("href", faviconURL);
 				document.head.append(ma);
 			})
-
-
+			
+			
 			//language.loadCharLanguage(this.#fetchLoad("./assets/lang/en_us/characters.json"));
 			//IS_LOAD_LISTER = true;
-
+			
 			////console.log(JSON.stringify(loadLister));
-
+			
 			let mmm = [
-
+				
 				{
 					dir: this.#fetchLoad("./assets/field/blob_hit.png"),
 					name: "blob_hit"
-   },
+				},
 				{
 					dir: this.#fetchLoad("./assets/field/block_hit.png"),
 					name: "block_hit"
-   },
+				},
 				{
-
+					
 					dir: this.#fetchLoad("./assets/field/wormhole_explosion.png"),
 					name: "wormhole_explosion"
-
-   },
+					
+				},
 				{
-
+					
 					dir: this.#fetchLoad("./assets/field/wormhole.png"),
 					name: "wormhole"
-
-   },
+					
+				},
 				{
-
+					
 					dir: this.#fetchLoad("./assets/field/fever_shine.png"),
 					name: "fever_shine"
-
-   },
+					
+				},
 				{
-
+					
 					dir: this.#fetchLoad("./assets/field/swap_roulette.png"),
 					name: "swap_roulette"
-
-   },
+					
+				},
 				{
-
+					
 					dir: this.#fetchLoad("./assets/field/perfect_clear.png"),
 					name: "perfect_clear"
-
-   }
-
-
-  ];
+					
+				}
+				
+				
+			];
 			for (let ll = 0; ll < 5; ll++) {
 				mmm.push({
-
-
+					
+					
 					dir: this.#fetchLoad(`./assets/skins/default/blob_pop${ll + 1}.png`),
 					name: `blob_pop${ll + 1}`
-
-
+					
+					
 				})
 			}
 			animatedLayers.loadOfflineArr(mmm);
-
-
+			
+			
 			await feverGaugeStorage.load("./assets/field/fever_gauge.png", "./assets/field/fever_timer.png");
-			//IS_LOAD_LISTER = false;
-			////console.log(JSON.stringify(loadLister))
+			
 			await background.loadBg();
-
+			
 			game1v1.loadAImgOffline([
-				{
-					name: "overhead_center",
-					image: this.#fetchLoad("./assets/field/overhead_1v1_center.png"),
-					w: 27,
-					h: 200,
-					frame: 120,
-					bound: 30
-				}
-			]);
-
-
+			{
+				name: "overhead_center",
+				image: this.#fetchLoad("./assets/field/overhead_1v1_center.png"),
+				w: 27,
+				h: 200,
+				frame: 120,
+				bound: 30
+			}]);
+			
+			
 			await menu.load();
-			menu.characterMenu.loadImages();
-
+			//menu.characterMenu.loadImages();
+			
 			splash.splashImage = this.#fetchLoad("./assets/splash/controls.png");
-
+			
 			this.resize();
-
+			
 			menu.characterMenu.setupPanelIntListener();
-
+			
 			menu.showMenu(true);
 			//this.initialize(3);
-			this.synchroLoop.confirmIsAsync = true;
-
-
+			
+			
 			splash.toggleRunner(true);
-
-
-
+			
+			
+			
 		}
 	}
-
+	
 	startReplay(isFile) {
 		this.replay.isFile = isFile;
 		this.startGameSet("replay");
 	}
-
+	
 	downloadReplayData() {
 		let data = btoa(this.replayDataToString());
 		//console.log(data);
-
+		
 	}
-
+	
 	parseReplayFile(jsonString, index, round, isFile) {
 		//let jsonString = atob(b64String);
 		try {
-
+			
 			let json = JSON.parse(jsonString);
 			//this.replay.isFile = false;
 			this.replay.replays.length = 0;
@@ -1025,25 +1083,29 @@ const manager = new class {
 					this.replay.replays.push((json.replays[h]));
 				}
 			} else {
-
+				
 			}
-
+			
 			this.startReplay(isFile);
-
+			
 		} catch (e) {
 			//console.log(e.message)
 		}
 	}
-
+	
 	setActualParameters() {
 		let a = menu.storage;
 		let b = {};
 		switch (this.actualParameters.mode) {
 			case 0: {
 				b.insaneStart = a.getValueFromRangeListSpecific("set_prep_insane_start");
+				b.professional = a.getItem("set_prep_professional(zen)");
+				b.tsdonly = a.getItem("set_prep_tsdonly(zen)");
+				
 				break;
 			}
 			case 1: {
+				b.professional = a.getItem("set_prep_professional(vs)");
 				this.actualParameters.maxWins = a.getItem("set_prep_wins(vs)");
 				break;
 			}
@@ -1060,17 +1122,27 @@ const manager = new class {
 				break;
 			}
 			case 5: {
-				this.actualParameters.maxWins = a.getItem("set_prep_wins(vs)");
+				
 				break;
 			}
-
-
+			
+			case 7: {
+				this.actualParameters.maxWins = a.getItem("set_prep_wins(rpg)");
+				
+				for (let pn = 0; pn < this.actualParameters.players.length; pn++) {
+					let ref = this.actualParameters.players[pn];
+					
+				}
+				break;
+			}
+			
+			
 		}
 		this.actualParameters.data = b;
 	}
-
+	
 	setModeParameters(mode) {
-
+		
 		sound.stop("wormhole_loop");
 		sound.stop("wormhole_ready");
 		this.woiMode.timeDelay = -9;
@@ -1081,7 +1153,7 @@ const manager = new class {
 		this.isRoundActive = false;
 		this.isProfessional = false;
 		this.misc.zenkeshi = language.getImage("images/zenkeshi.png");
-
+		this.targetPointSystem.on = false;
 		this.targetPointSystem.prep.initial = 70;
 		this.targetPointSystem.prep.marginTime = 96 * 60;
 		////console.log(this.misc.zenkeshi)
@@ -1092,26 +1164,26 @@ const manager = new class {
 		this.forEachPlayer(player => {
 			//player.blob.insane.delay.ready = player.block.insane.delay.ready = 6;
 			player.initialGarbage = 0;
-
+			
 			if (!(player.player in this.inGameParameters.players)) this.inGameParameters.players[player.player] = {};
 			this.inGameParameters.players[player.player].wins = this.replay.data.players[player.player].wins;
-
+			
 			let blub = player.blob;
 			let block = player.block;
-
+			
 			block.piece.is180able = false
-
+			
 			player.blob.colorSet = blobColors;
-
+			
 			block.insane.isCommandedEnd = false;
 			blub.insane.isCommandedEnd = false;
-
+			
 			blub.garbageOrder.on = false;
-
+			
 			blub.isChainOffsetting = false;
 			player.blob.insane.isUnlimited = player.block.insane.isUnlimited = 0;
 			player.feverStat.isUseTimer = false;
-
+			
 			blub.insane.timeAdditions.timeAddMult = block.insane.timeAdditions.timeAddMult = 0;
 			blub.insane.timeAdditions.fixedTimeAdd = block.insane.timeAdditions.fixedTimeAdd = 0;
 			blub.insane.timeAdditions.allClear = block.insane.timeAdditions.allClear = 0;
@@ -1123,11 +1195,18 @@ const manager = new class {
 			blub.insane.initialStartHenshin = false;
 			block.insane.initialStartHenshin = false;
 			block.isAllSpin = false;
+			player.rpgAttr.reset();
+			player.rpgAttr.resetAttributes();
+			player.rpgAttr.enableSkills = false;
+			player.rpgAttr.isUsableSkills = false;
+			player.block.isTSDOnly = false;
 		});
 		switch (mode) {
 			case 0: {
 				this.isSolo = true;
-				let p = this.getRDDataKey("insaneStart").split("-");
+				let p = this.getRDDataKey("insaneStart", "0-0").split("-");
+				let professional = this.getRDDataKey("professional", 0) == 1;
+				let tsdonly = this.getRDDataKey("tsdonly", 0) == 1;
 				this.forEachPlayer(player => {
 					let isInsane = false;
 					if (~~p[0] > 0) {
@@ -1144,8 +1223,16 @@ const manager = new class {
 					//	player.block.insane.delay.ready = 10;
 					player.blob.insane.fixedHenshinType = player.activeType == 1 ? ~~p[1] : 0;
 					//player.blob.isSpecialDropset = true;
-
+					if (professional) {
+						player.block.isProfessional = true;
+						player.block.isAllSpin = true;
+						player.block.piece.is180able = true;
+					}
+					if (tsdonly) {
+						player.block.isTSDOnly = true;
+					}
 				});
+				this.isProfessional = professional;
 				break;
 			}
 			//VERSUS
@@ -1178,17 +1265,28 @@ blob.colorSet = defaultBlobColors;
 					} else player.blob.fixedAtkHandicap = (120 / 70)
 
 				});*/
-
+				this.targetPointSystem.on = true;
 				this.forEachPlayer(player => {
-					if (player.activeType == 1) {
-						//player.blob.insane.delay.readyHenshin = 3
-					}
+					
 				});
+				
+					let professional = this.getRDDataKey("professional", 0) == 1;
+					this.forEachPlayer(player => {
+						if (player.activeType === 1) professional = false;
+					});
+					this.isProfessional = professional;
+				if (this.isProfessional) this.forEachPlayer(player => {
+					player.block.isProfessional = true;
+					player.block.isAllSpin = true;
+					player.block.piece.is180able = true;
+				});
+				
 				break;
 			}
 			//SWAP
 			case 2: {
 				this.swapMode.on = true;
+				this.targetPointSystem.on = true;
 				this.forEachPlayer(player => {
 					player.blob.insane.delay.ready = player.block.insane.delay.ready = 0;
 					player.switchModeType(0);
@@ -1206,12 +1304,12 @@ blob.colorSet = defaultBlobColors;
 				});
 				this.swapMode.decidedBlockOrBlob = ~~(this.seeds.main.next() * 2);
 				this.swapMode.blockOrBlob = this.swapMode.decidedBlockOrBlob;
-
+				
 				this.swapMode.pickDel = 220;
-
+				
 				this.timerDisplay.showHide(true);
-
-
+				
+				
 				break;
 			}
 			//WAR OF INSANITY
@@ -1221,11 +1319,13 @@ blob.colorSet = defaultBlobColors;
 				this.timer.enabled = 1;
 				this.timer.set(80 * this.FPS);
 				this.timer.setMax(80 * this.FPS);
+				//this.targetPointSystem.o;
 				this.forEachPlayer(player => {
 					player.blob.insane.delay.ready = player.block.insane.delay.ready = 3;
 					player.blob.insane.isUnlimited = player.block.insane.isUnlimited = true;
-					player.block.insane.initialStart = player.activeType == 0;
-					player.blob.insane.initialStart = player.activeType == 1;
+					player.block.insane.initialStart = true;
+					player.blob.insane.initialStart = true;
+					player.block.attackType = "scorebasedWMW";
 					//     player.blob.insane.isUnlimited = 0
 					player.blob.insane.maxTime = player.block.insane.maxTime = this.woiMode.maxTime = 80 * 60;
 					player.blob.colors = 4;
@@ -1234,7 +1334,7 @@ blob.colorSet = defaultBlobColors;
 					player.woi.isOn = true;
 					player.isInsaneModeOnly = true;
 					player.rpgAttr.openClose(true);
-					player.rpgAttr.setMaxHP(1000);
+					player.rpgAttr.setMaxHP(200);
 					player.rpgAttr.reset();
 					player.rpgAttr.isWOIHPMode = true;
 					player.block.attackType = "scorebased";
@@ -1244,14 +1344,14 @@ blob.colorSet = defaultBlobColors;
 				
 				break;
 			}
-
+			
 			case 4: {
 				this.targetPointSystem.prep.initial = 120;
 				this.targetPointSystem.prep.marginTime = 192 * 60;
-
+				this.targetPointSystem.on = true;
 				this.forEachPlayer(player => {
 					player.switchModeType(1);
-
+					
 					let blob = player.blob;
 					blob.isFever = true;
 					blob.isSpecialDropset = true;
@@ -1259,113 +1359,180 @@ blob.colorSet = defaultBlobColors;
 					player.feverStat.enable(true);
 					player.blob.insane.isUnlimited = player.block.insane.isUnlimited = false;
 					blob.dropsetReset(player.character.blob.dropset);
-
+					
 					blob.insane.timeAdditions.timeAddMult = 1;
 					blob.insane.timeAdditions.fixedTimeAdd = 0.0;
 					blob.insane.timeAdditions.allClear = 5;
 					blob.insane.timeMax = 99;
-
+					
 					player.feverStat.isUseTimer = true;
-
+					
 					/*player.rpgAttr.openClose(true);
 					player.rpgAttr.setMaxHP(1000000);
 					player.rpgAttr.reset();/**/
-
+					
 					blob.garbageOrder.on = true;
-
+					
 					player.blob.insane.isExtra = true;
 					blob.colorSet = defaultBlobColors;
-
-
-
+					
+					
+					
 				});
 				break;
 			}
-
-			case 5: {
-				this.isProfessional = true;
+			
+			//PARTY
+			
+			//RPG ATTRIBUTES 
+			case 7: {
+				this.targetPointSystem.on = true;
 				this.forEachPlayer(player => {
-					player.block.isProfessional = true;
+					let ap = this.replay.data.players[player.player].rpg;
+					/*player.block.isProfessional = true;
 					player.block.isAllSpin = true;
-					player.block.piece.is180able = true;
+					player.block.piece.is180able = true;*/
+					player.rpgAttr.isRPG = true;
+					player.rpgAttr.openClose(true);
+					player.rpgAttr.setMaxHP(ap.hp);
+					player.rpgAttr.setMaxMana(ap.mana);
+					player.rpgAttr.reset();
+					player.rpgAttr.resetAttributes();
+					
+					let pr = player.rpgAttr.attributes;
+					
+					
+					
+					
+					//console.log(JSON.stringify(pr), ap)
+					pr.attack = ap.atk;
+					pr.defense = ap.def;
+					pr.lifesteal = ap.lifesteal;
+					pr.lfa = ap.lfa;
+					pr.deflect = ap.deflect;
+					//console.log(pr, ap)
+					
+					for (let pm = 0; pm < 3; pm++) {
+						let rs = player.rpgAttr.deck.characters[pm];
+						let om = ap.cards[pm].char.split("|");
+						rs.character = ~~om[0];
+						rs.version = ~~om[1];
+						//console.log(rs)
+						rs.skill.rawDesc = ap.cards[pm].rawdesc.split("|");
+						//console.log(rs.skill.rawDesc)
+						rs.skill.maxCD = ap.cards[pm].cd;
+						rs.skill.mana = ap.cards[pm].mana;
+						rs.skill.skillVoice = ap.cards[pm].voice;
+						rs.skill.skillStatusEffects = ap.cards[pm].attr;
+						rs.skill.name = ap.cards[pm].name;
+						rs.skill.skillValues = ap.cards[pm].skillvalues;
+						let strDesc = "";
+						let lms = ap.cards[pm].desc.split(","),
+							con = 0;
+						for (let g of lms) {
+							strDesc += language.translate(`rpg_skilldesc_${g.trim()}`);
+							con++;
+							if (con < lms.length) strDesc += ",";
+							
+						}
+						rs.skill.desc = strDesc;
+					}
+					
+					
 				});
-
+				
 				this.forEachPlayer(player => {
-					if (player.activeType == 1) {
-						//player.blob.insane.delay.readyHenshin = 3
+					player.rpgAttr.addStatusEffect(player.player, "regen", "unli", {
+						maxf: 60,
+						value: 2
+					});
+				});
+				break;
+			}
+			
+			//RPG BOSS BATTLE
+			case 8: {
+				this.isSolo = true;
+				//let p = this.getRDDataKey("insaneStart", "0-0").split("-");
+				//let professional = this.getRDDataKey("professional", 0) == 1;
+				this.forEachPlayer(player => {
+					let isInsane = false;
+					
+					if (professional) {
+						player.block.isProfessional = true;
+						player.block.isAllSpin = true;
+						player.block.piece.is180able = true;
 					}
 				});
+				this.isProfessional = professional;
 				break;
 			}
-
-			//PARTY
-
-			//RPG ATTRIBUTES 
 		}
 	}
-
+	
 	setRDDataKey(key, value) {
 		this.replay.data.data[key] = value;
 	}
 	getRDDataKey(key, value) {
 		return this.replay.data.data[key];
 	}
-
+	
 	startGameSet(m) {
 		this.startGameParameters.frame = 43;
 		loadingScreen.toggleOn();
 		loadingScreen.isOpenable = false;
 		this.startGameParameters.type = m;
 	}
-
+	
 	initialize(mode, replay, parameters, isNext) {
 		if (replay) {
 			this.replay.isOn = true;
 			this.replay.replaysIndex = 0;
 			//this.replay.replays.push(JSON.stringify(this.replay.data));
-
+			
 			this.parseReplayData(this.replay.replays[this.replay.replaysIndex]);
 			//console.log(this.replay.data);
 		} else {
 			this.replay.isOn = false;
 			this.replay.isFile = false;
+			keypressManager.setupKeybinds();
 			let _mode = mode;
 			if (mode === "actualparameter") {
 				_mode = this.actualParameters.mode;
 			}
-
+			
 			this.replay.replays.length = 0;
-
+			
 			//this.round = 0;
-
+			
 			this.setActualParameters();
 			this.createReplayData(true, _mode, 0);
-
+			
 		}
-
+		
 		this.matchEndHandler.endable = false;
 		this.matchEndHandler.frame = -9;
 		this.matchEndHandler.on = false;
 		this.matchEndHandler.isFinishActual = false;
 		this.matchEndHandler.hasEnded = false;
-
+		
 		this.replay.replaysIndex = 0;
-
+		
 		//music.stopAll();
-
-
+		
+		
 		sound.load("default");
-
+		
 		this.enableWarning = menu.storage.getItem("set_session_fieldwarning", 0);
-
-
+		
+		
 		////console.log(this.woiMode.on, "ON OR OFF")
 		
 		if (!isNext) music.resetAllSeek();
 		this.prepareInRoundAssets();
 		this.unpauseGame();
 	}
-
+	
 	initializeNext(replay) {
 		if (replay) {
 			if (this.replay.replays.length > this.replay.replaysIndex) {
@@ -1373,9 +1540,9 @@ blob.colorSet = defaultBlobColors;
 				this.parseReplayData(this.replay.replays[this.replay.replaysIndex]);
 				this.prepareInRoundAssets();
 			} else {
-
+				
 			}
-
+			
 		} else {
 			this.inGameParameters.round++;
 			this.replay.replays.push(JSON.stringify(this.replay.data));
@@ -1386,7 +1553,7 @@ blob.colorSet = defaultBlobColors;
 	createRandomSeed() {
 		return ~~(Math.random() * 2147483647);
 	}
-
+	
 	createReplayData(reset, _mode, round) {
 		if (reset) {
 			this.inGameParameters.round = 0;
@@ -1403,14 +1570,14 @@ blob.colorSet = defaultBlobColors;
 				maxWins: this.actualParameters.maxWins,
 				title: title
 			},
-
+			
 		};
-
+		
 		for (let h in this.actualParameters.data) {
 			this.replay.data.data[h] = this.actualParameters.data[h];
-
+			
 		}
-
+		
 		for (let i = 0; i < this.actualParameters.players.length; i++) {
 			if (reset) {
 				this.inGameParameters.players[i] = {
@@ -1424,12 +1591,13 @@ blob.colorSet = defaultBlobColors;
 				character: this.actualParameters.players[i].character,
 				version: this.actualParameters.players[i].version,
 				mode: this.actualParameters.players[i].mode,
+				rpg: this.actualParameters.players[i]?.rpg || {},
 				wins: this.inGameParameters.players[i].wins,
-				color: ["55BBFF", "FF5555"][i]
+				color: ["55BBFF", "FF5555"][i] //["55BBFF", "FF5555"][i]
 			};
 		}
 	}
-
+	
 	parseReplayData(replayData) {
 		let json = JSON.parse(replayData);
 		{
@@ -1445,25 +1613,25 @@ blob.colorSet = defaultBlobColors;
 				name: "insane",
 				path: "insane2",
 				continuable: this.woiMode.on
-		},
+			},
 			{
 				name: "insane_transform",
 				path: "insane_transform",
 				continuable: false
-		},
+			},
 			{
 				name: "game_match",
 				path: menu.storage.getValueFromRangeListSpecific("set_global_musicbank"),
 				continuable: true
-		},
-
+			},
+			
 		]);
 		if (this.woiMode.on) {
 			lm.push({
 				name: "wmw_eval",
 				path: "wmw_eval",
 				continuable: false
-		})
+			})
 		}
 		if (this.enableWarning) {
 			lm.push({
@@ -1480,60 +1648,60 @@ blob.colorSet = defaultBlobColors;
 		this.forEachPlayer(player => {
 			player.resetEmAnimation();
 		})
-
+		
 		let isChange = this.createPlayer(Object.keys(this.replay.data.players).length);
-
+		
 		this.pause.frame = -9;
 		this.pause.on = false;
-
+		
 		touchButtons.enableControllers(!this.replay.isOn);
-
+		
 		game1v1.on = Object.keys(this.players).length == 2;
-
-
+		
+		
 		menu.showMenu(false);
-
+		
 		this.inGameParameters.mode = this.replay.data.data.mode;
-
+		
 		this.inGameParameters.round = this.replay.data.round;
-
+		
 		this.isFreezeHandlers = false;
-
+		
 		let isChangeChars = {};
-
+		
 		this.forEachPlayer(async player => {
 			//let char = ["epicman", /*"epicman", /**/ "elisha", "flotalendy", "elisha", "dylan_huff"][(player.player + 0 /*=== 2 ? 1 : 0/**/ ) % 52];
 			////console.log(`/assets/characters/${char}`);
 			let c = gtcharacter.characters[this.replay.data.players[player.player].character],
 				v = c.versions[this.replay.data.players[player.player].version];
 			let char = `${c.core.path}/${v.path}`;
-
-
-
+			
+			
+			
 			////console.log(this.replay.data.players[player.player].mode)
 			//if (player.player === 0) player.switchModeType(0b0);
 			player.team = ~~(player.player == 2 && this.playerCount > 2 ? 1 : Math.random() * 21583328828283882);
-
-
+			
+			
 			let change = player.loadCharacter(c.core.path, v.path);
-
+			
 			if (change) {
 				isChangeChars[`${player.character.char}/${player.character.ver}`] = 1;
 			}
 			if (isChange) await player.clearText.tspin.loadImages([this.misc.tspin, this.misc.tspinmini]);
 			player.changeBodyColorHex(`0x${this.replay.data.players[player.player].color}`);
 		});
-
+		
 		if (Object.keys(isChangeChars).length) {
 			//let chars = [];
 			playerVoiceSystem.unloadAll(isChangeChars);
 		}
-
-
+		
+		
 		let seed = this.replay.data.data.seed;
-
+		
 		this.isFinish = false;
-
+		
 		this.swapMode.on = false;
 		this.swapMode.swapDel = -8;
 		this.swapMode.blockOrBlob = 0;
@@ -1546,31 +1714,31 @@ blob.colorSet = defaultBlobColors;
 		this.frames = 0;
 		this.delayHandlers.length = 0;
 		this.isSolo = false;
-
-
+		
+		
 		this.pause.on = false;
-
+		
 		this.woiMode.loopRate = -1;
-
+		
 		this.isRoundNext = false;
 		this.roundNextTime = -20;
-
+		
 		this.countdown = 210 - 30;
 		this.waitCountdown = 50;
 		
 		
-
-
+		
+		
 		this.matchSignal.separator.ready.setSeparatedText(id("OVERLAY-MS-READY"), "Ready?");
-
+		
 		this.seeds.preview.seed = seed;
 		this.seeds.main.seed = seed;
-
+		
 		//this.matchSignal.separator.start.setSeparatedText(id("OVERLAY-MS-START"), "Start");
 		ihelem(id("OVERLAY-MS-START"), `START`);
-
+		
 		this.resetReadyMatchSignal(0);
-
+		
 		let blobVsBlock = {};
 		let isTwo = 0;
 		this.forEachPlayer(player => {
@@ -1582,6 +1750,7 @@ blob.colorSet = defaultBlobColors;
 			player.block.dasCancellation.on = true;
 			player.block.rngPreview.seed = jm.seed;
 			player.seeds.field.seed = jm.seed;
+			player.rpgAttr.seed.seed = jm.seed;
 			player.block.insane.rng.seed = jm.seed;
 			player.blob.insane.rng.seed = jm.seed;
 			player.blob.rngPreview.seed = seed;
@@ -1604,50 +1773,50 @@ blob.colorSet = defaultBlobColors;
 			player.block.garbageLimit = 0;
 			player.blob.isFever = false;
 			player.woi.reset();
-
-
-
+			
+			
+			
 		});
-
+		
 		this.inGameParameters.maxWins = this.replay.data.data.maxWins;
-
+		
 		if (1 in blobVsBlock && 0 in blobVsBlock) isTwo = 1;
 		////console.log(blobVsBlock)
-
-
-
+		
+		
+		
 		animatedLayers.remove("swap_roulette_object");
-
+		
 		this.forEachPlayer(player => {
 			player.meterBar.garbwait.toggle(false);
 			player.meterBar.right.toggle(false);
 			player.block.isProfessional = false;
 			player.block.meteredGarbageWaitMode = false;
 			player.garbageBlocking = "limited";
-
-
+			
+			
 		});
-
-
-
+		
+		
+		
 		this.setModeParameters(this.inGameParameters.mode);
 		
 		this.loadMusic();
-
+		
 		//this.resetPlayers();
 		this.targetPointSystem.marginTime = this.targetPointSystem.prep.marginTime;;
-
+		
 		this.targetPointSystem.iterIncDel = 16 * this.FPS;
-
+		
 		this.targetPointSystem.initial = this.targetPointSystem.prep.initial;
 		this.targetPointSystem.targetPoint = this.targetPointSystem.initial;
 		this.targetPointSystem.previous = this.targetPointSystem.initial;
-
+		
 		this.forEachPlayer(player => {
 			player.block.isAux = false;
 			player.blob.isAux = false;
 			player.garbageType = player.activeType;
-
+			
 			if (isTwo) {
 				if (player.activeType === 0) {
 					player.meterBar.garbwait.toggle(true);
@@ -1660,7 +1829,7 @@ blob.colorSet = defaultBlobColors;
 				player.block.attackType = "scorebased";
 				player.block.garbageLimit = 8;
 			}
-
+			
 			if (player.block.isProfessional) {
 				player.controlsBitwise.on = false;
 				player.block.attackType = "multiplier";
@@ -1669,18 +1838,18 @@ blob.colorSet = defaultBlobColors;
 		});
 		
 		music.volumeSet(menu.storage.getItem("set_global_mfx", 0));
-
+		
 		game1v1.winstat.openClose(game1v1.on);
-
+		
 		if (game1v1.on) {
 			game1v1.winstat.setMaxWins(this.inGameParameters.maxWins);
 		}
-
-
+		
+		
 		this.startLoadLoop();
-
+		
 	}
-
+	
 	resetPlayers() {
 		this.forEachPlayer(player => {
 			/*if (player.player == 0)/**/ //player.blob.insane.delay.ready = 3;
@@ -1690,23 +1859,24 @@ blob.colorSet = defaultBlobColors;
 			let tempHenBlob = player.blob.insane.delay.readyHenshin;
 			
 			if (!player.block.insane.initialStart) tempBlock = -99;
-				
-				if (!player.block.insane.initialStartHenshin) tempHenBlock = -99;
+			
+			if (!player.block.insane.initialStartHenshin) tempHenBlock = -99;
 			if (!player.blob.insane.initialStart) tempBlob = -99;
-			if (!player.blob.insane.initialStartHenshin) tempBlob = -99;
+			if (!player.blob.insane.initialStartHenshin) tempHenBlob = -99;
 			/*for (let b = 0; b < 16; b++) {
 				player.blob.piece.dropset[b] = player.character.blob.dropset[b];
 			}*/
-
+			
 			player.blob.dropsetReset(player.character.blob.dropset);
 			player.reset();
-
+			
 			player.block.insane.delay.ready = tempBlock;
 			player.blob.insane.delay.ready = tempBlob;
 			player.block.insane.delay.readyHenshin = tempHenBlock;
 			player.blob.insane.delay.readyHenshin = tempHenBlob;
-
+			
 			player.addGarbage("system", [player.initialGarbage]);
+			
 			// player.block.insane.delay.ready = tempBlock;
 			/*if (player.player == 1) /**/ //player.blob.insane.delay.ready = tempBlob;
 			/*else /**/ //player.blob.insane.delay.readyHenshin = tempBlob;
@@ -1718,15 +1888,15 @@ blob.colorSet = defaultBlobColors;
 		this.countdown = 210 - 30;
 		this.waitCountdown = 40;
 	}
-
+	
 	startLoadLoop() {
 		if (this.isGameLoaded) this.loadLoop();
 	}
-
+	
 	loadLoop() {
 		let loaded = true;
 		let jsonLoaded = true;
-
+		
 		if (!sound.isReady || !music.isReady) loaded = false;
 		this.forEachPlayer(player => {
 			if (!player.character.load) loaded = false;
@@ -1735,23 +1905,23 @@ blob.colorSet = defaultBlobColors;
 				jsonLoaded = false;
 			}
 		});
-
+		
 		if (loaded) {
 			if (!this.isGameLoaded) {
 				this.synchroLoop.confirmIsAsync = false;
 				//styleelem(this.loadDiv.main, "display", "none");
 				//this.resize();
-
+				
 			}
 			this.isGameLoaded = true;
 			loadingScreen.isOpenable = true;
-
+			
 			this.resize();
 			this.resetPlayers();
-
+			
 			if (game1v1.on) {
 				this.forEachPlayer(player => {
-
+					
 					if (player.player == 0) {
 						game1v1.winstat.loadPlayer("left", {
 							red: player.color.r,
@@ -1770,7 +1940,7 @@ blob.colorSet = defaultBlobColors;
 					}
 				});
 			}
-
+			
 			this.forEachPlayer(player => {
 				player.block.drawStack();
 				player.block.drawActivePiece();
@@ -1778,23 +1948,25 @@ blob.colorSet = defaultBlobColors;
 				player.blob.targetPoint = this.targetPointSystem.initial;
 				player.block.holdDraw();
 			});
-
+			
 			//music.volume(1);
 		} else {
 			let l = "";
 			Object.keys(this.players).forEach((a) => {
 				l += `${a}: ${this.players[a].character.loadedJson}, `
-
+				
 			})
 			//console.log(`${sound.isReady}, ${music.isReady}, players: ${l}`);
 			if (this.isGameLoaded) {
-
+				
 				this.resize();
 			}
 			loadingScreen.isOpenable = false;
 			this.isGameLoaded = false;
+			
 			if (jsonLoaded !== this.isPlayerJsonLoaded) {
 				this.isPlayerJsonLoaded = jsonLoaded;
+			
 				if (jsonLoaded) {
 					this.loadPlayerAssets();
 				}
@@ -1804,37 +1976,37 @@ blob.colorSet = defaultBlobColors;
 			})
 		}
 	}
-
+	
 	loadPlayerAssets() {
 		let storage = {};
 		let is1v1 = game1v1.on;
-
+		
 		////console.log("load player assets")
-
+		
 		let overheadSrcs = {};
 		this.forEachPlayer((player) => {
 			player.loadAssets();
 			//alert("load")
-
+			
 			let json = player.character.json;
-
+			
 			let imageURLs = json.sources.image;
-
+			
 			let mainDir = `/assets/characters/${player.character.char}/${player.character.ver}`;
-
-
+			
+			
 			//let i = player.character.json;
-
+			
 			for (let file in imageURLs) {
 				let ref = `${mainDir}/${imageURLs[file]}`;
 				storage[`${player.character.char}/${player.character.ver}/${file}`] = ref;
 			}
-
+			
 		});
-
+		
 		this.forEachPlayer(player => {
 			let i = player.character.json;
-
+			
 			let a = `${player.character.char}/${player.character.ver}`
 			if ("ca_overhead" in i.init) {
 				let h = i.init.ca_overhead;
@@ -1844,24 +2016,24 @@ blob.colorSet = defaultBlobColors;
 				}
 			}
 		});
-
+		
 		if (is1v1) {
 			let left = this.players[0];
 			let right = this.players[1];
-
+			
 			let ma = `${left.character.char}/${left.character.ver}`
 			let mb = `${right.character.char}/${right.character.ver}`
 			let n = [];
-
+			
 			for (let j in overheadSrcs) {
 				n.push({
 					name: j,
 					dir: overheadSrcs[j]
 				});
 			}
-
+			
 			game1v1.overhead.loadImg(n);
-
+			
 			game1v1.overhead.loadPlayer("left", {
 				image: ma,
 				red: left.color.r,
@@ -1869,28 +2041,28 @@ blob.colorSet = defaultBlobColors;
 				blue: left.color.b
 			});
 			game1v1.overhead.loadPlayer("right", {
-
+				
 				image: mb,
 				red: right.color.r,
 				green: right.color.g,
 				blue: right.color.b
-
+				
 			});
 		}
 		////console.log(overheadSrcs)
-
-
-
-
+		
+		
+		
+		
 	}
-
+	
 	resize() {
-		this.resolution.w = window.innerWidth;
-		this.resolution.h = window.innerHeight;
-
+		this.resolution.w = Math.max(document.documentElement.clientWidth, window.innerWidth, 1);
+		this.resolution.h = Math.max(document.documentElement.clientHeight, window.innerHeight, 1);
+		
 		style("CORE", "width", `${this.resolution.w}px`);
 		style("CORE", "height", `${this.resolution.h}px`);
-
+		
 		let screenWidth = this.resolution.w,
 			screenHeight = this.resolution.h;
 		let ratioWidth = screenWidth,
@@ -1900,144 +2072,160 @@ blob.colorSet = defaultBlobColors;
 		this.landscape.y = this.portrait.y = screenHeight;
 		if (screenWidth <= screenHeight) {
 			this.orientation = "portrait";
-			ratioHeight = (Math.round(Math.min(screenWidth * aspectRatio, screenHeight)));
+			ratioHeight = (Math.floor(Math.min(screenWidth * aspectRatio, screenHeight)));
 			if (screenWidth * aspectRatio >= screenHeight) {
 				ratioWidth = screenWidth - (((screenWidth * aspectRatio) - screenHeight) / 2);
-				//interfaceSound.playSound("error")
 			}
 			this.portrait.y = ratioHeight;
 			this.portrait.x = ratioWidth;
 			this.landscape.x = ratioWidth;
-			this.landscape.y = Math.round(ratioWidth / aspectRatio);
+			this.landscape.y = Math.floor(ratioWidth / aspectRatio);
 		} else {
 			this.orientation = "landscape";
-			ratioWidth = (Math.round(screenHeight * aspectRatio));
+			ratioWidth = (Math.floor(screenHeight * aspectRatio));
 			this.landscape.y = ratioHeight;
 			this.landscape.x = ratioWidth;
 			this.portrait.x = ratioHeight
-			this.portrait.y = Math.round(ratioHeight / aspectRatio);
+			this.portrait.y = Math.floor(ratioHeight / aspectRatio);
 		}
 		let aspectRatioResolution = Math.max(ratioWidth, ratioHeight);
 		let uhd = 0.8;
-		this.cellSize = Math.round(aspectRatioResolution / 50);
+		let cellSize = (aspectRatioResolution / 50) * 1;
+		let fontSizePerPx = 16 / appinfo.fontsize;
+		this.fontSize = ~~((cellSize) * fontSizePerPx);
+		this.cellSize = ~~cellSize;
+		//console.log(fontSizePerPx, appinfo.fontsize)
+		
+		document.documentElement.style.fontSize = this.fontSize + "px";
+		document.body.style["text-shadow"] = `-${fontSizePerPx}px 0 ${fontSizePerPx*2}px black, 0 ${fontSizePerPx}px ${fontSizePerPx*2}px black, ${fontSizePerPx}px 0 ${fontSizePerPx*2}px black, 0 -${fontSizePerPx}px ${fontSizePerPx*2}px black`;
 		if (this.orientation == "landscape") {
 			this.playerAreaSizeMult = uhd; //0.56;
 			this.aspectResolution.w = this.landscape.x;
 			this.aspectResolution.h = this.landscape.y;
 		}
-
+		
 		if (this.orientation == "portrait") {
 			this.playerAreaSizeMult = (1 / this.aspectRatio) * uhd; //0.56;
 			this.aspectResolution.w = this.portrait.x;
 			this.aspectResolution.h = this.portrait.y;
 		}
-		document.body.style["font-size"] = this.cellSize + "px";
+		//console.log(window.getComputedStyle(document.body).fontSize, appinfo.fontsize)// = this.cellSize + "px";
+		//console.log(this.resolution.w, this.resolution.h, this.cellSize)
 		for (let m of ["SCREEN", "GTRIS-AREA"]) {
 			style(m, "width", `${this.aspectResolution.w}px`);
 			style(m, "height", `${this.aspectResolution.h}px`);
 		}
-
+		
 		animatedLayers.cellSize = this.cellSize * this.playerAreaSizeMult;
-
+		
 		this.skinBlob.canvas.width = this.cellSize * 16 * this.resQualityMult;
 		this.skinBlob.canvas.height = this.cellSize * 16 * this.resQualityMult;
 		this.skinBlob.ctx.drawImage(this.skinBlobTemp.canvas, 0, 0, this.cellSize * 16 * this.resQualityMult, this.cellSize * 16 * this.resQualityMult);
-
+		
 		touchButtons.resize(this.orientation, this.resolution.w, this.resolution.h, this.aspectResolution.w, this.aspectResolution.h, this.cellSize);
-
+		
 		this.skin.canvas.width = this.cellSize * 4 * this.resQualityMult;
 		this.skin.canvas.height = this.cellSize * 11 * this.resQualityMult;
-
-
-
+		
+		
+		
 		this.skin.ctx.drawImage(this.skinTemp.canvas, 0, 0, this.cellSize * 4 * this.resQualityMult, this.cellSize * 12 * this.resQualityMult);
-
+		
 		this.skinGarb.canvas.width = 1600;
 		this.skinGarb.canvas.height = 400;
-
+		
 		this.skinGarb.ctx.drawImage(this.skinGarbTemp.canvas, 0, 0, 1600, 400, 0, 0, 1600, 400);
-
+		
 		this.skinParticle.canvas.width = this.cellSize * 11;
 		this.skinParticle.canvas.height = this.cellSize * 1;
-
+		
 		this.skinParticle.ctx.drawImage(this.skinParticleTemp.canvas, 0, 0, this.cellSize * 11, this.cellSize * 1);
-
+		
 		style(`BEHIND-OVERLAY-BACKGROUND`, `width`, `${this.resolution.w}px`);
 		style(`BEHIND-OVERLAY-BACKGROUND`, `height`, `${this.resolution.h}px`);
-
-		style("BACKGROUND-VIDEO-FRAME", `width`, `${this.landscape.x}px`);
-		style(`BACKGROUND-VIDEO-FRAME`, `height`, `${this.landscape.y}px`);
-
+		
+		//style("BACKGROUND-VIDEO-FRAME", `width`, `${this.landscape.x}px`);
+		//style(`BACKGROUND-VIDEO-FRAME`, `height`, `${this.landscape.y}px`);
+		
 		style("BACKGROUND-FOREGROUND-LAYER", `width`, `${this.landscape.x}px`);
 		style(`BACKGROUND-FOREGROUND-LAYER`, `height`, `${this.landscape.y}px`);
-
+		
 		style(`PARTICLE-PARTICLE-CANVAS`, `width`, `${this.resolution.w}px`);
 		style(`PARTICLE-PARTICLE-CANVAS`, `height`, `${this.resolution.h}px`);
-
+		
 		style(`OVERLAY-TIMER`, `width`, `${this.resolution.w}px`);
 		style(`OVERLAY-TIMER`, `height`, `${this.resolution.h}px`);
-
+		
 		style(`OVERLAY-TIMER-DIV`, `width`, `${this.cellSize * 6}px`);
 		style(`OVERLAY-TIMER-DIV`, `height`, `${this.cellSize * 5}px`);
-
-		style(`OVERLAY-TIMER-TEXT`, `font-size`, `${this.cellSize * 1.2}px`);
-		style(`OVERLAY-TIMER-DIV`, `transform`, `language.translate(0, -${this.cellSize * 1.5}px)`);
-
+		
+		style(`OVERLAY-TIMER-TEXT`, `font-size`, `${this.fontSize * 1.2}px`);
+		style(`OVERLAY-TIMER-DIV`, `transform`, `translate(0, -${this.cellSize * 1.5}px)`);
+		
 		style(`OVERLAY-WINS-STATUSBAR`, `width`, `${this.landscape.x}px`);
 		style(`OVERLAY-WINS-STATUSBAR`, `height`, `${this.landscape.y}px`);
-
+		
 		style(`WINSBAR-BAR`, `width`, `${this.cellSize * 12* this.playerAreaSizeMult}px`);
 		style(`WINSBAR-BAR`, `height`, `${this.cellSize * 3 * this.playerAreaSizeMult}px`);
-
+		
 		style(`WINSBAR-BAR`, `bottom`, `${this.cellSize * 2 * this.playerAreaSizeMult}px`);
-
+		
 		game1v1.winstat.resize(this.cellSize * this.playerAreaSizeMult);
 		//style(`WINSBAR-BAR`, `height`, `${this.cellSize * 1.2}px`);
-
-
+		
+		
 		style(`GTRIS-PARTICLE-SCREEN`, `width`, `${this.resolution.w}px`);
 		style(`GTRIS-PARTICLE-SCREEN`, `height`, `${this.resolution.h}px`);
-
+		
 		style(`GTRIS-SPLASH-DIV`, `width`, `${this.resolution.w}px`);
 		style(`GTRIS-SPLASH-DIV`, `height`, `${this.resolution.h}px`);
-		style(`GTRIS-FADE`, `width`, `${this.resolution.w}px`);
-		style(`GTRIS-FADE`, `height`, `${this.resolution.h}px`);
-
-
+		style(`GTRIS-FADE`, `width`, `${this.landscape.x}px`);
+		style(`GTRIS-FADE`, `height`, `${this.landscape.y}px`);
+		
+		style(`LOAD-TEXT`, `font-size`, `${this.fontSize * 1.05}px`);
+		style(`LOAD-ICON`, `width`, `${this.cellSize * 1}px`);
+		style(`LOAD-ICON`, `height`, `${this.cellSize * 1}px`);
 		style(`GTRIS-HTMLEFF-SCREEN`, `width`, `${this.resolution.w}px`);
 		style(`GTRIS-HTMLEFF-SCREEN`, `height`, `${this.resolution.h}px`);
-
+		
 		style(`GTRIS-LOAD-SCREEN`, `width`, `${this.resolution.w}px`);
 		style(`GTRIS-LOAD-SCREEN`, `height`, `${this.resolution.h}px`);
-
+		
 		styleelem(loadingScreen.canvas, `width`, `${this.landscape.x}px`);
 		styleelem(loadingScreen.canvas, `height`, `${this.landscape.y}px`);
-
-
+		
+		
 		style(`LOAD-DIV`, `width`, `${this.landscape.x}px`);
 		style(`LOAD-DIV`, `height`, `${this.landscape.y}px`);
-
-
+		
+		let landscapeCellSize = ~~(Math.max(this.landscape.x, this.landscape.y) / 50);
+		let landscapeFontSize = ~~((Math.max(this.landscape.x, this.landscape.y) / 50) * fontSizePerPx);
+		
+		//console.log(fontSizePerPx, "cell size:" + landscapeCellSize,"font size:" + landscapeFontSize, appinfo.fontsize, this.landscape.x, this.landscape.y)
+		
 		particle.size(this.resolution.w, this.resolution.h);
-		style("GTRIS-AREA", "grid-template-columns", this.orientation === "landscape" ? "auto auto auto" : "auto auto")
-
-		menu.resize(Math.max(this.landscape.x, this.landscape.y) / 50, this.landscape.x, this.landscape.y);
-		splash.resize(this.landscape.x, this.landscape.y, Math.max(this.landscape.x, this.landscape.y) / 50)
-
+		style("GTRIS-AREA", "grid-template-columns", this.orientation === "landscape" ? "auto auto auto" : "auto auto");
+		
+		menu.resize(landscapeCellSize, landscapeFontSize, this.landscape.x, this.landscape.y);
+		splash.resize(this.landscape.x, this.landscape.y, landscapeCellSize);
+		
 		if (animatedLayers.checkObject("swap_roulette_object")) {
 			let ghe = animatedLayers.getObject("swap_roulette_object");
 			ghe.centerPos.x = this.resolution.w / 2;
 			ghe.centerPos.y = this.resolution.h / 2;
 			ghe.sizeMult = this.cellSize * this.playerAreaSizeMult;
 		}
-
+		
 		game1v1.resize(this.landscape.x, this.landscape.y);
-
+		background.resize(this.landscape.x, this.landscape.y);
+		fsw.resize(this.resolution.w, this.resolution.h, this.fontSize, this.cellSize);
+		alertWindow.resize(this.resolution.w, this.resolution.h, this.fontSize);
+		
 		this.forEachPlayer(player => {
-			player.resize(~~this.cellSize, this.playerAreaSizeMult);
+			player.resize(~~this.cellSize, this.fontSize, this.playerAreaSizeMult);
 		});
 	}
-
+	
 	forEachPlayer(func) {
 		let a = 0;
 		while (a in this.players) {
@@ -2045,14 +2233,14 @@ blob.colorSet = defaultBlobColors;
 			a++;
 		}
 	}
-
+	
 	createPlayer(a) {
-
+		
 		if (a !== this.playerCount) {
 			this.playerCount = a;
 			this.players = {};
 			ih("PLAYER-STYLES", "");
-
+			
 			ih("GTRIS-AREA", "");
 			for (let i = 0; i < a; i++) {
 				this.players[i] = new Player(i);
@@ -2060,7 +2248,7 @@ blob.colorSet = defaultBlobColors;
 				id("GTRIS-AREA").innerHTML += b.assetHTML;
 				id("PLAYER-STYLES").innerHTML += b.assetStyle;
 			}
-
+			
 			this.forEachPlayer(player => {
 				////console.log(id("GTRIS-AREA"));
 				player.storeElementsToMemory();
@@ -2069,32 +2257,32 @@ blob.colorSet = defaultBlobColors;
 				player.insaneBg.fetchAsset(player.canvasses.insane, player.canvasCtx.insane);
 				player.woiWormhole.fetchAsset(player.canvasses.wormhole, player.canvasCtx.wormhole);
 				player.feverStat.fetchAsset(player.canvasses.feverGauge, player.canvasCtx.feverGauge, player.getAsset("FEVER-GAUGE"));
-
+				
 			});
-
+			
 			return true;
 		}
 		return false;
 	}
-
+	
 	updateInput() {
 		this.forEachPlayer(player => {
 			if (this.activePlayer === player.player || true) {
 				player.pressStr = this.pressStr;
 			}
-
+			
 		});
 		this.pressStr = "";
 	}
-
+	
 	typeInput(char) {
 		if (this.replay.isOn || menu.isMenu || this.pause.on) return;
 		this.pressStr += char;
-
+		
 		this.forEachPlayer(player => {});
-
+		
 	}
-
+	
 	replayDataToString() {
 		let string = JSON.stringify({
 			title: `[${new Date(Date.now()).toLocaleString(navigator.language)}] Replay of ${menu.storage.getItem("playername")}, version ${appinfo.version}`,
@@ -2102,16 +2290,19 @@ blob.colorSet = defaultBlobColors;
 		});
 		return string;
 	}
-
+	
 	frameLoop() {
 		let isInsane = !(this.matchEndHandler.on || !this.isGameLoaded || this.isFinish) ? 5 : 0;
-
+		let zerohp = 0;
+		this.#customLoops.update();
 		if (menu.isMenu) {
 			menu.run();
 		}
-
+		
 		menu.runInBackground();
-
+		fsw.update();
+		alertWindow.update();
+		
 		if (this.startGameParameters.frame > 0) {
 			this.startGameParameters.frame--;
 			if (this.startGameParameters.frame == 0) {
@@ -2135,10 +2326,10 @@ blob.colorSet = defaultBlobColors;
 			if (this.waitCountdown >= 0) {
 				this.waitCountdown--;
 			} else {
-
-
+				
+				
 				if (!this.isFreezeHandlers && !this.isRoundNext) this.frames += 1;
-
+				
 				if (this.swapMode.on && this.swapMode.pickDel >= 0) {
 					this.swapMode.pickDel -= 1;
 					if (this.swapMode.pickDel == 210) {
@@ -2154,16 +2345,13 @@ blob.colorSet = defaultBlobColors;
 							1,
 							"swap_roulette",
 							10,
-
 							this.cellSize * this.playerAreaSizeMult,
-
-
 							{
 								isOn: true,
 								resetFrame: 47,
 								targetFrame: 59
 							},
-
+							
 							false,
 							true,
 						);
@@ -2175,7 +2363,7 @@ blob.colorSet = defaultBlobColors;
 						sound.play("swap_pick");
 					}
 					if (this.swapMode.pickDel <= 172 && this.swapMode.pickDel >= 101 && (this.swapMode.pickDel % 5) == 0) {
-						sound.play("move");
+						sound.play("swap_roulette");
 					}
 					if (this.swapMode.pickDel == 90 && animatedLayers.checkObject("swap_roulette_object")) {
 						let ghe = animatedLayers.getObject("swap_roulette_object");
@@ -2194,20 +2382,20 @@ blob.colorSet = defaultBlobColors;
 						});
 					}
 				} else if (this.countdown > 0) {
-
+					
 					this.countdown--;
 					if (this.countdown == 209 - 30) {
 						this.resetReadyMatchSignal(1);
 						this.isRunning = true;
 						//this.synchroLoop.confirmIsAsync = false;
 						this.isRoundActive = true;
-
+						
 						let mseed = this.seeds.preview.next();
-
+						
 						this.forEachPlayer(player => {
 							//player.blob.previewReset(mseed);
 						})
-
+						
 						//if (!this.replay.isOn) this.synchroLoop.speed = 0.3;
 					}
 					if (this.countdown == 0) {
@@ -2216,50 +2404,53 @@ blob.colorSet = defaultBlobColors;
 							player.callibrateCenter();
 							if (player.activeType == 1 && player.blob.isEnable && player.blob.isControl && !(player.blob.insane.delay.ready > 0 || player.blob.insane.delay.readyHenshin > 0)) player.blob.previewNextBlob();
 							if (player.activeType == 0 && player.block.isEnable && player.block.isControl && !(player.block.insane.delay.ready > 0 || player.blob.insane.delay.readyHenshin > 0)) player.block.spawnPiece(player.block.previewNextBag());
-
+							
 							player.blob.isDelayEnabled = true;
 							player.block.isDelayEnabled = true;
-
+							if (player.rpgAttr.isRPG) player.rpgAttr.isUsableSkills = true;
+							
 						})
 					}
 				} else {
-					if (this.targetPointSystem.marginTime >= 0) {
-						this.targetPointSystem.marginTime--;
-						if (this.targetPointSystem.marginTime == 0 && this.targetPointSystem.targetPoint > 1) {
-							this.targetPointSystem.marginTime <= 0;
-							let currentTargetPoint = this.targetPointSystem.targetPoint;
-							this.targetPointSystem.targetPoint = ~~(this.targetPointSystem.initial * 0.75);
-							this.targetPointSystem.previous = currentTargetPoint;
-
+					if (this.targetPointSystem.on) {
+						if (this.targetPointSystem.marginTime >= 0) {
+							this.targetPointSystem.marginTime--;
+							if (this.targetPointSystem.marginTime == 0 && this.targetPointSystem.targetPoint > 1) {
+								this.targetPointSystem.marginTime <= 0;
+								let currentTargetPoint = this.targetPointSystem.targetPoint;
+								this.targetPointSystem.targetPoint = ~~(this.targetPointSystem.initial * 0.75);
+								this.targetPointSystem.previous = currentTargetPoint;
+								
+							}
 						}
-					}
-
-					if (this.targetPointSystem.marginTime <= 0) {
-						this.targetPointSystem.iterIncDel--;
-						if (this.targetPointSystem.iterIncDel <= 0 && this.targetPointSystem.targetPoint > 1) {
-							this.targetPointSystem.iterIncDel = 16 * this.FPS;
-							let currentTargetPoint = this.targetPointSystem.targetPoint;
-							this.targetPointSystem.targetPoint = ~~(this.targetPointSystem.previous * 0.5);
-							this.targetPointSystem.previous = currentTargetPoint;
+						
+						if (this.targetPointSystem.marginTime <= 0) {
+							this.targetPointSystem.iterIncDel--;
+							if (this.targetPointSystem.iterIncDel <= 0 && this.targetPointSystem.targetPoint > 1) {
+								this.targetPointSystem.iterIncDel = 16 * this.FPS;
+								let currentTargetPoint = this.targetPointSystem.targetPoint;
+								this.targetPointSystem.targetPoint = ~~(this.targetPointSystem.previous * 0.5);
+								this.targetPointSystem.previous = currentTargetPoint;
+							}
 						}
 					}
 					////console.log(this.targetPointSystem.targetPoint)
 					if (!this.isRoundNext && this.isRoundActive) {
-
+						
 						if (this.swapMode.time == 0) {
 							this.swapMode.time = 30 * this.FPS;
 							this.swapMode.swapDel = 40;
 							this.isFreezeHandlers = true;
-
+							
 							sound.play("swap_swap");
-
+							
 							if (this.swapMode.blockOrBlob == 0) {
 								this.swapMode.blockOrBlob = 1;
-
+								
 							}
 							else if (this.swapMode.blockOrBlob == 1) {
 								this.swapMode.blockOrBlob = 0;
-
+								
 							}
 							this.forEachPlayer(player => {
 								player.swapMode.playSwapAnim();
@@ -2274,33 +2465,38 @@ blob.colorSet = defaultBlobColors;
 						if (this.swapMode.time == ~~(0.3 * this.FPS)) {
 							this.forEachPlayer(player => {
 								player.block.isActive = false;
-
+								
 								player.blob.isActive = false;
-
-
-
-
+								
+								
+								
+								
 							});
-
+							
 						}
 						if (this.swapMode.time <= this.FPS * 3 && this.swapMode.time > this.FPS * 0.1) {
 							if (0 == (this.swapMode.time % this.FPS)) sound.play("timer_basic");
-
+							
 						}
 					}
 				}
 			}
 			this.matchSignal.main.run();
+			background.ctx.clearRect(0, 0, 1280, 720);
+			background.drawVideo();
+			//background.backgroundElem.currentTime -= 0.01;
+			game1v1.overhead.drawImageToBG();
+			
 			let hasChainOngoing = false,
 				hasChain = {};
 			let isStillFinishable = false;
-
+			
 			if (this.swapMode.swapDel >= 0) {
 				this.swapMode.swapDel--;
-
-
-
-
+				
+				
+				
+				
 				if (this.swapMode.swapDel == 0) {
 					this.isFreezeHandlers = false;
 					game1v1.overhead.openClose(5);
@@ -2311,7 +2507,7 @@ blob.colorSet = defaultBlobColors;
 						player.canvasClear("backAux");
 						player.engageCleartext("b2b", false, "");
 						player.engageCleartextCombo(false, 0, "");
-
+						
 						player.swapMode.reset();
 						player.swapMode.time = 16 * this.FPS;
 						player.convertGarbageBlockToGarbageBlob(this.swapMode.blockOrBlob);
@@ -2325,9 +2521,9 @@ blob.colorSet = defaultBlobColors;
 								} else {
 									player.playVoice("swap_swap");
 								}
-
+								
 							}
-
+							
 							if (this.swapMode.blockOrBlob == 0) {
 								player.block.setDelay(0, 5);
 								if (player.block.isWarning) {
@@ -2337,25 +2533,26 @@ blob.colorSet = defaultBlobColors;
 								} else {
 									player.playVoice("swap_swap");
 								}
-
+								
 							}
 						}
 					});
 				}
 			}
-
+			
 			this.forEachPlayer(player => {
 				player.runUnfreezableAnims();
 			});
-
+			
 			if (!this.isFreezeHandlers) {
-
+				
 				////console.log("running")
 				this.updateInput();
 				let teamsAlive = {};
-
+				
 				let n = false;
 				let insaneDetected = 0;
+				
 				//isInsane = 2;
 				this.forEachPlayer(player => {
 					if (player.blob.insane.isOn) {
@@ -2369,39 +2566,43 @@ blob.colorSet = defaultBlobColors;
 					if (player.isWarning) {
 						isInsane = 4;
 					}
+					
 				});
 				//music.volume(n ? 1 : 1)
-
+				
 				this.forEachPlayer(player => {
 					player.playerUpdate();
-
+					
 					player.blob.decreaseTargetPoint = Math.max(1, this.targetPointSystem.initial / this.targetPointSystem.targetPoint);
-					if (!player.isDead && !player.isDying) {
+					if (!player.isDead && !player.isDying && !player.hasWon) {
 						teamsAlive[player.team] = 1;
 						if (player.blob.forecastedChain > 0 && (player.blob.chain > 0 || player.blob.isChainUp) && player.blob.chain < player.blob.forecastedChain) {
 							hasChainOngoing = true;
 						}
-
+						
 					}
 					if (player.isFinishAble) isStillFinishable = true;
 					if (player.blob.isChainUp || player.blob.isChainUp) hasChain[player.team] = 1;
 					if (!player.isDead) {
 						if (!this.isFinish && (player.block.insane.isOn || player.blob.insane.isOn)) {
-
+							
 							if (player.blob.insane.insaneType == 0) isInsane = 1;
 							if (player.blob.insane.insaneType == 2) isInsane = 2;
 							if (player.blob.insane.insaneType == 1) isInsane = 2;
-
+							
 						}
 					}
+					if (player.rpgAttr.isZeroHPWarning && (!player.isDead && !player.isDying && !player.hasWon)) {
+						zerohp += 1;
+					}
 				});
-
+				
 				switch (this.inGameParameters.mode) {
 					case 3: {
 						let isInsaneOff = true;
 						let isInsaneOn = false;
-
-
+						
+						
 						this.forEachPlayer(player => {
 							let block = player.block,
 								blob = player.blob;
@@ -2410,17 +2611,17 @@ blob.colorSet = defaultBlobColors;
 								isInsaneOff = false;
 								isInsane = this.frames > 32 ? 1 : 0;
 							}
-
+							
 							////console.log(blob.insane.delay.ready, this.countdown, this.frames, blob.isEnable)
-
+							
 							if ((player.activeType == 0 && (block.insane.isOn)) ||
 								(player.activeType == 1 && (blob.insane.isOn))) {
 								isInsaneOn = true;
-
+								
 							}
 							// player.editIH("STATS-SCORE-TEXT", [JSON.stringify({ blob: blob.insane.delay, block: block.insane.delay }).replace(/,/gm, "\n"), this.woiMode.time]);
-
-
+							
+							
 							//player.editIH("STATS-SCORE-TEXT", [blob.insane.isOn, blob.insane.delay.ready, blob.insane.delay.in, blob.insane.delay.out, blob.insane.isOn || blob.insane.delay.ready > 0 || blob.insane.delay.in > 0 || blob.insane.delay.out > 0 ])
 						});
 						////console.log(isInsane)
@@ -2429,11 +2630,11 @@ blob.colorSet = defaultBlobColors;
 								this.woiMode.timeDelay -= 1;
 							}
 							this.timer.increment((this.woiMode.timeDelay > 0) ? 0 : -1);
-
+							
 						}
-
+						
 						this.timer.update();
-
+						
 						if (isInsaneOff) {
 							if (this.woiMode.time >= 0) {
 								this.woiMode.time--;
@@ -2454,16 +2655,16 @@ blob.colorSet = defaultBlobColors;
 								////console.log(player.player + ": " + `${player.woi.damageSent} damage pts`);
 							});
 						}
-
+						
 						if (this.woiMode.time == (0 * this.FPS)) {
 							sound.play("wormhole_blast");
 							//sound.play("wormhole_loop");
 							sound.stop("wormhole_ready");
 							this.woiMode.loopRate = 1.017;
-
+							
 							this.playAnimation("mswhstart");
 							ihelem(this.matchSignal.html.start, "The Wormhole!");
-
+							
 							this.woiMode.isEvaluation = true;
 							this.woiMode.shoot = -50;
 							this.forEachPlayer(player => {
@@ -2482,55 +2683,55 @@ blob.colorSet = defaultBlobColors;
 										"wormhole_explosion",
 										10,
 										3
-
+										
 									);
-
+									
 									player.playAnimation("fieldShake");
 								}
 								if (!player.isDead) player.playVoice("wormhole_enter");
 							});
 						}
-
+						
 						if (this.woiMode.isEvaluation) {
 							this.woiMode.shoot += Math.min(2, this.woiMode.loopRate - 0.017);
 							this.woiMode.loopRate += 0.0173;
 							isInsane = 3;
-
+							
 							if (this.woiMode.shoot >= 10) {
 								this.woiMode.shoot -= 10;
 								let attacks = {};
 								let blocks = {};
 								let isCounter = false;
 								let isAttack = false;
-
+								
 								this.forEachPlayer(player => {
 									if (player.woi.damageSent > 0) {
 										attacks[player.player] = [];
 										player.woi.damageSentPerHit = Math.max(Math.min(player.woi.damageSent, ~~(10 * (this.targetPointSystem.initial / this.targetPointSystem.targetPoint))), 0);
 										blocks[player.player] = player.woi.damageSentPerHit;
-
+										
 										player.woi.damageSent -= player.woi.damageSentPerHit;
-
+										
 										if (player.woi.damageSent < 0 || player.woi.damageSent == 0) {
-
+											
 											player.woi.damageSent = 0;
 											player.woiWormhole.engage(2);
 											player.stopAnimation("fieldShake");
 										} else {
-
+											
 										}
 										////console.log(`${player.player} ${player.woi.damageSent}`)
 										this.forEachPlayer(opponent => {
 											if (opponent.team !== player.team && player.player !== opponent.player && !opponent.isDead) attacks[player.player].push(opponent.player);
 										});
-
+										
 									}
 								});
 								let rx = (this.cellSize * ((Math.random() * 5) - (Math.random() * 5)));
 								let ry = (this.cellSize * ((Math.random() * 5) - (Math.random() * 5)));
 								this.forEachPlayer(player => {
 									let isBlock = false;
-
+									
 									if ((player.player in attacks) && !player.isDead) {
 										//isAttack = true;
 										for (let nb of attacks[player.player]) {
@@ -2545,7 +2746,7 @@ blob.colorSet = defaultBlobColors;
 												y3: 0.9,
 												y4: 1,
 											};
-
+											
 											let asset = player.assetRect("FIELD-INSANE-CANVAS");
 											let sizemult = 1;
 											let aw = asset.width;
@@ -2555,15 +2756,15 @@ blob.colorSet = defaultBlobColors;
 											let particleSpeed = 40;
 											let lx = this.resolution.w / 2;
 											let ly = this.resolution.h / 2;
-
+											
 											let dmg = player.woi.damageSentPerHit;
-
+											
 											let cs = player.fieldCellSize;
 											let particleColor = player.player;
 											sound.play("wormhole_transmit");
 											if (nb in blocks) {
-
-
+												
+												
 												let dmgNeut = blocks[nb];
 												let dmgSent = player.woi.damageSentPerHit;
 												dmg = Math.max(0, dmgSent - dmgNeut);
@@ -2571,24 +2772,24 @@ blob.colorSet = defaultBlobColors;
 												// lx += rx
 												ly += ry;
 												this.addDelayHandler(particleSpeed, () => {
-													sound.play("wormhole_block");
+													//sound.play("wormhole_block");
 												});
-
+												
 												if (dmg > 0) {
 													isCounter = true;
 													this.addDelayHandler(particleSpeed, () => {
-
+														
 														this.forEachPlayer(opponent => {
 															if (opp === opponent.player) {
 																player.woi.damageInflicted += dmg;
 																opponent.woi.damageReceived += dmg;
-
+																
 																let target = opponent.assetRect("FIELD-CHARACTER-CANVAS");
 																let gw = target.width;
 																let gh = target.height;
 																let gx = target.x;
 																let gy = target.y;
-
+																
 																let mlx = gx + (gw / 2) + (this.cellSize * ((Math.random() * 5) - (Math.random() * 5)));
 																let mly = gy + (gh / 2) + (this.cellSize * ((Math.random() * 5) - (Math.random() * 5)));
 																this.addDelayHandler(particleSpeed, () => {
@@ -2607,7 +2808,7 @@ blob.colorSet = defaultBlobColors;
 																		0.5,
 																		`${player.activeType == 1 ? "blob" : "block"}_hit`,
 																		10,
-																		player.fieldCellSize,
+																		this.cellSize * 0.3
 																	);
 																});
 																player.addParticle(true, "attack", 0, particleColor + 2,
@@ -2621,16 +2822,16 @@ blob.colorSet = defaultBlobColors;
 																		g: 255,
 																		b: 255,
 																	});
-
-
-
-
+																
+																
+																
+																
 															}
 														});
 													});
 												}
-
-
+												
+												
 											} else {
 												this.forEachPlayer(opponent => {
 													if (nb === opponent.player) {
@@ -2641,7 +2842,7 @@ blob.colorSet = defaultBlobColors;
 														let gh = target.height;
 														let gx = target.x;
 														let gy = target.y;
-
+														
 														lx = gx + (gw / 2) + (this.cellSize * ((Math.random() * 5) - (Math.random() * 5)));
 														ly = gy + (gh / 2) + (this.cellSize * ((Math.random() * 5) - (Math.random() * 5)));
 														this.addDelayHandler(particleSpeed, () => {
@@ -2652,24 +2853,24 @@ blob.colorSet = defaultBlobColors;
 																lx,
 																ly,
 																0, 0,
-
+																
 																200,
 																200,
 																5,
 																5,
-																0.9,
+																0.5,
 																`${player.activeType == 1 ? "blob" : "block"}_hit`,
 																10,
-																1.2
+																this.cellSize * 0.3
 															);
 														});
-
+														
 													}
 												});
-
+												
 											}
-
-
+											
+											
 											player.addParticle(true, "attack", 0, particleColor + 2,
 												ax + (aw / 2),
 												ay + (ah / 2),
@@ -2682,41 +2883,42 @@ blob.colorSet = defaultBlobColors;
 													b: 255,
 												});
 										};
-
-
+										
+										
 									}
-
+									
 								});
-
+								
 								this.forEachPlayer(player => {
 									if (player.woi.damageSent > 0) {
 										isAttack = true;
 									}
-
+									
 								})
 								if (!isAttack) {
-									if (this.woiMode.restart <= 100) this.woiMode.restart = 70;
+									if (this.woiMode.restart <= 75) this.woiMode.restart = 75;
 									//sound.stop("wormhole_loop");
 									this.woiMode.isEvaluation = false;
 									if (isCounter) {
-										if (this.woiMode.restart <= 100) this.woiMode.restart = 100;
-
+										if (this.woiMode.restart <= 105) this.woiMode.restart = 105;
+										
 									}
 								} else {
 									sound.play("wormhole_transmit");
 								}
-
-
+								
+								
 								if (!isAttack) {
-
+									
 								}
 							}
-
+							
 						}
-
+						
 						if (this.woiMode.restart >= 0) {
 							this.woiMode.restart--;
-
+							isInsane = 0;
+							
 							if (this.woiMode.restart == 0) {
 								this.woiMode.isEvaluation = false;
 								let isStillAlive = [];
@@ -2747,7 +2949,7 @@ blob.colorSet = defaultBlobColors;
 										} else {
 											player.playVoice("wormhole_win");
 										}
-
+										
 										player.woi.reset();
 										if (isStillAlive.length > 1) {
 											if (player.activeType == 0) player.block.insane.delay.ready = 50;
@@ -2761,54 +2963,56 @@ blob.colorSet = defaultBlobColors;
 									}
 								});
 							}
-
-
-
-
-
-
-
-
+							
+							
+							
+							
+							
+							
+							
+							
 						}
 						break;
-
+						
 					}
 				}
-
-
+				
+				
 				this.runDelayHandler();
-
+				
 				let teamsAliveArr = Object.keys(teamsAlive),
 					teamAliveCount = teamsAliveArr.length;
 				let playerWin = 0;
 				let hasMaxPointsWinner = false;
 				this.forEachPlayer(player => {
 					if (teamAliveCount == (this.isSolo ? 0 : 1) && !player.isWin && player.team in teamsAlive) {
+						queueMicrotask
 						player.isWin = true;
 						player.block.piece.enable = 0;
-
+						
 						player.blob.piece.enable = 0;
-
+						
 						player.block.isActive = 0;
-
+						
 						player.blob.isActive = 0;
 						this.isRoundActive = false;
 					}
 					if (player.isDying && !player.isFinishAble && !player.isDead && !player.isWin) {
 						player.block.piece.enable = 0;
-
+						
 						player.blob.piece.enable = 0;
-
+						
 						player.block.isActive = 0;
-
+						
 						player.blob.isActive = 0;
-
+						
 						player.blob.isEnable = 0;
 						player.block.isEnable = 0;
+						if (player.rpgAttr.isRPG) player.rpgAttr.isUsableSkills = false;
 						if (hasChainOngoing && !(player.team in hasChain)) {
 							player.isDead = false;
 							player.isFinishAble = true;
-
+							
 						} else if (!player.isFinishAble) {
 							player.phaseLose();
 						}
@@ -2818,13 +3022,14 @@ blob.colorSet = defaultBlobColors;
 						player.reset();
 						player.block.spawnPiece(0);*/
 						player.block.piece.enable = 0;
-
+						
 						player.blob.piece.enable = 0;
-
+						
 						player.block.isActive = 0;
-
+						
 						player.blob.isActive = 0;
-
+						if (player.rpgAttr.isRPG) player.rpgAttr.isUsableSkills = false;
+						
 						player.hasWon = true;
 						if (!player.isDead) {
 							player.playEmAnimation("win");
@@ -2833,9 +3038,9 @@ blob.colorSet = defaultBlobColors;
 						}
 						////console.log("PLAYER WIN: " + player.player);
 						//player.phaseLose();
-
-
-
+						
+						
+						
 						playerWin++;
 						this.inGameParameters.players[player.player].wins++;
 						if (this.inGameParameters.players[player.player].wins >= this.inGameParameters.maxWins) {
@@ -2843,9 +3048,9 @@ blob.colorSet = defaultBlobColors;
 						}
 					}
 					player.runAnimations();
-
+					
 				});
-
+				
 				if (!this.isRoundNext && (this.isSolo ? 0 : 1) >= teamAliveCount && !hasChainOngoing && !isStillFinishable) {
 					//document.write("STAPH")
 					this.roundNextTime = 120;
@@ -2859,10 +3064,10 @@ blob.colorSet = defaultBlobColors;
 					this.forEachPlayer(player => {
 						if (!player.isLosePlayed && player.isDead) loseNotReady++;
 					});
-
-
+					
+					
 					if (loseNotReady == 0) {
-
+						
 						this.isRoundNext = loseNotReady == 0;
 					}
 				}
@@ -2871,23 +3076,23 @@ blob.colorSet = defaultBlobColors;
 					this.forEachPlayer(player => {
 						if (player.checkVoicePlaying("lose")) playerDoneLose = false;
 					});
-
+					
 					if (playerDoneLose) this.roundNextTime--;
-
+					
 					if (this.roundNextTime == 118) {
 						this.forEachPlayer((player) => {
 							if (player.hasWon && !player.isDead) player.playVoice("win");
 						});
-
+						
 						if (game1v1.on) {
 							this.forEachPlayer(player => {
 								if (!(player.hasWon && !player.isDead)) return;
 								if (player.player == 0) {
-
+									
 									game1v1.winstat.setWins("left", player.wins + 1, true);
 								}
 								if (player.player == 1) {
-
+									
 									game1v1.winstat.setWins("right", player.wins + 1, true);
 								}
 							})
@@ -2899,27 +3104,28 @@ blob.colorSet = defaultBlobColors;
 							}
 						} else if (this.matchEndHandler.isFinishActual) {
 							this.matchEndHandler.on = true;
-
+							
 						}
 						//this.roundNextTime = -3993;
 					}
-
+					
 					if (this.roundNextTime == 6) {
 						if (this.replay.isOn) {
-
+							
 						}
 						if (this.matchEndHandler.on) {
 							this.endGame();
 							this.roundNextTime = -9999;
 						} else {
 							this.playAnimation("fade");
+							//this.playAnimation("fadelayout");
 						}
-
+						
 						this.woiMode.loopRate = -1;
-
+						
 					}
 					if (this.roundNextTime == 0) {
-
+						
 						if (!this.matchEndHandler.on) {
 							this.initializeNext(this.replay.isOn);
 							//this.resetCountdown();
@@ -2929,29 +3135,34 @@ blob.colorSet = defaultBlobColors;
 						this.isRoundNext = false;
 					}
 				}
-
+				
 				particle.refresh();
 				htmlEffects.run();
-
+				
 			}
-
+			
 			game1v1.run();
-
+			
+			//background.
+			
 			this.synchroLoop.confirmIsAsync = !this.isRunning;
-
+			
 			for (let h = 0, m = this.animationNames.length; h < m; h++)
 				this.animations[this.animationNames[h]].run();
-
-
+			
+			
 			if (this.woiMode.loopRate >= 0) {
 				this.woiMode.loopRate -= 0.017;
 				sound.rate("wormhole_loop", this.woiMode.loopRate);
 			}
-
+			
 			this.numberExecHandlers.wormholeLoop.assign(this.woiMode.loopRate > 0 ? 1 : 0);
-
+			
 		}
 		this.numberExecHandlers.insaneMFX.assign(isInsane);
+		this.numberExecHandlers.zerohp.assign(zerohp);
+		
+		log.run();
 	}
 	pauseGame() {
 		if (this.pause.on) return;
@@ -2961,7 +3172,7 @@ blob.colorSet = defaultBlobColors;
 		menu.showMenu(true);
 		this.synchroLoop.confirmIsAsync = true;
 	}
-
+	
 	unpauseGame() {
 		if (!this.pause.on) return;
 		this.pause.frame = 50;
@@ -2970,20 +3181,21 @@ blob.colorSet = defaultBlobColors;
 		menu.showMenu(false);
 		//this.synchroLoop.confirmIsAsync = true;
 	}
-
+	
 	playAnimation(h) {
 		this.animations[h].play();
 	}
-
+	
 	resetAnimations() {
 		for (let h = 0, m = this.animationNames.length; h < m; h++)
 			this.animations[this.animationNames[h]].reset();
 	}
-
-
+	
+	
 }();
 const game = manager;
 const keypressManager = new class {
+	#listeners = {};
 	constructor() {
 		/*
 		   pause: 27,
@@ -2997,7 +3209,14 @@ const keypressManager = new class {
 		    C180W: 16,
 		    retry: 82,
 		    */
-		this.bindsDefault = {
+		this.isKeyBindingMode = false;
+		this.pressedKeys = {};
+		this.BIND_NAMES = {
+			0: ["left", "right", "softdrop", "harddrop", "hold", "cw", "ccw", "c180w", "s1", "s2", "s3"],
+			1: ["left", "right", "softdrop", "harddrop", "cw", "ccw", "s1", "s2", "s3"],
+			general: ["pause", "restart"]
+		}
+		/*this.bindsDefault = {
 			0: {
 				left: "arrowleft",
 				right: "arrowright",
@@ -3006,11 +3225,10 @@ const keypressManager = new class {
 				hold: "c",
 				cw: "arrowup",
 				ccw: "x",
-				/*blockcw: 88,
-				blockccw: 90,
-				/*blockcw: 88,
-				blockccw: 90,/**/
-				c180w: "shift"
+				c180w: "shift",
+				s1: "1",
+				s2: "2",
+				s3: "3",
 			},
 			1: {
 				left: "arrowleft",
@@ -3020,30 +3238,58 @@ const keypressManager = new class {
 
 				cw: "x",
 				ccw: "z",
-				/*blockcw: 88,
-				blockccw: 90,
-				/*blockcw: 88,
-				blockccw: 90,/**/
-				c180w: "shift"
+				c180w: "shift",
+
+				s1: "1",
+				s2: "2",
+				s3: "3",
+
 			},
-		};
-
-		this.binds = {
-
-		};
-
+		};/**/
+		this.bindsDefault = {
+			0: {
+				arrowleft: "left",
+				arrowright: "right",
+				arrowdown: "softdrop",
+				arrowup: "cw",
+				" ": "harddrop",
+				c: "hold",
+				x: "ccw",
+				z: "c180w",
+				"1": "s1",
+				"2": "s2",
+				"3": "s3",
+			},
+			1: {
+				arrowleft: "left",
+				arrowright: "right",
+				arrowdown: "softdrop",
+				arrowup: "harddrop",
+				x: "cw",
+				z: "ccw",
+				"1": "s1",
+				"2": "s2",
+				"3": "s3",
+			},
+			general: {
+				"escape": "pause",
+				"r": "restart"
+			},
+			
+		}
+		
+		this.binds = JSON.parse(JSON.stringify(this.bindsDefault));
+		
 		for (let aa in this.bindsDefault) {
 			this.binds[aa] = {};
 			for (let ab in this.bindsDefault[aa]) {
-				this.binds[aa][ab] = {};
-				for (let ac of this.bindsDefault[aa][ab].split('||')) {
+				this.binds[aa][ab] = this.bindsDefault[aa][ab];
+				/*for (let ac of this.bindsDefault[aa][ab].split('||')) {
 					this.binds[aa][ab][ac] = 1;
-				}
+				}*/
 			}
 		}
 		this.lastKeys = {};
-
-
 		////console.log(this.binds)
 		this.flags = {
 			left: {
@@ -3078,12 +3324,41 @@ const keypressManager = new class {
 				up: "h",
 				down: "H"
 			},
+			s1: {
+				up: "1n",
+				down: "1N"
+			},
+			s2: {
+				up: "2n",
+				down: "2N"
+			},
+			s3: {
+				up: "3n",
+				down: "3N"
+			},
+			
 		};
+		this.STRING_SEPARATOR = "/\uFFFF\uFFFF/";
+		
+	}
+	keyGeneral(code, type) {
+		if (code in this.bindsDefault.general) {
+			if (type === "keydown") {
+				switch (this.bindsDefault.general[code]) {
+					case "pause": {
+						game.pauseGame();
+						break;
+					}
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 	keyFlag(code, type, categ) {
 		if (code) {
-
-			for (let r = Object.keys(this.flags)[0], f = 0, g = Object.keys(this.flags).length; f < g; f++, r = Object.keys(this.flags)[f]) {
+			
+			/*for (let r = Object.keys(this.flags)[0], f = 0, g = Object.keys(this.flags).length; f < g; f++, r = Object.keys(this.flags)[f]) {
 				if (r in this.binds[categ])
 					if (code in this.binds[categ][r]) {
 
@@ -3091,16 +3366,46 @@ const keypressManager = new class {
 							return this.flags[r][["down", "up"][type]];
 						}
 					}
+			}*/
+			if (code in this.binds[categ]) {
+				if (this.binds[categ][code] in this.flags) {
+					let flag = this.flags[this.binds[categ][code]];
+					return flag[["down", "up"][type]];
+				}
+				
 			}
 		}
 		return "";
 	}
-
+	addListener(id, func) {
+		if ((id in this.#listeners)) return;
+		this.#listeners[id] = (k, t) => {
+			func(k, t);
+		}
+	}
+	removeListener(id) {
+		if (!(id in this.#listeners)) return;
+		delete this.#listeners[id];
+	}
+	setupKeybinds() {
+		let data = menu.storage.getItem("keyboard");
+		for (let aa in data) {
+			this.binds[aa] = {};
+			for (let ab in data[aa]) {
+				let arr = data[aa][ab].split(this.STRING_SEPARATOR);
+				for (let ac of arr) {
+					this.binds[aa][ac] = ab;
+				}
+				/*for (let ac of this.bindsDefault[aa][ab].split('||')) {
+					this.binds[aa][ab][ac] = 1;
+				}*/
+			}
+		}
+	}
 	listen(evt) {
 		let key = evt.key.toLowerCase();
 		if ([" ", "arrowleft", "arrowright", "arrowup", "arrowdown"].indexOf(key) !== -1)
 			evt.preventDefault();
-
 		if (!(key in this.lastKeys)) {
 			this.lastKeys[key] = evt.type;
 		} else if (this.lastKeys[key] !== evt.type) {
@@ -3122,21 +3427,31 @@ const keypressManager = new class {
 		  }
 		 }
 		}*/
+		
+		for (let gn in this.#listeners) {
+			this.#listeners[gn](key, evt.type);
+		}
+		
+		if (this.isKeyBindingMode) return;
 		if (game.startGameParameters.frame > 0) return;
 		if (splash.isActive) {
 			splash.nextSlide();
 		}
-		else if (!menu.isMenu) {
-			if (key == "escape") game.pauseGame();
-			let player = manager.players[manager.activePlayer];
-			var flag = this.keyFlag(key, {
-				keydown: 0,
-				keyup: 1
-			} [evt.type], player.activeType);
-			////console.log(evt.key, flag)
-			manager.typeInput(flag);
-			
-		} else if (menu.characterMenu.isActive) {
+		else if (fsw.isShown) {
+			fsw.keyInput(key, evt.type);
+		} else if (!menu.isMenu)
+			do {
+				//if (this.keyGeneral(key, evt.type)) break;
+				let player = manager.players[manager.activePlayer];
+				var flag = this.keyFlag(key, {
+					keydown: 0,
+					keyup: 1
+				} [evt.type], player.activeType);
+				////console.log(evt.key, flag)
+				manager.typeInput(flag);
+				
+			} while (false);
+		else if (menu.characterMenu.isActive) {
 			if (evt.type == "keydown") menu.characterMenu.controlsListen((key));
 		} else if (menu.isMenu) {
 			let ms = (evt.type).replace(/key/gmi, "");
@@ -3163,14 +3478,44 @@ const keypressManager = new class {
 			}
 		}
 	}
-
+	defaultToSortedJSON() {
+		let json = {
+			0: {},
+			1: {},
+			general: {}
+		};
+		for (let m in this.bindsDefault) {
+			for (let k in this.bindsDefault[m]) {
+				if (!(this.bindsDefault[m][k] in json)) json[m][this.bindsDefault[m][k]] = [];
+				json[m][this.bindsDefault[m][k]].push(k);
+				//json[m][this.bindsDefault[m][k]] += ;
+				//json[m][this.bindsDefault[m][k]] = mk.join(this.STRING_SEPARATOR);
+			}
+			
+			
+		}
+		let fjson = {
+			0: {},
+			1: {},
+			general: {}
+		};
+		for (let m in json) {
+			for (let k in json[m]) {
+				fjson[m][k] = json[m][k].join(this.STRING_SEPARATOR);
+				//json[m][this.bindsDefault[m][k]] += ;
+				//json[m][this.bindsDefault[m][k]] = mk.join(this.STRING_SEPARATOR);
+			}
+			
+			
+		}
+		return fjson;
+	}
 }();
 
 const htmlEffects = new class {
 	constructor() {
 		this.main = $("GTRIS-HTMLEFF-SCREEN");
 		this.a = new ArrayFunctionIterator((at) => {
-
 			for (let ptl = 0; ptl < at.length; ptl++) {
 				let pl = at[ptl];
 				let element = pl.element,
@@ -3181,13 +3526,12 @@ const htmlEffects = new class {
 					this.main.removeChild(element);
 					at.splice(ptl, 1);
 					ptl--;
-
+					
 				}
 			}
-
 		});
 	}
-
+	
 	add(text, posX, posY, frame, animation, style, id) {
 		//let parent = document.createElement("GTRIS-HTMLEFF-PARENT")
 		let a = document.createElement("GTRIS-HTMLEFF-ELEM");
@@ -3201,7 +3545,7 @@ const htmlEffects = new class {
 		styleelem(a, "animation-timing-function", animation.timefunc);
 		styleelem(a, "animation-delay", animation.initdel || 0);
 		styleelem(a, "animation-play-state", "paused");
-
+		
 		//parent.appendChild()
 		this.main.appendChild(a);
 		this.a.addItem({
@@ -3213,8 +3557,11 @@ const htmlEffects = new class {
 	run() {
 		this.a.update();
 	}
-}()
+}();
 
+__private.game = manager;
+__private.keypressManager = keypressManager;
+__private.htmlEffects = htmlEffects;
 
 handle.__setHandle = () => {
 	//////console.log(game)
@@ -3226,10 +3573,15 @@ handle.__setHandle = () => {
 	}, false);
 	game.resize();
 	game.initGame();
-	////console.log(load);
-	////console.log(__private)
 	for (let a of ["keydown", "keyup"]) window.addEventListener(a, (evt) => {
-		keypressManager.listen(evt)
+		keypressManager.listen(evt);
 	});
-
-}
+	window.onerror = ((event, source, lineno, colno, error) => {
+		
+			//console.warn(event, source, lineno, colno, error);
+			log.error_program(event, source, lineno, colno, error);
+			//alert(`At ${source}, ${lineno}:${colno}, there is ${[`a`,`e`,`i`,`o`,`u`].indexOf(event.toLowerCase().charAt(0)) !== -1?'an':'a'} ${event}. If you see this error mesage, contact the Gachatris developer.`)
+		
+	})
+	
+};

@@ -212,7 +212,7 @@ class MobileButtonSystem {
    if (type == "touchend") game.typeInput("f");
    if (menu.isMenu) {
 	let ja = "b";
-	if (type == "touchstart")
+	if (type == "touchend")
 		menu.controlsListen(ja, "down");
 	}
 
@@ -227,7 +227,7 @@ class MobileButtonSystem {
    if (type == "touchend") game.typeInput("g");
    if (menu.isMenu) {
 	let ja = "a";
-	if (type == "touchstart")
+	if (type == "touchend")
 		menu.controlsListen(ja, "down");
 	
 	}
@@ -244,6 +244,15 @@ class MobileButtonSystem {
   this.createButton("controls", "assets/menu/control_mobile/toggle.png", "button", (type) => {
    if (type == "touchend") this.toggleControllers();
   }, 25, 1, -10, 34, 5, 5);
+    this.createButton("skill1", "assets/menu/control_mobile/skill1.png", "controller", (type) => {
+  	if (type == "touchstart") game.typeInput("1N1n");
+  }, 45, 1, -10, 34, 5, 5);
+  this.createButton("skill3", "assets/menu/control_mobile/skill2.png", "controller", (type) => {
+  	if (type == "touchstart") game.typeInput("2N2n");
+  }, 55, 1, -10, 34, 5, 5);
+  this.createButton("skill13", "assets/menu/control_mobile/skill3.png", "controller", (type) => {
+	if (type == "touchstart") game.typeInput("3N3n");
+}, 65, 1, -10, 34, 5, 5);
 
   this.checkButtons()
   this.initialize();
@@ -362,7 +371,7 @@ class MobileButtonSystem {
   	let t = e.touches[0];
   	let y = event(e);
   	
-  	if (p == "start") {
+  	if (p == "start" && !fsw.isShown) {
   		menu.touchSensitivity.direction = y ? 3 : 0;
   		menu.touchArea.isPress = true;
   		menu.touchArea.x = t.pageX;
@@ -376,7 +385,7 @@ class MobileButtonSystem {
   
   window.addEventListener(`touchmove`, e => {
   	let t = e.touches[0];
-  	if (menu.touchArea.isPress) {
+  	if (menu.touchArea.isPress && !fsw.isShown) {
   		menu.touchArea.x = t.pageX;
   		menu.touchArea.y = t.pageY
   		

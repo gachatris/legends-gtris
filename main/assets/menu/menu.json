@@ -5,6 +5,10 @@
 		"cancel": "sounds/cancel.ogg",
 		"error": "sounds/error.ogg",
 		"notification": "sounds/notification.ogg",
-		"exclam": "sounds/exclam.ogg"
+		"exclam": "sounds/exclam.ogg",
+        "keybindready1": "sounds/keybindready1.ogg",
+        "keybindready2": "sounds/keybindready2.ogg",
+        "keybindready3": "sounds/keybindready3.ogg",
+        "keybindcancel": "sounds/keybindcancel.ogg"
 	}
 }

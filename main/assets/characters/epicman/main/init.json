@@ -26,7 +26,7 @@
 
    "damage1": "voices/damage1.ogg",
    "damage2": "voices/damage2.ogg",
-
+   "damage3": "voices/damage3.ogg",
    "counter_mid": "voices/counter.ogg",
    "counterattack": "voices/counter.ogg",
    
@@ -108,7 +108,7 @@
    "spell5": "spell5",
    "damage1": "damage1",
    "damage2": "damage2",
-   
+	"damage3": "damage3",
             "win": "win",
          "lose": "lose",
    

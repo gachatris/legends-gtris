@@ -1,0 +1,43 @@
+=# VERSION 0.1.0 ALPHA
+May 25, 2025 update
+
+-> If you find bugs in the game, report them to the developer (EricLenovo) through the official Gachatris + Linkblobs Discord Server (with the invite button shown in the Main Menu). 
+
+# Character Additions: 
+## Eclipse
+ - This magical fairy herself who comes from up above is friends with a "neko guy" named Epicman33456. With the knowledge of how to use Linkblobs and Gachaquadrominoes, she can upgrade the powers she's using. Her speciality is magic with mind-governed abilities like telekinesis and telepathy.
+## Abcia2
+ - From stars above comes this lavender-colored guy. He discovers something that sounds like blocks like Gachaquadrominoes; he has yet to know "blobby" objects. Let's see how much magic he does with his stars.
+
+# Minor Additions, Changes, and Bug Fixes:
+ - Fixed the player name text not being updated in the character selection panel when preparing a Zen mode session
+ - Fixed several Wormhole Mayhem War bugs
+ - Back button icon added
+ - Back button becomes hidden when there are no submenus users can go back to.
+ - Fixed Fever timer still working even when the game's over and the timer sound should not be played.
+ - Smaller footer text for PC users
+ - Fixed Wormhole Mayhem War's attack hit effect size: a hit effect sprite becomes too big and the next others become too small (counter attack hit effect too large) -> they are now equally sized.
+ - Adjusted font size to precision (not in some cases)
+ - Changed Gachatris's timings (Autoshift Rate (ARR), Autoshift Delay (DAS), Line Clear Delay, Piece Entry Delay, and Pre-Line Clear Delay)
+ - Double Play: Professional Gachatris mode moved to Versus mode (now a mode parameter)
+ - Zen Mode: Parameter "T-Spin Double Only" is now added for Gachatris-only sessions, where you are not allowed to clear lines other than T-Spin Dounles but you'll win if you achieve 20 or more T-Spin Doubles.
+ - KEYBINDING: You are now able to assign one or more keys to flags using the "Many-to-One" keybinding system where multiple bound keys correspond to a flag/trigger.
+ - All Character's fever entrance images are removed, but they will come back after some updates.
+ - Adjusted particles
+ - New "dust"-like particles
+ - New song: "Starbells In Motion"
+ - Notifications now appear on the bottom left of the screen. They are "warnings" that notify you "results", "notifications", or "errors".
+ - Other bugfixes, refactoring, and improvements
+ 
+# Major Additions
+## FULL-SCREEN WINDOW
+ - Navigate by using keyboard, mouse, or touch.
+ - The window is automatically resized to the window size of the browser or device, regardless of the aspect ratio/resolution.
+ - This feature includes Keybinding menus.
+ - In every new version update appears the changelog/patch notes window. You will see how many changes have been done for a new version. You can go to the changelog window by searching for "Changelogs (Patch Notes)" selection in the Main Menu screen of the game.
+
+## RPG Mode (Alpha):
+ - This mode is in Alpha stage, meaning that there are bugs present in the mode. If you discover bugs in this mode, report them to the developer.
+ - A player can only pick 3 UNIQUE characters as cards in their deck; they can use the same character as their opponent. All 3 characters in their deck add up HP and Mana depending on the attributes of each of them.
+ - Each character has a unique skill or so, with some remarkable features, buffs, and debuffs contained; enough mana will be used for every skill use. Mana costs vary on a card.
+ - The goal of a player is to force their opponent's HP down to 0. Every top-out or pile-out costs them a fraction of their HP.

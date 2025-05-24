@@ -1,0 +1,23 @@
+{
+	"base": "dominic_zi",
+	"version": "main",
+	"sources": {
+		"image": {
+			"card": "images/rpg_card.png",
+			"use": "images/skill_use.png"
+		},
+		"voices": {
+
+		}
+	},
+	"init": {
+		"attributesJson": "rpg_attr.json",
+		"image": {
+			"card": "card",
+			"use": "use"
+		},
+		"voices": {
+
+		}
+	}
+}

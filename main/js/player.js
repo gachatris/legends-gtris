@@ -8,6 +8,31 @@ class MainPlayerFragment {
 
 	DEFAULT_SPELL_SEQUENCE = JSON.stringify(CHAIN_SEQUENCE);
 
+	static DEFAULT_HENSHIN_SPELL_SEQUENCE = [
+		"t_count1",
+		"t_count2",
+		"t_count3",
+		"t_count4",
+		"t_count5",
+		"t_count6",
+		"t_count7",
+		"init1",
+		"init2",
+		"init3",
+		"init4",
+		"init5",
+		"spell1",
+		"spell2",
+		"spell3",
+		"spell4",
+		"spell5",
+		"t_small",
+		"t_small",
+		"t_small",
+		"t_small",
+
+	];
+
 	constructor(player, n) {
 		this.player = player;
 		let regex = /PNUMBER/gm;
@@ -264,6 +289,7 @@ class MainPlayerFragment {
 			garbageTrayBehind: "GARBAGE-TRAY-BEHIND",
 			hpmeter: "HP-METER",
 			feverGauge: "FEVER-GAUGE",
+			rpgDeck: "RPG-DECK",
 
 			characterAux: "AUX-FIELD-CHARACTER",
 			backAux: "AUX-FIELD-BACK",
@@ -293,10 +319,10 @@ class MainPlayerFragment {
 		};
 
 		this.ai = (this.player) % 2 == 0 && false ? new NeoplexArtificialIntelligence(this, `PLAYER${this.player}`, manager.misc.ai_original) : new ArtificialIntelligence(this, `PLAYER${this.player}`, manager.misc.ai);
-		//this.aiBlob = new Neoplex2BlobArtificialIntelligence(this, `PLAYERBLOB${this.player}`, manager.misc.ai_blob_original, manager.misc.ai_blob_functions);
-		this.aiFrenzy = new NeoplexStaticFrenzyAI(this, `STATICPLAYER${this.player}`, manager.misc.ai_frenzy)
+		//this.aiBlob = new NeoplexBlobArtificialIntelligence(this, `PLAYERBLOB${this.player}`, manager.misc.ai_blob_original, manager.misc.ai_blob_functions);
+		//this.aiFrenzy = new NeoplexStaticFrenzyAI(this, `STATICPLAYER${this.player}`, manager.misc.ai_frenzy)
 		this.aiBlob = new Neoplex2BlobArtificialIntelligence(this, `PLAYERBLOB${this.player}`, manager.misc.ai_blob_sapphirus, manager.misc.ai_blob_functions);
-
+		this.aiRPG = new ArtificialIntelligenceRPG(this);
 		this.unfreezableFieldAnimations = {};
 		this.namesUFA = [];
 
@@ -316,7 +342,7 @@ class MainPlayerFragment {
 		if (this.soundActive) {
 			let id = sound.play(str);
 			let m = sound.getSound(str);
-			m.stereo(this.player % 2 == 0 ? 1 : -1, id);
+			//m.stereo(this.player % 2 == 1 ? 1 : -1, id);
 		}
 	}
 
@@ -325,7 +351,7 @@ class MainPlayerFragment {
 		/*for (let b in this.character.voices) {
 			this.character.voices[b].stopVoice();
 		}*/
-		/*if (!this.character.voices[a].checkPlay()) /**/
+		if (this.character.voices[a].checkPlay()) return /**/
 		if (this.character.voiceActive in this.character.voices) {
 			let km = this.character.voices[this.character.voiceActive].getVoice();
 			km.stop(this.character.voiceID);
@@ -334,8 +360,9 @@ class MainPlayerFragment {
 
 		let id = this.character.voices[a].playVoice();
 		let m = this.character.voices[a].getVoice();
+		if (!m) return;
 		this.character.voiceID = id;
-		m.stereo(0.4 * (this.player % 2 == 0 ? 1 : -1), id);
+		//m.stereo(1 * (this.player % 2 == 0 ? -1 : 1), id);
 	}
 
 	removeVoices() {
@@ -379,6 +406,11 @@ class MainPlayerFragment {
 	addParticle(requireVisibility, imgRef, spriteRow, spriteCell, startX, startY, endX, endY, duration, size, clr, bez, trail, topt, rotopt) {
 		if (requireVisibility && !this.isVisible) return false;
 		particle.addParticle(game.cellSize, imgRef, spriteRow, spriteCell, startX, startY, endX, endY, duration, size, clr, bez, trail, topt, rotopt);
+	}
+
+	addBasicParticle(requireVisibility, startX, startY, endX, endY, duration, size, clr, bez, trail, topt, rotopt) {
+		if (requireVisibility && !this.isVisible) return false;
+		particle.addBasicParticle(game.cellSize, startX, startY, endX, endY, duration, size, clr, bez, trail, topt, rotopt);
 	}
 
 	drawActivePlaycharExt(mx) {
@@ -458,6 +490,10 @@ class MainPlayerFragment {
 
 			fieldDown: new AnimationFrameRenderer(this.getAsset("WHOLE"), 0, 70, 1000 / 60, {
 				name: "board-fall",
+				timing: "cubic-bezier(0,0,1,0)",
+			}),
+			fieldStomp: new AnimationFrameRenderer(this.getAsset("STOMP-WHOLE"), 0, 70, 1000 / 60, {
+				name: "board-stomp",
 				timing: "cubic-bezier(0,0,1,0)",
 			}),
 			fieldDownAux: new AnimationFrameRenderer(this.getAsset("AUX-WHOLE"), 0, 70, 1000 / 60, {
@@ -571,7 +607,6 @@ class MainPlayerFragment {
 	loadCharacter(char, ver) {
 		this.character.char = char;
 		this.character.ver = ver;
-		//return new Promise(async (res) => {
 		let num = `/assets/characters/${char}/${ver}`;
 		if (this.character.current !== num) {
 			this.character.current = num;
@@ -618,8 +653,6 @@ class MainPlayerFragment {
 			return true;
 		}
 		return false;
-		//res();
-		//});
 	}
 
 	cleanAssets() {
@@ -628,6 +661,24 @@ class MainPlayerFragment {
 
 	loadAssets() {
 		return new Promise(async (res, rej) => {
+			//console.log(this.rpgAttr)
+			if (this.rpgAttr.isRPG) {
+				//console.log("RPG MODE ENABLED");
+				for (let h = 0; h < 3; h++) {
+					let ref = this.rpgAttr.deck.characters[h];
+					if (ref.character !== ref.characterLast) {
+						ref.characterLast = ref.character;
+						ref.isOK = false;
+						this.character.loadable = true;
+
+					}
+					if (ref.version !== ref.versionLast) {
+						ref.versionLast = ref.version;
+						ref.isOK = false;
+						this.character.loadable = true;
+					}
+				}
+			}
 			if (!this.character.load && this.character.loadable) {
 				let json = (this.character.json);
 				let num = `/assets/characters/${this.character.char}/${this.character.ver}`;
@@ -635,6 +686,7 @@ class MainPlayerFragment {
 				let storage = {};
 				let rawstore = {};
 				this.character.loadable = false;
+				this.character.active = false;
 
 				let voiceURLs = json.sources.voice;
 				let imageURLs = json.sources.image;
@@ -646,10 +698,10 @@ class MainPlayerFragment {
 				}
 
 				for (let file in imageMains) {
-					rawstore[`image_${file}`] = await loadImage(storage[imageMains[file].src]);
+					rawstore[`image_${file}`] = await memoryManager.asyncLoad(storage[imageMains[file].src], "image");
 				}
 				for (let file in json.init.spellImage) {
-					rawstore[`image_spell_${file}`] = await loadImage(storage[json.init.spellImage[file]]);
+					rawstore[`image_spell_${file}`] = await memoryManager.asyncLoad(storage[json.init.spellImage[file]], "image");
 				}
 
 				////console.log(num, rawstore)
@@ -681,10 +733,12 @@ class MainPlayerFragment {
 				}
 
 				if ("main" in json.init) {
-					for (let mas in this.character.attributes)
+					/*for (let mas in this.character.attributes)
 						if (mas in json.init.main.attributes) {
 							this.character.attributes[mas] = json.init.main.attributes[mas];
-						} else this.character.attributes[mas] = this.character.defaultAttributes[mas];
+						} else this.character.attributes[mas] = this.character.defaultAttributes[mas];*/
+
+
 
 					if ("chainPower" in json.init.main) {
 						for (let w = 0; w < 24; w++) {
@@ -722,6 +776,8 @@ class MainPlayerFragment {
 						}
 					}
 
+					this.character.isHenshinCounting = json.init.main.henshinCanCount;
+
 					if ("counting" in json.init.main) this.character.isCounting = json.init.main.counting;
 
 					////console.log(this.character.blob)
@@ -734,7 +790,7 @@ class MainPlayerFragment {
 					let anim = json.init.animation;
 					for (let asset in anim.sources) {
 						let mm = anim.sources[asset];
-						let imagus = await loadImage(storage[mm.src]);
+						let imagus = await memoryManager.asyncLoad(storage[mm.src], "image");
 						animatedLayers.loadOffline(this.getCanvasAnimationLoadedName(asset), imagus,
 							anim.sources[asset].width,
 							anim.sources[asset].height
@@ -849,12 +905,25 @@ class MainPlayerFragment {
 					this.rectanim.load(array);
 				}
 
+				if (this.rpgAttr.isRPG) {
+					for (let h = 0; h < 3; h++) {
+						let ref = this.rpgAttr.deck.characters[h];
+						let character = gtcharacter.characters[ref.character];
+						let core = character.core;
+						let version = character.versions[ref.version];
+						//console.log(version)
+						await this.rpgAttr.loadRPG(h, `assets/characters/${core.path}/${version.path}`, version.rpg_init);
+						ref.isOK = true;
+					}
+				}
+
 				this.character.active = true;
 				this.character.load = true;
+				this.character.loadable = true;
 				res();
 				this.drawCharacterBg(0);
 				return;
-			} else res()
+			} else res();
 		});
 	}
 
@@ -876,6 +945,10 @@ class MainPlayerFragment {
 			this.setStyle(`BLOB-NEXT-BG-${gt}`, "fill", `rgba(${r - 10},${g - 10},${b - 10},0.5)`);
 			this.setStyle(`BLOB-NEXT-BG-${gt}`, "stroke", `rgba(${Math.min(255, r + 100)},${Math.min(255, g + 100)},${Math.min(255, b + 100)},0.8)`);
 		}
+		this.setStyle(`RPG-DECK`, "background", `rgba(${r - 10},${g - 10},${b - 10},0.8)`);
+		this.setStyle(`RPG-DECK`, "border", `0.3em solid rgba(${Math.min(255, r + 20)},${Math.min(255, g + 20)},${Math.min(255, b + 20)},0.8)`);
+
+
 	}
 
 	changeBodyColorHex(hex) {
@@ -958,7 +1031,7 @@ class MainPlayerFragment {
 		this.setStyle("PLAYCHAR-TEXT-DIV", "opacity", "0%");
 		switch (type) {
 			case "insane": {
-				this.playcharExt.anim.insaneChar.play();
+				//this.playcharExt.anim.insaneChar.play();
 				this.playcharExt.anim.insaneText.play();
 				this.setActivePlaycharExt(name || "insane");
 				break;
@@ -986,9 +1059,6 @@ class MainPlayerFragment {
 			}
 		}
 	}
-
-
-
 }
 
 class InsaneMode {
@@ -1104,7 +1174,7 @@ class InsaneMode {
 		if (this.isOn) {
 			this.parent.parent.insaneBg.draw();
 			this.parent.parent.editIH("INSANE-TIMER", this.isUnlimited ? "" : Math.max(Math.floor(this.time / 60), 0));
-			if (this.time <= 5 * game.FPS && this.time >= 0) {
+			if (this.time <= 5 * game.FPS && this.time >= 0 && !this.parent.parent.hasWon) {
 				if ((this.time % game.FPS) == 0 && this.time > 0) this.parent.parent.playSound("timer2_1");
 				if (this.time == 0) {
 					this.time = -90;
@@ -1465,7 +1535,7 @@ class InsaneMode {
 				this.parent.setDelay(0, this.parent.parent.isInsaneModeOnly ? -19 : 5);
 				this.parent.drawStack(this.parent.stack);
 				this.parent.canFallTrash = false;
-				
+
 				this.parent.blobCount = this.parent.checkBlobCount(this.parent.stack);
 
 			}
@@ -1497,7 +1567,7 @@ class InsaneMode {
 
 
 			}
-			
+
 			this.parent.parent.engageCleartext("b2b", false, "");
 			this.parent.parent.engageCleartextCombo(false, 0, "");
 		}
@@ -1505,9 +1575,9 @@ class InsaneMode {
 		if (this.delay.out == 0) {
 			this.isTime = false;
 			this.parent.parent.editIH("INSANE-TIMER", "");
-			
-			
-			
+
+
+
 			if (this.type == "blob" && this.parent.canFallTrashAfterFever) {
 				this.parent.dropGarbage();
 			}
@@ -2109,48 +2179,303 @@ class RPGAttributes {
 	#ctx;
 	#canvas;
 	#text;
+	#targets = {
+		current: this.parent
+	};
+	seed = new ParkMillerPRNG();
+	selectTargets(arg, pickPlayer) {
+		if (arg === "this") return this.parent;
+		if (arg == "allies") {
+			let arr = [];
+			game.forEachPlayer(player => {
+				if (player.player !== this.parent.player && this.parent.team == player.team) {
+					arr.push(player);
+				}
+			});
+			return arr;
+		}
+		if (arg == "enemies") {
+			let arr = [];
+			game.forEachPlayer(player => {
+				if (player.player !== this.parent.player && this.parent.team !== player.team) {
+					arr.push(player);
+				}
+			});
+			return arr;
+		}
+	}
+	static Skill = class {
+		constructor(parent, number, parameters) {
+			this.parent = parent;
+			this.number = number;
+			this.name = parameters.name || "0";
+			this.skillStatusEffects = parameters.statfx || [];
+			this.skillValues = parameters.skillValues || {
+				parameters: {}
+			};
+			/*
+			Effects {
+				se: "lifesteal",
+				to: "self",
+				parameters: {...}
+			}
+			/**/
+			this.cooldown = parameters.initcd || 0;
+			this.initCD = parameters.initcd || 0;
+			this.maxCD = parameters.cd || 0;
+			this.skillVoice = parameters?.voice || "skill";
+			//this.character = parameters.character;
+			//this.image = parameters.image;
+			//this.card = parameters.card;
+			this.mana = parameters.mana;
+			this.attributeDesc = "";
+		}
+		execute() {
+			if (this.cooldown > 0 || this.parent.mana < this.mana) return false;
+			let skillVoice = this.skillVoice;
+			//console.log(this.skillStatusEffects)
+			//let skillValues = {};
+			/*for (let j in this.skillValues) {
+				let value = 0;
+				if (typeof h.parameters.value == "string") {
+					let split = h.parameters.value.split("%");
+					let split2 = split.split("-");
+					value = (parseFloat(split[0]) / 100);
+				}
+				skillValues[j] = [value, split2[0], split2[1]];
+			}*/
+			switch (this.name) {
+				//mains
+				case "misty1": {
+					game.forEachPlayer(player => {
+						let thisBase = this.parent.selectTargets("this");
+
+						for (let player of this.parent.selectTargets("enemies")) {
+							let baseValue = thisBase.rpgAttr.attributes.attack;
+
+
+							player.rpgAttr.addStatusEffect(thisBase.player, "periodicdmg", this.skillValues.pdmgtime, {
+								value: baseValue * (this.skillValues.pdmgpercentage / 100),
+								maxf: this.skillValues.pdmginterval,
+								type: "burn"
+							})
+
+						}
+					});
+					break;
+				}
+				case "epicman1": {
+					if (this.parent.parent.activeType == 0) this.parent.parent.block.stompProps.afterHardDrop = true;
+					if (this.parent.parent.activeType == 1) {
+						
+					}
+					break;
+				}
+				case "dominic1": {
+					//this.parent.parent.halt.delays.manipulation = 220;
+					let num = ~~(this.parent.seed.next() * 1);
+					switch (num) {
+						case 0: {
+							//Nitro
+							
+							break;
+						}
+					}
+					break;
+					
+				}
+				case "eclipse1": {
+					if (this.parent.parent.activeType == 1) {
+						this.parent.parent.blob.insane.delay.readyHenshin = 15;
+						this.parent.parent.blob.insane.delay.fixedHenshinType = 2;
+					} else if (this.parent.parent.activeType == 0) {
+						this.parent.parent.block.insane.delay.ready = 15;
+						//this.parent.parent.blob.insane.delay.fixedHenshinType = 2;
+					}
+
+					break;
+				}
+			}
+			for (let h of this.skillStatusEffects) {
+				let value = 0;
+				if (typeof h.parameters.value == "string") {
+					let split = h.parameters.value.split("%");
+					if (split[1] == "hp") {
+						value = ~~((parseFloat(split[0]) / 100) * this.parent.maxHP);
+					}
+					else value = ((parseFloat(split[0]) / 100) * this.parent.attributes[split[1]]);
+				}
+				else value = h.parameters.value;
+				//console.log(h.parameters)
+				let modifiedParameters = JSON.parse(JSON.stringify(h.parameters));
+				modifiedParameters.value = value;
+				this.parent.addStatusEffect(this.parent.parent.player, h.type, h.time, modifiedParameters);
+
+			}
+			this.cooldown = this.maxCD;
+
+			this.parent.playVoice(this.number, skillVoice);
+
+
+			return true;
+		}
+		reset() {
+			this.cooldown = this.maxCD;
+		}
+		change(parameters) {
+
+		}
+	};
 	constructor(parent) {
 		this.parent = parent;
 		this.isOn = false;
 		this.maxHP = 184472;
-		this.hp = 40332;
+		this.hp = 2000;
+		this.mana = 1000;
+		this.maxMana = 1000;
+		this.absorb = 0;
 		this.hpBehind = 0;
 		this.isOn = false;
 		this.hpDamage = 0;
 		this.isWOIHPMode = false;
+		this.canReceiveGarbage = 1;
+		this.isRPG = false;
+		this.isUsableSkills = false;
+		this.warningTime = 60;
+		this.isZeroHPWarning = false;
+		this.deck = {
+			characters: {
 
-		this.attributes = {
-			attack: 100,
-			atkTolerance: 100,
-			defense: 50,
-			lifesteal: 0.59
+			},
+			loaded: true
 		};
+		for (let h = 0; h < 3; h++) {
+			this.deck.characters[h] = {
+				skill: new RPGAttributes.Skill(this, h, {}),
+				character: null,
+				version: null,
+				characterLast: null,
+				versionLast: null,
+				jsonstring: "",
+				json: {},
+				card: new Image(2, 2),
+				skillUse: new Image(2, 2),
+				isOK: false
+			};
+		}
+		//console.log(this.deck);
+		this.isRPGOK = true;
+		this.manaRegen = {
+			time: 0,
+			max: 40,
+			value: 1
+		};
+		this.skillUseDisplay = {
+			frame: 0,
+			max: 100,
+			on: false,
+			using: 0,
+			//TODO use pythagoras distance formula: d=√((x-X)^2+(y-Y)^2) | x = 30, y = 2(720)
+			tx1: -400,
+			ty1: -1000,
+			tx2: -200,
+			ty2: 1000
+		}
+
+		//this.enableSkills = false;
+
+		this.DEFAULT_ATTRIBUTES = {
+			attack: 10,
+			atkTolerance: 10,
+			defense: 100,
+			lifesteal: 0,
+			lfa: 0,
+			deflect: 0
+		};
+		this.ATTRIBUTE_NAMES = Object.keys(this.DEFAULT_ATTRIBUTES);
+		this.ATTRIBUTE_LENGTH = this.ATTRIBUTE_NAMES.length;
+		this.attributes = JSON.parse(JSON.stringify(this.DEFAULT_ATTRIBUTES));
+
+		this.statusEffectsAttributes = JSON.parse(JSON.stringify(this.DEFAULT_ATTRIBUTES));
+		for (let h in this.statusEffectsAttributes) {
+			this.statusEffectsAttributes[h] = 0;
+		}
 		this.healthBar = {
 			active: new NumberChangeFuncExec(null, (val, arg) => {
 				if (arg) {
 					this.healthBar.behind.execute();
+					this.healthBar.absorb.execute();
 					this.healthBar.forecastedDmg.execute();
+
 				}
 				this.drawHealthBar(val, "#0e0");
+				if (arg) {
+					this.healthBar.measure.execute();
+				}
 			}),
 			behind: new NumberChangeFuncExec(null, (val, arg) => {
-				this.drawHealthBar(val, "#a00", true);
+				this.drawHealthBar(val, "#cc2222", true);
 				if (arg) {
+					this.healthBar.absorb.execute();
 					this.healthBar.forecastedDmg.execute();
 					this.healthBar.active.execute();
+					this.healthBar.measure.execute();
+
+
 				}
 
 			}),
 			forecastedDmg: new NumberChangeFuncExec(null, (val, arg) => {
-				if (arg) this.healthBar.behind.execute();
+				if (arg) {
+					this.healthBar.behind.execute();
+					this.healthBar.absorb.execute();
+				}
 				this.drawHealthBar(val, "#fa0");
-				if (arg) this.healthBar.active.execute();
+				if (arg) {
+					this.healthBar.active.execute();
+					this.healthBar.measure.execute();
+				}
 			}),
 			text: new NumberChangeFuncExec(null, (val) => {
 				this.#text.innerHTML = val;
 			}),
+			absorb: new NumberChangeFuncExec(null, (val, arg) => {
+				if (arg)
+				{
+					this.healthBar.behind.execute();
+				}
 
+				this.drawHealthBar(val, "#9a9a9a");
+				if (arg)
+				{
+					this.healthBar.forecastedDmg.execute();
+					this.healthBar.active.execute();
+					this.healthBar.measure.execute();
+
+				}
+
+			}),
+			measure: new NumberChangeFuncExec(null, (val, arg) => {
+				if (arg) {
+					this.healthBar.behind.execute();
+					this.healthBar.absorb.execute();
+					this.healthBar.forecastedDmg.execute();
+					this.healthBar.active.execute();
+				}
+				let width = 300;
+				let gap = 300 / (val / 50)
+
+				let ticks = val / 50;
+
+				this.#ctx.fillStyle = "#000";
+				for (let gx = 0; gx < ticks; gx++)
+					this.#ctx.fillRect(gx * gap, 0, 3, 70 * ((gx % 5 == 0) ? 0.45 : 0.3));
+				this.#ctx.fillRect(((this.maxHP) / val) * width, 0, 3, 70 * 0.7);
+			}),
 		};
+
+		this.statusEffects = [];
+
 	}
 
 	drawHealthBar(val, color, isClear) {
@@ -2158,8 +2483,95 @@ class RPGAttributes {
 		this.#ctx.fillStyle = color;
 		this.#ctx.fillRect(0, 0, 300 * val, 70);
 	}
+	executeSkill(number) {
+		//this.parent.playSound("skill_activate");
+		if (!(this.isOn && this.isRPG && this.isUsableSkills)) return;
+
+		if (this.deck.characters[number] === void 0) return;
+		if (!("skill" in this.deck.characters[number])) return;
+		let isOK = this.deck.characters[number].skill.execute();
+		if (isOK) {
+			this.parent.playSound("skill_activate");
+			this.mana -= this.deck.characters[number].skill.mana;
+			this.executeSkillUse(number);
+		}
+	}
 	reset() {
 		this.hp = this.maxHP;
+		this.statusEffects.length = 0;
+		this.canReceiveGarbage = 1;
+		this.manaRegen.value = 1;
+		this.manaRegen.time = 0;
+		this.skillUseDisplay.on = false;
+		this.isZeroHPWarning = false;
+		for (let eh in this.deck.characters) {
+			let h = this.deck.characters[eh];
+			h.skill.cooldown = h.skill.initCD;
+		}
+	}
+	resetAttributes() {
+		this.attributes = JSON.parse(JSON.stringify(this.DEFAULT_ATTRIBUTES));
+	}
+	playVoice(deckn, skill) {
+		this.parent.playVoice(`deck${deckn}|${skill}`);
+	}
+
+	loadRPG(number, directory, fileName) {
+		return new Promise(async (res, rej) => {
+			//console.log(number, directory, fileName)
+
+			let jsonString = await memoryManager.asyncLoad(directory + "/" + fileName);
+			let json = JSON.parse(jsonString);
+			let raw = {};
+			let references = {};
+			for (let j in json.sources.image) {
+				raw[j] = await memoryManager.asyncLoad(directory + "/" + json.sources.image[j], "image");
+			}
+			for (let j in json.init.image) {
+				references[j] = raw[j];
+			}
+
+			{
+				let arr = [];
+				let srcArr = [];
+
+
+				for (let h in json.init.voices) {
+					arr.push(json.init.voices[h]);
+				}
+
+				for (let qi of arr) {
+					if (qi in json.init.voices) srcArr.push(json.sources.voices[json.init.voices[qi]]);
+				}
+
+				if (Object.keys(json.init.voices).length > 0) {
+					await playerVoiceSystem.batchLoad(json.base, json.version, srcArr);
+				}
+
+				//////console.log(json.init.voice)
+				for (let hh in json.init.voices) {
+					this.parent.character.voices[`deck${number}|${hh}`] = new PlayerVoice(json.base, json.version, json.sources.voices[json.init.voices[hh]]);
+				}
+			}
+
+			//Skill
+			/*let attrString = await memoryManager.asyncLoad(directory + "/" + json.init.attributesJson);
+			let skill = JSON.parse(attrString).skill;*/
+			//end Skill
+
+			let character = this.deck.characters[number];
+			character.card = raw.card;
+			character.skillUse = raw.use;
+			//console.log(raw.use)
+			//character.skill.mana = raw.skill.mana;
+			///console.log("done")
+
+			res();
+		});
+	}
+
+	restInPeace() {
+
 	}
 
 	update() {
@@ -2172,10 +2584,248 @@ class RPGAttributes {
 			this.hpBehind = this.hp;
 		}
 		if (!this.isWOIHPMode) {}
-		this.healthBar.behind.assign(this.hpBehind / this.maxHP, true);
-		this.healthBar.forecastedDmg.assign(this.hp / this.maxHP, true);
-		this.healthBar.active.assign((this.hp - this.hpDamage) / this.maxHP, true);
+
+		let absorb = 0;
+		let length = this.statusEffects.length;
+		this.canReceiveGarbage = 1;
+		if (this.isRPG) {
+			if (this.isUsableSkills) {
+				this.manaRegen.time--;
+				if (this.manaRegen.time <= 0) {
+					this.manaRegen.time = this.manaRegen.max;
+					this.addMana(this.manaRegen.value);
+				}
+			}
+			for (let l = 0; l < this.ATTRIBUTE_LENGTH; l++) {
+				let g = this.ATTRIBUTE_NAMES[l];
+				this.statusEffectsAttributes[g] = 0;
+			}
+			for (let h = 0; h < length && !(this.parent.hasWon || this.parent.isDead); h++) {
+				let gg = this.statusEffects[h];
+				if (gg.isTime) {
+					if (gg.time > 0) {
+						gg.time--;
+					} else {
+						this.statusEffects.splice(h, 1);
+						h--;
+						length--;
+						continue;
+					}
+				}
+				switch (gg.type) {
+					case "periodicdmg": {
+						if (gg.parameters.frame > 0) {
+							gg.parameters.frame--;
+						} else {
+							gg.parameters.frame = gg.parameters.maxf;
+							this.addHP(-gg.parameters.value, true);
+							//this.parent.playSound("shoosh_chain");
+							if (this.checkZeroHP()) {
+								this.parent.checkLose();
+							};
+						}
+						break;
+					}
+
+					case "regen": {
+						if (gg.parameters.frame > 0) {
+							gg.parameters.frame--;
+						} else {
+							gg.parameters.frame = gg.parameters.maxf;
+							if (this.hp < this.maxHP && this.hp > 0) this.addHP(gg.parameters.value);
+						}
+						break;
+					}
+					case "lsbuff": {
+						this.statusEffectsAttributes.lifesteal += gg.parameters.value;
+						break;
+					}
+					case "lfabuff": {
+						this.statusEffectsAttributes.lfa += gg.parameters.value;
+						break;
+					}
+					case "atkbuff": {
+						this.statusEffectsAttributes.attack += gg.parameters.value;
+						break;
+					}
+					case "defbuff": {
+						this.statusEffectsAttributes.defense += gg.parameters.value;
+						break;
+					}
+					case "deflect": {
+						this.statusEffectsAttributes.deflect += gg.parameters.value;
+						break;
+					}
+					case "immune2garbage": {
+						/*if (gg.parameters.frame > 0) {
+							gg.parameters.frame--;
+						} else {
+							gg.parameters.frame = gg.parameters.maxf;
+							this.addHP(gg.parameters.value);
+						}*/
+						this.canReceiveGarbage--;
+						break;
+					}
+				}
+				if (gg.type == "absorb") {
+					absorb += gg.parameters.value;
+				}
+
+			}
+		}
+		this.absorb = absorb;
+		let max = Math.max(this.maxHP, this.hp + absorb);
+
+
+		this.healthBar.behind.assign(this.hpBehind / max, true);
+		this.healthBar.absorb.assign((this.hp + absorb) / max, true);
+		this.healthBar.forecastedDmg.assign(this.hp / max, true);
+		this.healthBar.active.assign((this.hp - this.hpDamage) / max, true);
 		this.healthBar.text.assign(this.hp);
+		this.healthBar.measure.assign(max, true);
+		if (this.isRPG) {
+
+			this.parent.canvasClear("rpgDeck");
+			let ctx = this.parent.canvasCtx.rpgDeck;
+			let jk = 350 * 2;
+			let km = this.parent.player % 2 == 0;
+			let aspect = 550 / 250;
+
+			let x = (800) - (jk * aspect / 2);
+			for (let j = 0; j < 3; j++) {
+				let ref = this.deck.characters[j];
+
+				/*this.parent.canvasCtx.rpgDeck.drawImage(
+					ref.card,
+					0,0,550,250,
+					x, j * 301, jk*aspect, jk
+				);*/
+
+
+				ctx.save();
+
+				ctx.translate(x, j * (jk + 5));
+				ctx.scale(km ? 1 : -1, 1);
+				ctx.drawImage(ref.card, 0, 0, 550, 250, km ? 0 : -(jk * aspect), 0, jk * aspect, jk);
+				//ctx.setTransform(1,0,0,1,0,0)
+				ctx.restore();
+				ctx.textBaseline = "top";
+				ctx.font = `280px josefinsans`;
+				ctx.fillStyle = "#fff";
+				ctx.strokeStyle = "#000";
+				let mk = 2 * (km ? 30 : (800 - 30));
+				ctx.textAlign = km ? "start" : "end";
+				ctx.lineWidth = 12 * 2;
+				ctx.fillText(ref.skill.mana, mk, 20 + (j * (jk + 10)));
+				ctx.strokeText(ref.skill.mana, mk, 20 + (j * (jk + 10)));
+				ctx.textBaseline = "ideographic";
+				ctx.font = `180px default-ttf`;
+				ctx.lineWidth = 7;
+				ctx.fillText(ref.skill.desc, mk, (jk - 40) + (j * (jk + 10)));
+				ctx.strokeText(ref.skill.desc, mk, (jk - 40) + (j * (jk + 10)));
+				if (ref.skill.cooldown > 0) {
+					ctx.fillStyle = "#0008";
+					ctx.fillRect(x, j * (jk + 5), jk * aspect, jk);
+					ctx.font = `360px josefinsans`;
+					ctx.fillStyle = "#fff";
+
+					ctx.textBaseline = "middle";
+					ctx.textAlign = "center";
+					ctx.lineWidth = 12 * 2;
+					ctx.fillText((ref.skill.cooldown / 60).toFixed(1), 400, (jk / 2) + (j * (jk + 5)));
+					ctx.strokeText((ref.skill.cooldown / 60).toFixed(1), 400, (jk / 2) + (j * (jk + 5)));
+				}
+				if (ref.skill.mana > this.mana) {
+					ctx.fillStyle = "#0008";
+					ctx.fillRect(x, j * (jk + 5), jk * aspect, jk);
+					ctx.font = `360px josefinsans`;
+					ctx.fillStyle = "#fff";
+
+
+				}
+
+				if (ref.skill.cooldown >= 0) ref.skill.cooldown--;
+			}
+			ctx.fillStyle = "#333";
+			ctx.fillRect(0, 2 * 12.2 * 100, 2 * 8 * 100, 2 * 0.8 * 100);
+
+			ctx.fillStyle = "#aa3";
+			ctx.fillRect(0, 2 * 12.2 * 100, 2 * ~~((this.mana / this.maxMana) * 8 * 100), 2 * 0.8 * 100);
+			let mk = 2 * (km ? 30 : (800 - 30));
+			ctx.fillStyle = "#fff";
+			ctx.textBaseline = "top";
+			ctx.textAlign = km ? "start" : "end";
+			ctx.lineWidth = 6 * 2;
+			ctx.font = `230px josefinsans`;
+			ctx.fillText("Mana: " + this.mana, mk, 40 + (3 * (jk + 10)));
+			ctx.strokeText("Mana: " + this.mana, mk, 40 + (3 * (jk + 10)));
+
+			if (this.skillUseDisplay.on && game1v1.on)
+				do {
+					let add = 0;
+					if (this.skillUseDisplay.frame > 45 && this.skillUseDisplay.frame <= 55) {
+						add = 0.05;
+					} else add = 8;
+
+					this.skillUseDisplay.frame += add;
+					if (this.skillUseDisplay.frame >= this.skillUseDisplay.max) {
+						this.skillUseDisplay.on = false;
+						break;
+					}
+					let sd = this.skillUseDisplay;
+					if (!this.parent.isVisible) break;
+
+					let isFlip = this.parent.player % 2 == 1;
+					let w = 1000 * 1.265;
+					let h = 720 * 1.265;
+					if (isFlip) {
+						background.drawImage(this.deck.characters[sd.using].skillUse,
+							0, 0, 1000, 720,
+							(1280 - w) - (sd.tx1 + ((sd.frame / sd.max) * (sd.tx2 - sd.tx1))),
+							(sd.ty1 + ((sd.frame / sd.max) * (sd.ty2 - sd.ty1))),
+							w,
+							h,
+							true
+						);
+					} else {
+						background.drawImage(this.deck.characters[sd.using].skillUse,
+							0, 0, 1000, 720,
+							(sd.tx1 + ((sd.frame / sd.max) * (sd.tx2 - sd.tx1))),
+							(sd.ty1 + ((sd.frame / sd.max) * (sd.ty2 - sd.ty1))),
+							w,
+							h,
+							false
+						);
+					}
+
+				} while (false);
+			this.isZeroHPWarning = false;
+			if (this.hp + absorb <= this.hpDamage) {
+				this.isZeroHPWarning = true;
+			} else {
+				let ar = 0;
+				if (this.hp / this.maxHP < 0.4) {
+					ar += 1;
+				}
+				if (this.hp / this.maxHP < 0.15) {
+					ar += 1;
+				}
+				this.warningTime -= ar;
+
+				if (this.warningTime < 0 && !this.parent.isDead && !this.parent.hasWon) {
+					this.warningTime = 60;
+					this.parent.playSound("rpg_lowhp");
+				}
+			}
+		}
+
+	}
+
+	executeSkillUse(number) {
+		let sd = this.skillUseDisplay;
+		sd.on = true;
+		sd.frame = 0;
+		sd.using = number;
 	}
 
 	fetchAsset(canvas, ctx, text) {
@@ -2185,14 +2835,67 @@ class RPGAttributes {
 		this.#canvas.width = 300;
 		this.#canvas.height = 70;
 	}
-	addHP(num) {
+	addMana(_num) {
+		if (_num < 0 && this.mana < 0) return;
+		this.mana += _num;
+		if (this.mana < 0) this.mana = 0;
+		if (this.mana > this.maxMana) this.mana = this.maxMana
+	}
+	addHP(_num, isBypassAbsorb) {
 		if (!this.isOn) return;
+		let num = ~~_num;
 		let isFull = false;
 		if (this.hp > this.maxHP) {
 			isFull = true;
 		}
+		let absorbed = 0;
+		let numAttack = 0;
+		if (num < 0 && !isBypassAbsorb) {
+			numAttack = -1 * num;
+			//console.log(num, numAttack)
+			//ABSORPTION
+			if (numAttack > 0) {
+				let length = this.statusEffects.length;
+				for (let k = 0; k < length; k++)
+					if (this.statusEffects[k].type == "absorb") {
+						let ma = this.statusEffects[k];
+						let ref = ma.parameters;
+						let value = Math.min(numAttack, ref.value);
+						ref.value -= value;
+						numAttack -= value;
+						absorbed += value;
 
-		this.hp += ~~(num);
+						if (ref.value <= 0) {
+							ma.triggerOn("zero");
+							this.statusEffects.splice(k, 1);
+							k--;
+							length--;
+						}
+					}
+
+
+			}
+			num = -numAttack;
+		} else numAttack = -num;
+		//console.log(numAttack)
+		if (num !== 0) {
+			if (this.parent.isVisible) {
+				let asset = this.#text.getBoundingClientRect(); //this.parent.assetRect("FIELD");
+				let plw = this.isAux ? 0.47 : 1;
+				let px = (asset.x);
+				let py = (asset.y); // + (this.parent.fieldCellSize * this.getQPosY(this.piece.y - this.fieldSize.hh) * plw);
+				htmlEffects.add(num, px, py, 40, {
+					name: "damage-text-animation",
+					iter: 1,
+					timefunc: "cubic-bezier(0,1,1,1)",
+					initdel: 0,
+				}, `color: #${num > 0 ? "0a0" : "a00"}; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; --__chaintext_size: ${this.parent.fieldFontSize * 0.9}`)
+
+
+			}
+		}
+		this.hp += (num);
+
 		if (this.hp > this.maxHP) {
 			this.hp = this.maxHP;
 		}
@@ -2202,10 +2905,19 @@ class RPGAttributes {
 		if (!isFull) {
 
 		}
+		return {
+			hp: Math.max(numAttack, 0),
+			absorb: absorbed
+		};
 	}
 	setMaxHP(max) {
 		this.maxHP = max || 1000;
 		this.hp = max || 1000;
+	}
+
+	setMaxMana(max) {
+		this.maxMana = max || 1000;
+		this.mana = max || 1000;
 	}
 
 	checkZeroHP() {
@@ -2220,6 +2932,104 @@ class RPGAttributes {
 		this.isOn = oc;
 		this.parent.setStyle(`GARBAGE-TRAY-DIV`, "top", `${this.parent.fieldCellSize * -1*(2.5 + (this.isOn ? 1.5 : 0))}px`);
 		this.parent.setStyle("HP-BAR-DIV", "display", this.isOn ? "flex" : "none");
+		this.parent.setStyle("RPG-DECK", "display", this.isOn && this.isRPG ? "flex" : "none");
+	}
+
+	emulateDamage(mpl) {
+		if (this.isOn) {
+			let removehp = 0;
+			for (let kk in mpl) {
+				let lifestealOpp = this.addHP(-mpl[kk]);
+				removehp = mpl[kk];
+				//console.log(removehp)
+				if (kk in game.players) {
+					let player = game.players[kk];
+					let laa = player.rpgAttr.attributes;
+					let lab = player.rpgAttr.statusEffectsAttributes;
+					player.rpgAttr.addHP(lifestealOpp.hp * (laa.lifesteal + lab.lifesteal - (this.attributes.deflect + this.statusEffectsAttributes.deflect)), 0);
+					player.rpgAttr.addHP(lifestealOpp.absorb * (laa.lfa + lab.lfa), 0);
+					if (player.rpgAttr.checkZeroHP()) {
+						player.checkLose();
+					};
+				}
+			}
+
+		}
+	}
+
+	static STATUS_EFFECTS = {
+		regen: {
+			frame: 1,
+			maxf: 10,
+			value: 1
+
+		},
+		periodicdmg: {
+			frame: 1,
+			maxf: 100,
+			value: 1
+		},
+		atkbuff: {
+			value: 1
+		},
+		atkred: {
+			value: 0.7
+		},
+		lsbuff: {
+			value: 0.7
+		},
+		lfabuff: {
+			value: 0
+		},
+		defbuff: {
+			value: 0
+		},
+		defred: {
+			value: 0
+		},
+		absorb: {
+			value: 2
+		},
+		purify: {
+
+		},
+		buffred: {
+
+		},
+		deflect: {
+			value: 0
+		},
+
+		immune2dmg: {
+			value: 100
+		},
+		immune2garbage: {
+
+		},
+
+	};
+
+	addStatusEffect(player, type, time, parameters, on) {
+		this.statusEffects.push(new RPGAttributes.AttrDefStatusEffect(this, player, type, time, parameters, on))
+	}
+
+	static AttrDefStatusEffect = class {
+		constructor(parent, player, type, time, parameters, on) {
+			this.isTime = time !== "unli";
+			this.time = this.isTime ? time : 99;
+			this.player = player;
+			this.maxTime = this.isTime ? time : 99;
+			this.type = type;
+			this.parameters = JSON.parse(JSON.stringify(RPGAttributes.STATUS_EFFECTS[type]));
+			this.on = { ...(on || {}) };
+			for (let h in parameters) {
+				if (h in this.parameters) this.parameters[h] = parameters[h];
+			}
+			//console.log(this)
+		}
+		triggerOn(name) {
+			if (name in this.on) this.on[name]();
+		}
 	}
 }
 
@@ -2255,8 +3065,17 @@ const playerVoiceSystem = {
 					if (kl in this.voices) {
 						continue;
 					}
+					this.voices[kl] = {
+						main: new MainHowler.Howl({
+							src: [""],
+							format: "ogg",
+							loop: false,
+							preload: false
+						}),
+						length: 0,
+						isLoad: false
+					};
 
-					this.voices[kl] = {};
 					needLoad.push([kl, b]);
 
 					loadLength++;
@@ -2272,38 +3091,56 @@ const playerVoiceSystem = {
 					let kl = o[0],
 						b = o[1];
 					//console.log("load " + kl);
-					if (!(kl in storage)) storage[kl] = await load(`${dir}/${b}`, "blob");
-					////console.log(kl, storage[kl])
-					let blob = URL.createObjectURL(storage[kl]);
+					try {
+						if (!(kl in storage)) memoryManager.asyncLoad(`${dir}/${b}`, "blob").then((bb => {
 
-					//let ml = `${player}#${kl}`;
-					this.voices[kl] = {
-						main: new MainHowler.Howl({
-							src: blob,
-							format: "ogg",
-							loop: false,
-							preload: false
-						}),
-						length: 0,
-						isLoad: false
-					};
+							if (bb == null) {
+								loaded++;
+								if (loaded >= loadLength) {
+									//console.log("load done")
+									res();
+								}
+								return;
+							}
+							storage[kl] = bb;
+							let blob = URL.createObjectURL(storage[kl]);
+							//let ml = `${player}#${kl}`;
+							this.voices[kl] = {
+								main: new MainHowler.Howl({
+									src: blob,
+									format: "ogg",
+									loop: false,
+									preload: false
+								}),
+								length: 0,
+								isLoad: false
+							};
 
-					if (!isPath) {
-						this.storagePaths[bversion][kl] = blob;
+							if (!isPath) {
+
+								this.storagePaths[bversion][kl] = blob;
+							}
+
+
+
+							this.voices[kl].main.load();
+							for (let nx of ["load", "loaderror"]) this.voices[kl].main.once(nx, () => {
+								loaded++;
+								this.voices[kl].isLoad = true;
+								this.voices[kl].length = ~~(this.voices[kl].main.duration() * 60);
+								URL.revokeObjectURL(storage[kl]);
+								if (loaded >= loadLength) {
+									//console.log("load done")
+									res();
+								}
+							})
+						}));
+					} catch (e) {
+
+
 					}
+					////console.log(kl, storage[kl])
 
-
-
-					this.voices[kl].main.load();
-					for (let nx of ["load", "loaderror"]) this.voices[kl].main.once(nx, () => {
-						loaded++;
-						this.voices[kl].isLoad = true;
-						this.voices[kl].length = ~~(this.voices[kl].main.duration() * 60);
-						if (loaded >= loadLength) {
-							//console.log("load done")
-							res();
-						}
-					})
 				}
 
 
@@ -2547,18 +3384,28 @@ class GarbageTrayObject {
 	}
 }
 
-class GachatrisBlock {
-
+class LegacyMode {
 	constructor(parent) {
-		this.garbageLimit = 8;
 		this.parent = parent;
 		this.isActive = false;
 		this.isEnable = false;
 		this.isControl = false;
 		this.isWarning = false;
+		this.canControl = false;
+		this.isAux = false;
+	}
+}
+
+class GachatrisBlock extends LegacyMode {
+
+	constructor(parent) {
+		super(parent);
+		this.garbageLimit = 8;
+		this.isInvisible = false;
+
 		this.isWarningTopOut = false;
 		this.isSpawnablePiece = false;
-		this.isAux = false;
+
 		this.attackType = "scorebased";
 		this.piece = {
 			x: 0,
@@ -2599,14 +3446,21 @@ class GachatrisBlock {
 			},
 			is180able: false,
 		};
+		this.stompProps = {
+			delayIndex: 4,
+			afterHardDrop: false,
+
+		};
 
 		this.delay = {};
 		this.delayAdd = {};
 		this.delayDefault = {
-			0: 10,
-			1: 40,
-			2: 4
+			0: 7,
+			1: 35,
+			2: 5,
+			3: 0,
 		};
+		this.lcdTimes5 = 2;
 		this.delayParamsLength = 8;
 		this.isProfessional = false;
 		this.canRaiseGarbage = true;
@@ -2615,7 +3469,11 @@ class GachatrisBlock {
 			this.isWarning = t;
 		});
 
+		this.attackDeviation = 0;
+
 		this.isAllSpin = false;
+		this.isTSDOnly = false;
+		this.tsdCount = 0;
 		this.level = 3;
 
 		this.fixedGravity = [
@@ -2666,7 +3524,7 @@ class GachatrisBlock {
 		this.pcSpam = {
 			frame: 0,
 			count: 0
-		}
+		};
 
 		this.rngPreview = new ParkMillerPRNG();
 
@@ -2674,13 +3532,23 @@ class GachatrisBlock {
 			bag: [0, 1, 2, 3, 4, 5, 6],
 			queue: []
 		}
-		this.settings = {
-			das: 6,
-			arr: 4,
+		this.defaultSettings = {
+			das: 9,
+			arr: 1,
 			gravity: this.fixedGravity[Math.min(28, this.level)],
 			lock: 30,
 			sft: 0.5 * 60 / 60,
+		};
+		this.customSettings = {
+
+			das: 5,
+			arr: 0,
+			gravity: this.fixedGravity[Math.min(28, this.level)],
+			lock: 30,
+			sft: 9603,
+
 		}
+		this.settings = JSON.parse(JSON.stringify(this.defaultSettings));
 		this.handling = {
 			das: 0,
 			arr: 0,
@@ -2700,6 +3568,7 @@ class GachatrisBlock {
 			vh: 20,
 			hh: 20
 		};
+		this.columnBlocks = []
 		//to add cool visual effects
 
 		this.effects = {
@@ -2886,6 +3755,57 @@ class GachatrisBlock {
 		this.appearBlockFrame = -1;
 		this.stackAltitude = this.fieldSize.h;
 	}
+
+	executeStomp() {
+		this.setDelay(this.stompProps.delayIndex, 52);
+		this.setDelay(3, 35);
+		this.setDelay(0, 20);
+		//play animation prior to the actual board stomp
+		this.parent.fieldAnimations.fieldStomp.play();
+	}
+	stomp() {
+		let board = this.stack,
+			width = this.fieldSize.w,
+			hiddenHeight = this.fieldSize.hh,
+			height = this.fieldSize.h;
+		let checked = true;
+		for (let t = 0; t < height && checked; t++)
+			for (var y = height - 1; y >= hiddenHeight - 2; y--) {
+				for (var x = 0; x < width; x++) {
+					checked = true;
+					if (!this.testGridSpace(x, y - 1, width, height)) {
+						continue;
+					}
+					if (!this.testGridSpace(x, y, width, height)) {
+						board[x][y] = board[x][y - 1]
+						board[x][y - 1] = 0;
+						checked = false;
+					}
+				}
+			}
+		this.drawStack(this.stack);
+		this.checkStackAltitude();
+
+	}
+
+	checkLines() {
+		this.clear.linesReady.length = 0;
+		let lines = 0;
+		for (let y = 0; y < this.fieldSize.h; y++) {
+			let count = 0;
+			for (let x = 0; x < this.fieldSize.w; x++) {
+				if (this.testGridSpace(x, y)) count++;
+			}
+			if (count >= this.fieldSize.w) {
+				this.clear.linesReady.push(y);
+				lines++;
+			}
+		}
+
+		if (lines) {
+			this.setDelay(2, void 0);
+		}
+	}
 	checkStackAltitude() {
 
 		let alt = this.fieldSize.h;
@@ -2900,7 +3820,7 @@ class GachatrisBlock {
 		this.stackAltitude = alt;
 	}
 	checkWarning() {
-		let isWarning = (this.isActive && !this.parent.isWin && !this.insane.isOn && (this.stackAltitude - this.parent.garbageLength) <= (this.fieldSize.hh + 5)) ? 1 : 0;
+		let isWarning = (!this.insane.isOn && (this.stackAltitude - this.parent.garbageLength) <= (this.fieldSize.hh + 5)) ? 1 : 0;
 
 		this.warningTrig.assign(isWarning);
 	}
@@ -2987,6 +3907,8 @@ class GachatrisBlock {
 		this.isSpawnablePiece = true;
 		this.nextVoice.duration = -999;
 		this.repeatSpellVoice = 0;
+		this.stompProps.afterHardDrop = false;
+		this.tsdCount = 0;
 
 		this.pcSpam.frame = 0;
 		this.pcSpam.count = 0;
@@ -3110,22 +4032,25 @@ class GachatrisBlock {
 			this.delay[delayPrioritize]--;
 			this.parent.isDelayStoppable = false;
 		}
-
-
-
-		if (this.delay[2] == 0) {
-			this.clearLine();
-			this.spellTime = Math.max(0, this.delay[1] - 4);
-			this.attackSendDelay = Math.max(0, this.delay[1] - 4);
+		if (this.delay[this.stompProps.delayIndex] == 0) {
+			this.stomp();
+		}
+		if (this.delay[3] == 0) {
+			this.checkLines();
 
 
 
 		}
 
+		// PRE-LINE CLEAR
+		if (this.delay[2] == 0) {
+			this.clearLine();
+			this.spellTime = Math.max(5, Math.min(this.delay[1] - 4, 30,));
+			this.attackSendDelay = Math.max(5, Math.min(this.delay[1] - 4, 30));
+		}
+
 		if (this.delay[1] == 0) {
 			this.stackCollapse(true);
-
-
 		}
 
 		if (this.loseDelay == 0) {
@@ -3133,7 +4058,10 @@ class GachatrisBlock {
 			this.checkRespawnOrDie();
 		}
 		if (this.delay[0] == 0) {
-			this.spawnPiece(this.previewNextBag(), false);
+			if (this.stompProps.afterHardDrop) {
+				this.stompProps.afterHardDrop = false;
+				this.executeStomp();
+			} else this.spawnPiece(this.previewNextBag(), false);
 		}
 
 		if (this.delay[delayPrioritize] == 0) {
@@ -3183,6 +4111,7 @@ class GachatrisBlock {
 			}
 		}
 	}
+
 	holdShow(showhide) {
 		this.parent.setStyle("HOLD", "display", showhide ? "block" : "none");
 		this.parent.setStyle('HOLD', "left", `${(this.parent.fieldCellSize * 0.1)}px`);
@@ -3192,7 +4121,7 @@ class GachatrisBlock {
 	}
 
 	drawStack(stack) {
-		if (!this.isEnable) return;
+		if (!this.isEnable || this.isInvisible) return;
 		let aux = this.isAux ? "stackAux" : "stack";
 		let widthQuotient = this.parent.fieldSize.w / this.fieldSize.w;
 		let heightQuotient = this.parent.fieldSize.vh / this.fieldSize.vh;
@@ -3221,8 +4150,8 @@ class GachatrisBlock {
 		this.parent.drawArray(aux, this.piece.activeArr, this.piece.x, ~~(this.piece.y) - (this.fieldSize.hh - this.visibleFieldBufferHeight), void 0, 0, widthQuotient, heightQuotient);
 		let q = this.parent.canvasCtx[aux];
 		let type = 3;
-		q.globalAlpha = 1;//- ((game.frames % 50) / 130);
-		this.parent.drawArray(aux, this.piece.activeArr, this.piece.x, ~~(this.piece.y) + this.checkDrop(40) - (this.fieldSize.hh - this.visibleFieldBufferHeight), void 0, type, widthQuotient, heightQuotient);
+		q.globalAlpha = 1; //- ((game.frames % 50) / 130);
+		if (!this.isInvisible) this.parent.drawArray(aux, this.piece.activeArr, this.piece.x, ~~(this.piece.y) + this.checkDrop(40) - (this.fieldSize.hh - this.visibleFieldBufferHeight), void 0, type, widthQuotient, heightQuotient);
 		q.globalAlpha = 1;
 		if (this.piece.spin.spin) {
 			let b = 0;
@@ -3267,12 +4196,13 @@ class GachatrisBlock {
 		if (this.isSpawnablePiece && this.canSpawnPiece(index, held)) {
 			this.piece.spin.spin = 0;
 			this.piece.spin.mini = 0;
-			this.piece.y += this.checkDrop(1);
+			this.piece.y += this.checkDrop(1 + ~~(this.settings.gravity));
+			//this.piece.y += this.checkDrop(1);
 			let temp = this.piece.template;
 			this.canRaiseGarbage = true;
 			this.lock.lowest = 0;
 			this.checkManipulatedPiece();
-			if (this.parent.ai.active) {
+			if (this.parent.ai.active && !game.replay.isOn) {
 				let h = this.piece.hold || 0;
 
 				let pieceX = temp[h].x + Math.min((this.fieldSize.w - 5), ~~((this.fieldSize.w - 10) / 2)),
@@ -3324,9 +4254,13 @@ class GachatrisBlock {
 
 	checkRespawnOrDie() {
 		let isLose = false;
+		let isWin = false;
 
 		if (!this.parent.rpgAttr.isOn) {
-			isLose = true;
+			if (this.isTSDOnly && this.tsdCount >= 20) {
+				isWin = true;
+			}
+			else isLose = true;
 		} else {
 			if (this.parent.rpgAttr.checkZeroHP()) {
 				isLose = true;
@@ -3336,7 +4270,16 @@ class GachatrisBlock {
 					this.insane.status = "fail";
 					this.setDelay(0, -9);
 				}
-				else this.parent.rpgAttr.addHP(-500);
+				else this.parent.rpgAttr.addHP(-(this.parent.rpgAttr.maxHP / 5), true);
+				this.parent.rpgAttr.addStatusEffect(this.parent.player, "immune2garbage", 2 + 40, {});
+
+				this.parent.garbage.length = 0;
+				this.parent.garbageBehind.length = 0;
+				this.parent.garbageLength = 0
+				this.parent.garbageBehindLength = 0;
+				this.parent.garbageLastForTray.assign(0);
+				this.parent.garbageBehindLastForTray.assign(0);
+				this.parent.rpgAttr.hpDamage = 0;
 				if (this.parent.rpgAttr.checkZeroHP()) {
 					isLose = true;
 				}
@@ -3351,7 +4294,16 @@ class GachatrisBlock {
 				this.isSpawnablePiece = false;
 			}
 
+		} else if (isWin) {
+			this.delay[0] = -60;
+
+			for (let l = this.delayParamsLength; l >= 0; l--) {
+				this.delay[l] = -82;
+			}
+			this.parent.checkWin();
+			this.isSpawnablePiece = false;
 		} else {
+			this.simulateSplashOut();
 			this.resetGrid();
 			this.isSpawnablePiece = true;
 			this.delay[0] = 10;
@@ -3424,7 +4376,7 @@ class GachatrisBlock {
 	}
 
 	hold() {
-		if (this.piece.enable && this.piece.holdable) {
+		if (this.piece.enable && this.piece.holdable && this.canControl) {
 			let tmp = this.piece.hold;
 			if (!this.piece.held) {
 				this.piece.held = true;
@@ -3599,7 +4551,7 @@ class GachatrisBlock {
 			}
 		}
 
-		if (this.piece.isAir) {
+		if (air) {
 			this.lock.delay = this.settings.lock;
 			this.piece.moved = true;
 		} else {
@@ -3614,7 +4566,7 @@ class GachatrisBlock {
 					this.parent.playSound("lock");
 				}
 				this.piece.isHardDrop = false;
-				this.detectSpin(!this.piece.moved);
+				this.detectSpin(!this.piece.moved && this.piece.rotated && !air);
 				this.addPieceStack(this.piece.activeArr);
 
 				for (let h = 0; h < this.delayParamsLength; h++) {
@@ -3626,7 +4578,10 @@ class GachatrisBlock {
 				}
 
 				if (this.piece.enable && this.isSpawnablePiece) {
-					this.spawnPiece(this.previewNextBag(), false);
+					if (this.stompProps.afterHardDrop) {
+						this.stompProps.afterHardDrop = false;
+						this.executeStomp();
+					} else this.spawnPiece(this.previewNextBag(), false);
 				}
 			}
 		}
@@ -3635,7 +4590,7 @@ class GachatrisBlock {
 
 	updatePiece() {
 
-		if (!this.piece.enable) return;
+		if (!this.piece.enable || !this.canControl) return;
 		let gravity = this.settings.gravity;
 		if (this.piece.isAir) {
 			if (gravity < 1) {
@@ -3668,7 +4623,7 @@ class GachatrisBlock {
 	}
 
 	rotatePiece(direction) {
-		if (!this.piece.enable || (!this.piece.is180able && direction == 2)) return;
+		if (!this.canControl || !this.piece.enable || (!this.piece.is180able && direction == 2)) return;
 		let temp = this.piece.template[this.piece.active].matrix;
 		let pos = ((this.piece.rot % 4) + 4) % 4;
 		let nPos = (((this.piece.rot + direction) % 4) + 4) % 4;
@@ -3707,8 +4662,9 @@ class GachatrisBlock {
 
 				this.piece.moved = false;
 				this.piece.rotated = true;
+				this.checkManipulatedPiece();
 
-				this.detectSpin(!this.piece.moved && this.piece.rotated);
+				if (this.lock.reset > 0) this.detectSpin(!this.piece.moved && this.piece.rotated && !this.piece.isAir);
 				if (this.piece.spin.spin) {
 					this.parent.playSound("prespin");
 				}
@@ -3716,7 +4672,7 @@ class GachatrisBlock {
 					this.parent.playSound("prespinmini");
 				}
 
-				this.checkManipulatedPiece();
+
 
 
 				break;
@@ -3774,7 +4730,7 @@ class GachatrisBlock {
 	}
 
 	moveX(shift) {
-		if (!this.piece.enable) return;
+		if (!this.piece.enable || !this.canControl) return;
 		if (this.checkValid(this.piece.activeArr, shift, 0)) {
 			this.piece.x += shift;
 
@@ -3784,11 +4740,6 @@ class GachatrisBlock {
 			this.piece.rotated = false;
 			this.parent.playSound("move");
 			this.checkManipulatedPiece();
-			/*try {
-				throw new Error("wat")
-			} catch(e) {
-				console.log(e.stack)
-			}*/
 		}
 	}
 
@@ -3824,8 +4775,9 @@ class GachatrisBlock {
 
 		if (this.parent.flagPresses.left || this.parent.flagPresses.right) {
 			this.handling.das++;
-			if (this.handling.das >= this.settings.das) {
+			if (this.handling.das > this.settings.das) {
 				this.handling.arr++;
+				if (this.handling.arr > this.settings.arr) this.handling.arr = 1;
 				for (let i = 0; i < this.fieldSize.w; i++) {
 					let dir = 0;
 					if (this.handling.xFirst === 1) {
@@ -3850,13 +4802,14 @@ class GachatrisBlock {
 
 
 	}
+
 	resetDelayAutoshiftRate() {
 		this.handling.das = 0;
 	}
 
 	hardDrop() {
-		if (this.piece.enable) {
-			let distance = this.checkDrop(this.fieldSize.h);
+		if (this.piece.enable && this.canControl) {
+			let distance = this.checkDrop(this.fieldSize.h); //this.checkDrop(Math.max(this.fieldSize.h - ~~this.settings.gravity, 0));
 			let startingPos = this.piece.y;
 			this.piece.y += distance;
 			let endingPos = this.piece.y;
@@ -3868,8 +4821,23 @@ class GachatrisBlock {
 			this.piece.isHardDrop = true;
 			this.parent.playSound("harddrop");
 			let m = [];
+			if (this.parent.rpgAttr.isOn) {
+				/*this.parent.rpgAttr.addStatusEffect(this.parent.player, "absorb", 20*60, {
+					value: 25
+				}, (this.parent.character.char !== "elisha") ? {} : {
+					zero: () => {
+					game.forEachPlayer(player => {
+						if (player.player !== this.parent.player) player.rpgAttr.addStatusEffect(this.parent.player, "periodicdmg", 1.5*60, {
+							value: 1,
+							maxf: 30
+						});
+					});
+						
+				}
+				});*/
+			}
 
-			this.parent.score += distance * 2;
+			this.parent.score += Math.max(distance - ~~this.settings.gravity, 0) * 2;
 			for (let x = 0, km = this.piece.activeArr.length; x < km; x++) {
 				for (let y = 0, mm = this.piece.activeArr[x].length; y < mm; y++) {
 					if (this.piece.activeArr[x][y]) {
@@ -3879,6 +4847,49 @@ class GachatrisBlock {
 					}
 				}
 			}
+
+			if (!this.isInvisible) {
+				let bez = {
+					x1: 0,
+					x2: 0.1,
+					x3: 0.9,
+					x4: 1,
+					y1: 0,
+					y2: 0.1,
+					y3: 0.1,
+					y4: 1,
+				};
+				let particleSpeed = 50 + ~~(Math.random() * 20);
+				let asset = this.parent.assetRect(this.isAux ? "AUX-FIELD-CHARACTER-CANVAS" : "FIELD-CHARACTER-CANVAS");
+				let sizemult = this.isAux ? 0.47 : 1;
+				let aw = asset.width;
+				let ah = asset.height;
+				let ax = asset.x;
+				let ay = asset.y;
+				let qw = sizemult * (this.parent.fieldSize.w / this.fieldSize.w);
+				let qh = sizemult * ((this.parent.fieldSize.vh) / this.fieldSize.vh);
+				let cs = this.parent.fieldCellSize;
+				//TODO addBasicParticle()
+				for (let yo = 0; yo < 5; yo++)
+					for (let x = 0, km = this.piece.activeArr.length; x < km; x++) {
+						for (let y = 0, mm = this.piece.activeArr[x].length; y < mm; y++) {
+							if (this.piece.activeArr[x][y]) {
+								let rx = Math.random();
+								let ry = Math.random();
+								this.parent.addBasicParticle(true,
+									(ax) + ((x + this.piece.x) * cs) + (cs * rx),
+									(ay) + ((y + this.piece.y - this.fieldSize.hh) * cs) + (cs * ry),
+									(ax) + ((x + this.piece.x) * cs) + (cs * rx),
+									(ay) + ((y + this.piece.y - 2 - (Math.random() * 12) - this.fieldSize.hh) * cs),
+									particleSpeed, 0.025, false, bez, false);
+							};
+						}
+					}
+
+
+
+			
+
 			let ln = m.length;
 			let ll = Math.max(distance, 10);
 			/*for (let depth = 0; depth < ll; depth++) */
@@ -3894,16 +4905,19 @@ class GachatrisBlock {
 					blk: this.piece.active
 				});
 			}
+			}
+
 
 			this.checkManipulatedPiece();
 		}
 	}
 
 	softDrop() {
-		if (this.piece.enable) {
+		if (this.piece.enable && this.canControl) {
 
 			if (this.piece.isAir) {
 				let gravity = (this.settings.gravity * (20));
+				if (this.isProfessional) gravity = this.settings.sft;
 				let initial = Math.floor(this.piece.y);
 				if (gravity < 1) {
 					this.piece.y += gravity;
@@ -3927,6 +4941,7 @@ class GachatrisBlock {
 		let lines = 0;
 		let valid = false;
 		let hasDelay = false;
+		this.clear.linesReady.length = 0;
 		for (let x = 0; x < arr.length; x++) {
 			for (let y = 0; y < arr[x].length; y++) {
 				if (arr[x][y]) {
@@ -3941,11 +4956,9 @@ class GachatrisBlock {
 			}
 		}
 
+
 		let isPuffOut = false;
 
-		if (!valid) {
-			this.checkLose();
-		}
 
 		for (let y = 0; y < this.fieldSize.h; y++) {
 			let count = 0;
@@ -3957,6 +4970,9 @@ class GachatrisBlock {
 				lines++;
 			}
 		}
+
+
+
 		if (lines == 0) {
 			this.combo = -1;
 			if (this.piece.spin.spin) {
@@ -3994,7 +5010,9 @@ class GachatrisBlock {
 			}
 			if (this.isAux) isPuffOut = true;
 		} else {
-			hasDelay = this.setDelay(2, void 0);
+			hasDelay = this.setDelay(2, void 0); //|| this.setDelay(4, 83);
+			
+			//this.executeStomp();
 			if (this.parent.garbageBlocking === "limited") {
 				this.canRaiseGarbage = true;
 			}
@@ -4025,17 +5043,33 @@ class GachatrisBlock {
 			this.insane.delay.turningOff = 5;
 			this.setDelay(0, 5);
 		}
+
 		if (!hasDelay) {
 			this.clearLine();
+		}
+		if (this.isTSDOnly && ((this.piece.active !== 6 || (!this.piece.spin.spin || lines !== 2)) && lines > 0)) {
+			valid = false;
+
+
 		}
 
 		if (!this.isActive) this.canRaiseGarbage = false;
 
 		this.drawStack(this.stack);
 		this.checkStackAltitude();
+		if (!valid) {
+
+			this.checkLose();
+			hasDelay = this.setDelay(2, -1);
+		}
+		if (this.stompProps.afterHardDrop) {
+			this.stompProps.afterHardDrop = false;
+			this.executeStomp();
+			return
+		}
 	}
 
-	stackCollapse() {
+	stackCollapse(sound) {
 		let hasAbove = false;
 		for (let j = 0, len = this.clear.linesDelayed.length; j < len; j++) {
 			let y = this.clear.linesDelayed.shift();
@@ -4227,7 +5261,7 @@ class GachatrisBlock {
 									(ay) + ((this.piece.lastDrop.y - this.fieldSize.hh) * cs),
 									tx + (tw / 2),
 									ty + (th / 2),
-									particleSpeed, 1, false, bez, true, {
+									particleSpeed, 2.5, false, bez, true, {
 										frame: particleSpeed * (0.3 + (Math.min(9, remaining) * 0.1)),
 										r: 255,
 										g: 255,
@@ -4240,7 +5274,7 @@ class GachatrisBlock {
 										gy + (gh / 2),
 										tx + (tw / 2),
 										ty + (th / 2),
-										particleSpeed, 1, false, bez, true, {
+										particleSpeed,2.5, false, bez, true, {
 											frame: particleSpeed * (0.3 + (Math.min(9, remaining) * 0.1)),
 											r: 255,
 											g: 255,
@@ -4272,7 +5306,7 @@ class GachatrisBlock {
 				(ay) + ((this.piece.lastDrop.y - this.fieldSize.hh) * cs),
 				gx + (gw / 2),
 				gy + (gh / 2),
-				particleSpeed, 1, false, bez, true, {
+				particleSpeed, 2.5, false, bez, true, {
 					frame: particleSpeed * (0.3 + (Math.min(9, remaining) * 0.1)),
 					r: 255,
 					g: 255,
@@ -4323,7 +5357,7 @@ class GachatrisBlock {
 	sendGarbage(lt, m) {
 		this.parent.playerTarget.length = 0;
 		let garbageTarget = {};
-		let hpDamage = this.parent.rpgAttr.attributes.attack + (this.parent.rpgAttr.attributes.atkTolerance * this.parent.seeds.field.next());
+		let hpDamage = (this.parent.rpgAttr.attributes.attack + this.parent.rpgAttr.statusEffectsAttributes.attack) + (this.parent.rpgAttr.attributes.atkTolerance * this.parent.seeds.field.next());
 		let blockToBlobDivisor = 1.8;
 		manager.forEachPlayer(player => {
 			if (player.player !== this.parent.player && player.team !== this.parent.team) this.parent.playerTarget.push(player.player);
@@ -4353,7 +5387,7 @@ class GachatrisBlock {
 			}
 		amtBlob = [g];
 		manager.forEachPlayer(player => {
-			if (this.parent.playerTarget.indexOf(player.player) !== -1) {
+			if ((player.rpgAttr.isOn ? (player.rpgAttr.canReceiveGarbage > 0) : true) && this.parent.playerTarget.indexOf(player.player) !== -1) {
 
 				if (player.activeType === 1) {
 					player.addGarbage(this.parent.player, m == 0 ? amtBlob : amtBlock, isWait, false, 70, hpDamage * (1 / (blockToBlobDivisor)));
@@ -4424,7 +5458,7 @@ class GachatrisBlock {
 				len--;
 			}
 
-			removeHp += r.hpdmg;
+			//removeHp += r.hpdmg;
 
 			//#83
 			if (this.parent.rpgAttr.isOn) game.forEachPlayer(player => {
@@ -4445,29 +5479,25 @@ class GachatrisBlock {
 				this.parent.playVoice("damage1");
 			}
 			if (count > 3) {
-				this.parent.playVoice("damage2");
+				this.parent.playVoice(count > 9 ? "damage3" : "damage2");
 				this.parent.rectanim.play("damage2");
 			}
+			this.parent.rpgAttr.emulateDamage(mpl);
 
-			this.parent.rpgAttr.addHP(-removeHp);
 			this.canRaiseGarbage = this.parent.garbageBlocking !== "full";
 			let isLose = false;
 			if (this.parent.rpgAttr.isOn && this.parent.rpgAttr.checkZeroHP()) {
 				isLose = true;
 			}
 			if (isLose) this.immediatelyLose();
-			if (this.parent.rpgAttr.isOn) {
-				game.forEachPlayer(player => {
-					if (player.player in mpl) player.rpgAttr.addHP(mpl[player.player] * player.rpgAttr.attributes.lifesteal);
 
-				});
-			}
 
 
 			this.parent.garbageLength = this.parent.calculateGarbage();
 			this.parent.garbageLastForTray.assign(this.parent.garbageLength);
 
 			this.parent.rpgAttr.hpDamage = this.parent.calculateHPDamage();
+			//this.parent.rpgAttr.setHPDamageValye
 
 			this.drawStack(this.stack);
 			this.checkStackAltitude();
@@ -4475,6 +5505,7 @@ class GachatrisBlock {
 	}
 
 	clearLine() {
+
 		let lines = 0;
 		let isPC = !this.insane.isOn;
 		let hasDelay = false;
@@ -4494,7 +5525,7 @@ class GachatrisBlock {
 					x: x,
 					y: y,
 					c: this.stack[x][y]
-				})
+				});
 				this.stack[x][y] = 0;
 			};
 			this.clear.linesDelayed.push(y);
@@ -4510,6 +5541,8 @@ class GachatrisBlock {
 
 		if (lines > 0) {
 			hasDelay = this.setDelay(1, void 0);
+			this.delay[1] += this.isProfessional ? 0 : (~~(lines / this.lcdTimes5)*5);
+			hasDelay = this.delay[1] > 0;
 			if (!this.isProfessional && isPC) hasDelay = this.setDelay(1, 0);
 
 			this.combo++;
@@ -4522,7 +5555,13 @@ class GachatrisBlock {
 					this.parent.engageCleartext("spin", true, language.translate(`${letter}spin`));
 				} else this.parent.engageCleartextTSpin(true, 0, lines);
 				if (!this.insane.isOn) this.b2b++;
-				if (this.piece.active !== 4) this.parent.playSound(`tspin${Math.min(lines, 4)}${this.b2b > 0 ? "_b2b" : ""}`);
+				if (this.isTSDOnly && (this.piece.active == 6 && lines == 2)) {
+					this.tsdCount++;
+					if (this.tsdCount < 20) this.parent.playSound(`tspin_correct`);
+					else this.parent.playSound(`tspin${lines}`);
+					if (this.tsdCount == 20) this.parent.playSound(`tspin_complete`);
+				} else
+					this.parent.playSound(`tspin${Math.min(lines, 3)}${this.b2b > 0 ? "_b2b" : ""}`);
 			} else if (this.piece.spin.mini) {
 				if (this.piece.active !== 6) {
 					let letter = ["z", "l", "o", "s", "i", "j", "t"][this.piece.active];
@@ -4530,12 +5569,14 @@ class GachatrisBlock {
 				} else
 
 					this.parent.engageCleartextTSpin(true, 1, lines);
-				if (this.insane.isOn) this.b2b = -1;
-				else this.b2b++;
-				if (this.piece.active !== 4) this.parent.playSound(`tspinmini${Math.min(lines, 4)}${this.b2b > 0 ? "_b2b" : ""}`);
+				if (!this.insane.isOn) this.b2b++;
+				if (this.isTSDOnly && (this.piece.active == 6 && lines == 2)) {
+					this.parent.playSound(`tspin_correct`);
+					this.tsdCount++;
+				} else
+					this.parent.playSound(`tspinmini${Math.min(lines, 3)}${this.b2b > 0 ? "_b2b" : ""}`);
 			} else if (lines > 3) {
-				if (this.insane.isOn) this.b2b = -1;
-				else this.b2b++;
+				if (!this.insane.isOn) this.b2b++;
 				this.parent.playSound(`line${Math.min(lines, 4)}${this.b2b > 0 ? "_b2b" : ""}`);
 			} else {
 				this.b2b = -1;
@@ -4598,7 +5639,7 @@ class GachatrisBlock {
 					let n = this.clear.blocks[m];
 					let y = n.y;
 					let x = n.x;
-					let c = n.c;
+					let c = this.isInvisible ? 1 : n.c;
 
 
 
@@ -4627,20 +5668,25 @@ class GachatrisBlock {
 				}, `text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; --__chaintext_size: 1.4em; color: #fff`);*/
 			}
 			if (this.piece.active !== 6) {
+
 				this.parent.engageCleartext("line", true, language.translate(`line${lines}`));
+
+
 				if (this.piece.spin.spin || this.piece.spin.mini) {
 					let letter = ["z", "l", "o", "s", "i", "j", "t"][this.piece.active];
 					this.parent.engageCleartext("spin", true, language.translate(`${letter}spin${this.piece.spin.mini ? "mini" : ""}`));
-				}
+				} else if (lines > 5) this.parent.engageCleartext("spin", true, language.translate(`line5`));
 			} else if (!(this.piece.spin.spin || this.piece.spin.mini)) {
+				if (lines > 5) this.parent.engageCleartext("spin", true, language.translate(`line5`));
 				this.parent.engageCleartext("line", true, language.translate(`line${lines}`));
 			}
 
 			if (this.parent.garbageBlocking == "full") {
 				this.canRaiseGarbage = false;
 			}
-			if (!this.insane.isOn && !this.isAux) this.parent.engageCleartext("b2b", this.b2b > 0, language.translate("b2b", [this.b2b]));
-
+			if (this.isTSDOnly && !this.isAux) this.parent.engageCleartext("b2b", this.tsdCount > 0, language.translate("tsd_" + (this.tsdCount == 1 ? "singular" : "plural"), [this.tsdCount]));
+			else if (!this.insane.isOn && !this.isAux) this.parent.engageCleartext("b2b", this.b2b > 0, language.translate("b2b", [this.b2b]));
+	
 
 
 			if (this.parent.canAttack) {
@@ -4709,9 +5755,11 @@ class GachatrisBlock {
 
 			if (hasDelay) {
 				this.spellAnimName = lm;
+				//this.setDelay(0, 2);
 			} else {
 				this.spellAnimName = lm;
-				this.stackCollapse();
+				this.stackCollapse(false);
+
 				this.parent.playVoice(this.activeVoiceLine);
 				if (this.spellAnimName !== "") this.parent.rectanim.play(this.spellAnimName);
 			}
@@ -4728,13 +5776,20 @@ class GachatrisBlock {
 							x: x,
 							y: y,
 							frames: 0,
-							maxf: this.delay[1]
+							maxf: this.delay[1] * (((y % 2 == 0) ? (x) : (this.fieldSize.w - (x))) / this.fieldSize.w)
 						});
 					}
 				}
 
-
-			this.parent.score += this.level * (SCORE_TABLE[isPC ? "pc" : "nopc"][`${this.b2b > 0 ? "" : "no"}b2b`][`${spinDetected ? "spin" : miniDetected ? "mini" : "line"}`][lines] + SCORE_TABLE.combo * Math.max(0, this.combo))
+			if (lines > 4) {
+				let score = lines * 200;
+				if (isPC) score *= 2.5;
+				if (spinDetected) score *= 1.5;
+				if (miniDetected) score *= 1.2;
+				if (this.b2b > 0) score *= 1.5 + (0.1 * (lines - 4));
+				score *= this.level;
+				this.parent.score += ~~score
+			} else this.parent.score += this.level * (SCORE_TABLE[isPC ? "pc" : "nopc"][`${this.b2b > 0 ? "" : "no"}b2b`][`${spinDetected ? "spin" : miniDetected ? "mini" : "line"}`][lines] + SCORE_TABLE.combo * Math.max(0, this.combo))
 			this.parent.swapMode.add("combo");
 			this.drawStack(this.stack);
 
@@ -4745,7 +5800,7 @@ class GachatrisBlock {
 			b = 0;
 		if (this.attackType == "multiplier") {
 			if (line > 3) {
-				b = 4;
+				b = spin ? (line * 2) : line;
 			} else if (line == 1) {
 				b = spin ? 2 : 0;
 			} else if (line == 2) {
@@ -4780,7 +5835,9 @@ class GachatrisBlock {
 
 			let base = 1;
 			let c = 0;
-			if (line > 3) c = base * 4;
+			if (line > 3) {
+				c = base * (spin ? (line * 2) : line);
+			}
 			if (line == 3) c = base * (spin ? 4 : 2);
 			if (line == 2) c = base * (spin ? 3 : 1);
 			if (line == 1) c = base * (spin ? 2 : 0);
@@ -4802,7 +5859,7 @@ class GachatrisBlock {
 
 			let base = 1;
 			let c = 0;
-			if (line > 3) c = base * 4;
+			if (line > 3) c = base * (spin ? (line * 2) : line);
 			if (line == 3) c = base * (spin ? 6 : 2);
 			if (line == 2) c = base * (spin ? 4 : 1);
 			if (line == 1) c = base * (spin ? 2 : 0);
@@ -4819,12 +5876,31 @@ class GachatrisBlock {
 
 
 			a = ~~(c + ((c / 4) * ((this.parent.blob.decreaseTargetPoint - 1) / this.parent.blob.targetPoint)));
+		} else if (this.attackType == "scorebasedWMW") {
+
+			let base = 1;
+			let c = 0;
+			if (line > 3) c = base * (spin ? (line * 2) : line);
+			if (line == 3) c = base * (spin ? 4 : 2);
+			if (line == 2) c = base * (spin ? 3 : 1);
+			if (line == 1) c = base * (spin ? 2 : 0);
+			if (combo <= 1) { c += base * 0.50; }
+			else if (combo > 1 && combo <= 6) { c += base * 1; }
+			else { c += base * (1 + ~~((combo - 6) / 4)); }
+
+			if (b2b > 0) c += base;
+			if (pc) c = base * 6;
+
+			let g = this.parent.blob.decreaseTargetPoint;
+			let h = this.parent.blob.targetPoint;
+			a = ~~(c + ((c / 8) * ((70 - (h - g)) / 2)));
+
 		} else if (this.attackType == "normal") {
 			if (pc && line > 0) {
 				a = 10;
 			} else {
 				if (line > 3) {
-					a = 4
+					a = spin ? (line * 2) : line;
 				} else if (line == 1) {
 					a = spin ? 2 : 0;
 				} else if (line == 2) {
@@ -4898,7 +5974,8 @@ class GachatrisBlock {
 
 			if (b2b > 0) a += 1;
 		}
-		if (line > 3) str = `gtris`;
+		if (line > 4) str = `gtrisplus`;
+		else if (line == 4) str = `gtris`;
 		else if (a === 0) str = `init${Math.min(combo + 1, 5)}`;
 		else if (a > 0) str = `spell${Math.min(a, 5)}`;
 
@@ -4989,17 +6066,13 @@ class NeoBlobGhost {
 	}
 }
 
-class NeoplexianBlob {
+class NeoplexianBlob extends LegacyMode {
 
 	constructor(parent) {
+		super(parent);
 		this.opponentGarbageBehind = {};
-		this.parent = parent;
-		this.isActive = false;
-		this.isEnable = false;
-		this.isControl = false;
-		this.isWarning = false;
+
 		this.isWarningTopOut = false;
-		this.isAux = false;
 		this.isSpawnablePiece = true;
 		this.isFever = false;
 		this.warningTrig = new NumberChangeFuncExec(0, (t) => {
@@ -5236,10 +6309,10 @@ class NeoplexianBlob {
 
 					} else if (idx.landFrames >= 0) {
 						idx.landFrames--;
-						
+
 					}
 					frames += Math.max(0, idx.frames) + Math.max(0, idx.landFrames);
-					
+
 					if (idx.frames === 0 && idx.isLandSound) {
 						switch (idx.isLandSound) {
 							case 1: {
@@ -5266,10 +6339,10 @@ class NeoplexianBlob {
 				}
 				for (let wm = 0, lm = aray.length; wm < lm; wm++) {
 					let idx = aray[wm];
-					
+
 					let landing = idx.delay <= 0 && idx.frames < 0 && idx.landFrames >= 0;
 					let kf = Math.max(0, idx.frames);
-					
+
 					let sizeBez = 1;
 					let yBez = idx.y0 + Math.min(idx.y1, (((idx.maxf - kf) / idx.maxf) * (idx.y1 - idx.y0)));
 					let py = yBez;
@@ -5310,7 +6383,7 @@ class NeoplexianBlob {
 					let x = ~~((idx.x) * this.parent.cellSize * sx),
 						y = (py - (this.fieldSize.hh)) * this.parent.cellSize * sy; //- (2 * this.cellSize);
 
-					
+
 
 
 
@@ -5746,9 +6819,9 @@ class NeoplexianBlob {
   [[0, 0], [0, -1], [0, -1], [1, 0], [0, -1]],
   ],
 					double: [
+  [[0, 0], [0, -1]],
   [[0, 0], [0, 1]],
-  [[0, 0], [0, 1]],
-  [[0, 0], [0, 2]],
+  [[0, 0], [0, -2]],
   [[0, 0], [0, 2]]
   ]
 				},
@@ -5766,9 +6839,9 @@ class NeoplexianBlob {
   [[0, 0], [0, -1], [0, -1], [1, 0], [0, -1]],
   ],
 					double: [
+  [[0, 0], [0, -1]],
   [[0, 0], [0, 1]],
-  [[0, 0], [0, 1]],
-  [[0, 0], [0, 2]],
+  [[0, 0], [0, -2]],
   [[0, 0], [0, 2]]
   ]
 				},
@@ -5786,9 +6859,9 @@ class NeoplexianBlob {
   [[0, 0], [0, -1], [0, -1], [1, 0], [-1, -1]],
   ],
 					double: [
+  [[0, 0], [0, -1]],
   [[0, 0], [0, 1]],
-  [[0, 0], [0, 1]],
-  [[0, 0], [0, 2]],
+  [[0, 0], [0, -2]],
   [[0, 0], [0, 2]]
   ]
 				},
@@ -5934,6 +7007,7 @@ class NeoplexianBlob {
 					let my = ay + (this.getQPosY(y - this.fieldSize.hh) * this.parent.fieldCellSize) + (this.getQPosY(1) * this.parent.fieldCellSize / 2);
 					let particleSpeed = 71 + (Math.random() * 30);
 					bez.y3 = 1 + (Math.random() * 0.3);
+					let isTwo = this.stack[x][y] == 6 && this.parent.garbageType == 0;;
 					this.parent.addParticle(true, "blobblock", 0, this.stack[x][y] - 1,
 						mx,
 						my,
@@ -6162,8 +7236,6 @@ class NeoplexianBlob {
 		let modulus = marr % (this.targetPoint);
 		this.divScoreAttackingTrash %= (this.targetPoint);
 
-
-
 		let remain = 0;
 		let count = attack;
 		let neutralCount = 0;
@@ -6174,7 +7246,6 @@ class NeoplexianBlob {
 		if (((this.parent.feverStat.isOn && this.isFever) || this.insane.isOn || this.isChainOffsetting) && garbLength > 0 && count == 0) count += 1;
 		attack *= (this.requiredChain > this.chain || game.isSolo ? 0 : 1);
 		count *= (this.requiredChain > this.chain || game.isSolo ? 0 : 1);
-
 
 		let gCount = 0,
 			excessCount = 0;
@@ -6268,7 +7339,6 @@ class NeoplexianBlob {
 				this.canFallTrash = false;
 				this.canFallTrashAfterFever = false;
 			}
-
 		}
 
 		game.forEachPlayer(player => {
@@ -6284,8 +7354,6 @@ class NeoplexianBlob {
 			qm.score += (total);
 			qm.trash = ~~(qm.score / (player.blob.targetPoint));
 		});
-
-
 
 		let bez = {
 			x1: 0,
@@ -6370,7 +7438,7 @@ class NeoplexianBlob {
 									(ay) + ((j.y - this.fieldSize.hh) * cs * qh),
 									tx + (tw / 2),
 									ty + (th / 2),
-									particleSpeed, 1.5, false, bez, true, {
+									particleSpeed, 2.5, false, bez, true, {
 										frame: particleSpeed * (0.3 + (Math.min(9, this.chain) * 0.2)),
 										r: this.blobColors.r[j.cell],
 										g: this.blobColors.g[j.cell],
@@ -6388,7 +7456,7 @@ class NeoplexianBlob {
 									gy + (gh / 2),
 									tx + (tw / 2),
 									ty + (th / 2),
-									particleSpeed, 1.5, false, bez, true, {
+									particleSpeed, 2.5, false, bez, true, {
 										frame: particleSpeed * (0.3 + (Math.min(9, this.chain) * 0.2)),
 										r: this.blobColors.r[um],
 										g: this.blobColors.g[um],
@@ -6549,60 +7617,64 @@ class NeoplexianBlob {
 		manager.forEachPlayer(player => {
 			if (player.player !== this.parent.player && player.team !== this.parent.team) this.parent.playerTarget.push(player.player);
 		});
-		let attackHp = this.parent.rpgAttr.attributes.attack + (this.parent.rpgAttr.attributes.atkTolerance * this.parent.seeds.field.next());
+		let attackHp = (this.parent.rpgAttr.attributes.attack + this.parent.rpgAttr.statusEffectsAttributes.attack) + (this.parent.rpgAttr.attributes.atkTolerance * this.parent.seeds.field.next());
 		let blobToBlockMultiplier = 1.8;
 
 		manager.forEachPlayer(player => {
 			if (this.parent.playerTarget.indexOf(player.player) !== -1) {
 				let qm = this.targetGarbagePlayer[player.player];
-				if (player.activeType === 1) {
-					////console.log(this.targetGarbagePlayer[player.player])
-					if (((player.player in this.opponentGarbageBehind) && player.isGarbageBehindActive)) {
+				if (player.rpgAttr.isOn ? (player.rpgAttr.canReceiveGarbage > 0) : true) {
+					if (player.activeType === 1) {
+						////console.log(this.targetGarbagePlayer[player.player])
+						if (((player.player in this.opponentGarbageBehind) && player.isGarbageBehindActive)) {
 
-						player.addGarbageBehind(this.parent.player, [qm.trash], true, false, 0, attackHp);
+							player.addGarbageBehind(this.parent.player, [qm.trash], true, false, 0, attackHp);
 
-					} else player.addGarbage(this.parent.player, [qm.trash], true, false, 0, attackHp);
-					if (qm.trash > 0) {
-						playerTrashSent[player.player] = qm.trash;
-						qm.score %= player.blob.targetPoint;
-					}
-				}
-				if (player.activeType === 0) {
-					let h = 0;
-					let g = 0;
-					let l = 4;
-					let q = 1;
-					while (h < qm.trash) {
-						h++;
-						if (h >= l) {
-							////console.log("GARB")
-							l += ~~(q * 2.75);
-							q++;
-							g++;
+						} else player.addGarbage(this.parent.player, [qm.trash], true, false, 0, attackHp);
+						if (qm.trash > 0) {
+							playerTrashSent[player.player] = qm.trash;
+							qm.score %= player.blob.targetPoint;
 						}
-						/*if (h >= l) {
-						 //////console.log("GARB")
-						 l += ~~(q * 4.5);
-						 q++;
-						 g++;
-						}*/
 					}
+					if (player.activeType === 0) {
+						let h = 0;
+						let g = 0;
+						let l = 4;
+						let q = 1;
+						while (h < qm.trash) {
+							h++;
+							if (h >= l) {
+								////console.log("GARB")
+								l += ~~(q * 2.75);
+								q++;
+								g++;
+							}
+							/*if (h >= l) {
+							 //////console.log("GARB")
+							 l += ~~(q * 4.5);
+							 q++;
+							 g++;
+							}*/
+						}
 
-					//////console.log(player.player, player.dividedBlobScoreGarbage, player.blobGarbage, g)
+						//////console.log(player.player, player.dividedBlobScoreGarbage, player.blobGarbage, g)
 
-					if (g > 0) {
-						playerTrashSent[player.player] = g;
+						if (g > 0) {
+							playerTrashSent[player.player] = g;
 
-						if ((player.player in this.opponentGarbageBehind) && player.isGarbageBehindActive) {
-							player.addGarbageBehind(this.parent.player, [g], true, true, 0, attackHp * (blobToBlockMultiplier));
-						} else player.addGarbage(this.parent.player, [g], true, true, 0, attackHp * (blobToBlockMultiplier));
+							if ((player.player in this.opponentGarbageBehind) && player.isGarbageBehindActive) {
+								player.addGarbageBehind(this.parent.player, [g], true, true, 0, attackHp * (blobToBlockMultiplier));
+							} else player.addGarbage(this.parent.player, [g], true, true, 0, attackHp * (blobToBlockMultiplier));
 
 
-						qm.score %= (player.blob.targetPoint);
-						qm.trazh = 0;
+							qm.score %= (player.blob.targetPoint);
+							qm.trash = 0;
+						}
 					}
+				} else {
+					qm.score %= (player.blob.targetPoint);
+					qm.trash = 0;
 				}
-
 
 			}
 		});
@@ -6679,7 +7751,7 @@ class NeoplexianBlob {
 				/*for (let yy = 0; yy < this.eraseInfo.length; yy++)*/
 				this.parent.playSound(`chain${Math.min(7, this.chain)}`);
 				this.parent.playSound("shoosh_chain");
-				//sound.sounds.chain1.rate(1 + (0.08 * (this.chain - 1)));
+				//sound.sounds[`chain${Math.min(7, this.chain)}`].rate(0.9);
 				let asset = this.parent.assetRect(this.isAux ? "AUX-FIELD-CHARACTER-CANVAS" : "FIELD-CHARACTER-CANVAS");
 				let sizemult = (this.isAux ? 0.47 : 1) * this.getQPosX(1);
 				let aw = asset.width;
@@ -6722,12 +7794,12 @@ class NeoplexianBlob {
 					}
 				}
 
-				if (this.chain > 1) htmlEffects.add(this.chain + `<gtp style="font-size: 0.8em">-${this.insane.insaneType == 1 ? "combo" : "chain"}</gtp>`, px, py, 50, {
+				if (this.chain > 1) htmlEffects.add(this.chain + `<gtp style="font-size: ${this.parent.fieldFontSize * 2.3}px">-${this.insane.insaneType == 1 ? "combo" : "chain"}</gtp>`, px, py, 50, {
 					name: "chain-text-anim",
 					iter: 1,
 					timefunc: "cubic-bezier(0,0,1,0)",
 					initdel: 0,
-				}, `font-size: ${~~(this.parent.fieldCellSize * 6.3)}px; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; --__chaintext_size: 1.4em; color: #${["fff", "ff0", "f00", "70f"][Math.min(4, ~~(this.chain / 5))]}`);
+				}, `font-size: ${~~(this.parent.fieldFontSize * 6.3)}px; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; --__chaintext_size: 1.4em; color: #${["fff", "ff0", "f00", "70f"][Math.min(4, ~~(this.chain / 5))]}`);
 				//let lem = this.parent.garbageLength,
 				////console.log(lem)
 				let isCounter = ~~((delayed / this.targetPoint) - lem) > 0 && lem > 0;
@@ -6764,6 +7836,18 @@ class NeoplexianBlob {
 					} catch (e) {
 						this.activeVoiceLine = "damage2";
 					} /**/
+
+					if (this.chain > 0 && this.insane.insaneType !== 0) {
+						if (this.parent.character.isHenshinCounting) {
+							let spell = "";
+							if (this.chain > MainPlayerFragment.DEFAULT_HENSHIN_SPELL_SEQUENCE.length) {
+								spell = "t_large";
+							} else {
+								spell = MainPlayerFragment.DEFAULT_HENSHIN_SPELL_SEQUENCE[this.chain - 1];
+							}
+							this.activeVoiceLine = spell;
+						}
+					}
 
 					if (this.chain > 1 && this.insane.insaneType === 2) {
 						let h = 0;
@@ -6931,7 +8015,7 @@ class NeoplexianBlob {
 
 					{
 
-						let speed = 1.75;
+						let speed = 1.25;
 
 						let blobs = [];
 						let isExist = false;
@@ -7024,7 +8108,7 @@ class NeoplexianBlob {
 							});
 						}
 
-						this.setDelay(1, 2 + (isExist ? 22 : 0) + Math.floor(Math.max(0, (longest))));
+						this.setDelay(1, 2 + (isExist ? 25 : 0) + Math.floor(Math.max(0, (longest))));
 						//this.setDelay(1, 24);
 						this.drawStack();
 						this.checkInstantDrop();
@@ -7096,7 +8180,7 @@ class NeoplexianBlob {
 
 
 		this.rotate180Timer--;
-		this.warningTrig.assign(((this.blobCount + this.parent.garbageLength) > 40 && this.isActive && !this.insane.isOn) ? 1 : 0);
+		this.warningTrig.assign(((this.blobCount + this.parent.garbageLength) > 45 && !this.insane.isOn) ? 1 : 0);
 		if (this.isAllClearTemp > 0) {
 			this.isAllClearTemp--;
 			if (this.isAllClearTemp == 0) {
@@ -7177,7 +8261,7 @@ class NeoplexianBlob {
 			this.stack[rx][startY - height] = this.NUISANCE;
 			b++;
 
-			removeHp += r.hpdmg;
+			//removeHp += r.hpdmg;
 
 
 			blobs.push({
@@ -7219,20 +8303,15 @@ class NeoplexianBlob {
 			}
 			this.blobCount = this.checkBlobCount(this.stack);
 
-			this.parent.rpgAttr.addHP(-removeHp);
-			this.parent.rpgAttr.hpDamage = this.parent.calculateHPDamage();
+			//this.parent.rpgAttr.addHP(-removeHp);
+			this.parent.rpgAttr.emulateDamage(mpl);
 			let isLose = false;
 			if (this.parent.rpgAttr.isOn && this.parent.rpgAttr.checkZeroHP()) {
 				isLose = true;
 			}
 			if (isLose) this.checkLose();
-			if (this.parent.rpgAttr.isOn) {
-				game.forEachPlayer(player => {
-					if (player.player in mpl) player.rpgAttr.addHP(mpl[player.player] * player.rpgAttr.attributes.lifesteal);
-
-				});
-			}
 			this.parent.conclude1v1Overhead(2);
+			this.parent.rpgAttr.hpDamage = this.parent.calculateHPDamage();
 
 
 			//TODO test fever
@@ -7609,15 +8688,24 @@ class NeoplexianBlob {
 					this.piece.enable = false;
 					this.piece.y = -99;
 
-					this.nextVoice.name = "fail";
+					this.nextVoice.name = "insane_fail";
 					this.nextVoice.duration = 20;
 
 					this.setDelay(0, -9);
 				}
 				else {
-					let mm = this.parent.calculateGarbage() * this.targetPoint / 2;
-					this.parent.rpgAttr.addHP(-5 * mm);
-					this.emitAttack(mm);
+					//let mm = this.parent.calculateGarbage() * this.targetPoint / 2;
+					this.parent.rpgAttr.addHP(-(this.parent.rpgAttr.maxHP / 5), true);
+					//this.emitAttack(mm);
+					this.simulateSplashOut();
+					this.parent.rpgAttr.addStatusEffect(this.parent.player, "immune2garbage", 20 + 30, {});
+					this.parent.garbage.length = 0;
+					this.parent.garbageBehind.length = 0;
+					this.parent.garbageLength = 0
+					this.parent.garbageBehindLength = 0;
+					this.parent.garbageLastForTray.assign(0);
+					this.parent.garbageBehindLastForTray.assign(0);
+					this.parent.rpgAttr.hpDamage = 0;
 				}
 				if (this.parent.rpgAttr.checkZeroHP()) {
 					isLose = true;
@@ -7712,7 +8800,7 @@ class NeoplexianBlob {
 			this.piece.active.parameters.sx = sx;
 			this.piece.active.parameters.sy = sy;
 
-			if (this.parent.ai.active) {
+			if (this.parent.ai.active && !game.replay.isOn) {
 				let h = this.piece.hold || 0;
 
 				let pieceX = sx + Math.min((this.fieldSize.w - 5), ~~((this.fieldSize.w - 10) / 2)),
@@ -8019,7 +9107,7 @@ class NeoplexianBlob {
 	}
 
 	updatePiece() {
-		if (!this.piece.enable) return;
+		if (!this.piece.enable || !this.canControl) return;
 		let gravity = this.settings.gravity;
 		if (this.piece.isAir) {
 			if (this.piece.delay <= 0) {
@@ -8068,7 +9156,7 @@ class NeoplexianBlob {
 	}
 
 	rotatePiece(_direction) {
-		if (!this.piece.enable) return;
+		if (!this.canControl || !this.piece.enable) return;
 		let direction = _direction;
 		if (this.rotate180Timer > 0) direction = 2;
 		let temp = this.piece.template;
@@ -8150,7 +9238,7 @@ class NeoplexianBlob {
 	}
 
 	moveX(shift) {
-		if (!this.piece.enable) return;
+		if (!this.piece.enable || !this.canControl) return;
 		if (this.checkValid(this.piece.activeArr, shift, 0, 0, 0, true)) {
 			this.piece.x += shift;
 			if (!this.checkValid(this.piece.activeArr, 0, 1, 0, 0, true)) {
@@ -8219,7 +9307,7 @@ class NeoplexianBlob {
 	}
 
 	hardDrop() {
-		if (this.piece.enable) {
+		if (this.piece.enable && this.canControl) {
 			let distance = this.checkDrop(this.fieldSize.h);
 			this.piece.y += distance;
 			if (distance > 0) {
@@ -8235,7 +9323,7 @@ class NeoplexianBlob {
 	}
 
 	softDrop() {
-		if (this.piece.enable && this.piece.delay <= 0) {
+		if (this.piece.enable && this.piece.delay <= 0 && this.canControl) {
 
 			if (this.piece.isAir) {
 				let gravity = this.settings.sft;
@@ -8696,8 +9784,8 @@ class NeoplexianBlob {
 			}
 
 			this.divScoreTrash = 0;
-			this.nextVoice.duration == -1;
-			this.nextVoice.name == "";
+			this.nextVoice.duration = -1;
+			this.nextVoice.name = "";
 			this.drawStack(this.stack);
 
 			if (this.isAllClear) {
@@ -8892,13 +9980,13 @@ class NeoplexianBlob {
 		this.blobCount = a.remaining;
 		//console.log(this.parent.player, a.chain);
 		if (a.chain > 6) {
-			/*
-			if (this.parent.isVisible && false) {
+
+			if (this.parent.isVisible) {
 				let asset = this.parent.assetRect(this.isAux ? "AUX-FIELD" : "FIELD");
 				let plw = this.isAux ? 0.47 : 1;
 				let px = (asset.x) + (this.parent.fieldCellSize * this.getQPosX(this.piece.x) * plw);
 				let py = (asset.y) + (this.parent.fieldCellSize * this.getQPosY(this.piece.y - this.fieldSize.hh) * plw);
-				htmlEffects.add(language.translate("7chain"), px, py, 50, {
+				htmlEffects.add(language.translate("7chain"), px, py, 40, {
 					name: "chain-text-anim",
 					iter: 1,
 					timefunc: "cubic-bezier(0,0,1,0)",
@@ -8907,7 +9995,7 @@ class NeoplexianBlob {
 
 
 			}
-			*/
+			/**/
 		}
 	}
 
@@ -9088,14 +10176,10 @@ const blobChainDetector = new class {
 					//testBoard[popRef.x][popRef.y] = 0;
 					for (let jh in obj.connections[j]) {
 						let popRef = obj.connections[j][jh];
-						//let len = Object.keys(popRefArr).length;
-						//	for (let p = 0; p < len; p++) {
-						//let popRef = popRefArr[p];
 						popped += this.removeAdjacentNuisance(testBoard, popRef.x, popRef.y, width, hiddenHeight, height);
 						testBoard[popRef.x][popRef.y] = 0;
 						popped++;
-						//remaining--;
-						//}
+
 					}
 				}
 
@@ -9160,7 +10244,7 @@ const blobChainDetector = new class {
 				}
 			}
 	}
-
+	//BREADTH FIRST SEARCH
 	bfs(referenceObject, board, x, y, width, hiddenHeight, height, modulo) {
 		//recursion function: Breadth-First Search Algorithm 
 		let a = referenceObject || {};
@@ -9808,7 +10892,10 @@ class FeverGaugeStat {
 
 }
 
+
+
 class Player extends MainPlayerFragment {
+
 	constructor(player, n) {
 		super(player, n);
 
@@ -9818,12 +10905,21 @@ class Player extends MainPlayerFragment {
 		this.auxEnabled = false;
 		this.isDead = false;
 		this.isDying = false;
+		this.halt = {
+			names: [],
+			delays: {
+				manipulation: 0,
+				delay: 0
+			}
+		};
+		this.halt.names = Object.keys(this.halt.delays);
 
 		this.controlsBitwise = {
 			on: true,
 			bit: 0,
 			//letters: "AaBbCcDdEeFfGgHhIiJjKk",
-			maxBits: 0b11111111111,
+			maxBits: 0b11111111111111,
+			lastBit: 0,
 			bitList: {
 
 			}
@@ -9854,6 +10950,7 @@ class Player extends MainPlayerFragment {
 		this.isInsaneModeOnly = false;
 
 		this.canAttack = true;
+		this.canReceiveGarbage = 1;
 		this.garbage = [];
 		this.garbageBehind = [];
 		this.isGarbageBehindActive = false;
@@ -10032,6 +11129,12 @@ class Player extends MainPlayerFragment {
 			this.lastFlagPresses[a] = false;
 			//this.flagNames.push(a);
 		}
+	}
+
+	checkHalt(man, del) {
+		return (man && this.halt.delays.manipulation) ||
+			(del && this.halt.delays.delay);
+
 	}
 
 	runAnimations() {
@@ -10250,6 +11353,7 @@ class Player extends MainPlayerFragment {
 		 if (stop.indexOf(this.animFieldNames[h]) !== -1) this.fieldAnimations[this.animFieldNames[h]].reset();*/
 		this.fieldAnimations[name].play();
 	}
+
 	stopAnimation(name) {
 		//this.resetAnimations();
 		/**for (let h = 0, m = this.animFieldNames.length; h < m; h++)
@@ -10263,6 +11367,7 @@ class Player extends MainPlayerFragment {
 		 if (stop.indexOf(this.animFieldNames[h]) !== -1) this.fieldAnimations[this.animFieldNames[h]].reset();*/
 		this.unfreezableFieldAnimations[name].play();
 	}
+
 	resetAnimations() {
 		for (let h = 0, m = this.animFieldNames.length; h < m; h++) {
 			//console.log(this.animFieldNames[h])
@@ -10271,10 +11376,12 @@ class Player extends MainPlayerFragment {
 		this.setStyle("WHOLE", "opacity", "100%");
 		this.setStyle("AUX-WHOLE", "opacity", "100%");
 	}
+
 	resetUFA() {
 		for (let h = 0, m = this.namesUFA.length; h < m; h++)
 			this.unfreezableFieldAnimations[this.namesUFA[h]].reset();
 	}
+
 	executeRotateWobble(intensity, frames, aux) {
 		this.fieldAnimations.fieldWobbleRotate.reset();
 		if (intensity === 0) return;
@@ -10282,6 +11389,7 @@ class Player extends MainPlayerFragment {
 		this.styleVariable(aux ? "AUX-WHOLE" : "ROTATING-WHOLE", `board-rot-wob-int`, `${intensity || 20}`);
 		this.fieldAnimations.fieldWobbleRotate.play();
 	}
+
 	runUnfreezableAnims() {
 		for (let h = 0, m = this.namesUFA.length; h < m; h++)
 			this.unfreezableFieldAnimations[this.namesUFA[h]].run();
@@ -10295,7 +11403,6 @@ class Player extends MainPlayerFragment {
 		this.setStyle("AUX-WHOLE", "display", this.auxEnabled ? "block" : "none");
 
 	}
-
 
 	switchModeType(type) {
 		this.activeType = type;
@@ -10548,9 +11655,10 @@ class Player extends MainPlayerFragment {
 		}
 	}
 
-	resize(cellSize, sizeMult) {
+	resize(cellSize, fontSize, sizeMult) {
 		this.cellSize = ~~(cellSize * game.resQualityMult);
 		this.fieldCellSize = ~~(cellSize * sizeMult);
+		this.fieldFontSize = ~~(fontSize * sizeMult);
 		let block = this.block;
 		let blob = this.blob;
 		//////console.log(this.fieldSize)
@@ -10571,8 +11679,8 @@ class Player extends MainPlayerFragment {
 		let plm = 6;
 		this.meterBar.right.resize(this.fieldCellSize, 0.4, fieldHeight);
 		this.meterBar.garbwait.resize(this.fieldCellSize, 0.4, fieldHeight);
-		this.setStyle("AREA", "fontSize", `${this.fieldCellSize}px`);
-		for (let body of ["BORDER", "AREA", "WHOLE", "ROTATING-WHOLE", "PLAYER-CHARACTER-LAYER"]) {
+		this.setStyle("AREA", "fontSize", `${this.fieldFontSize}px`);
+		for (let body of ["BORDER", "AREA", "WHOLE", "ROTATING-WHOLE", "STOMP-WHOLE", "PLAYER-CHARACTER-LAYER"]) {
 			this.setStyle(body, "width", `${this.fieldCellSize * ((handWidth * 2) + width + 2 + 2 + plm)}px`);
 			this.setStyle(body, "height", `${this.fieldCellSize * (fieldHeight+2+2)}px`);
 		}
@@ -10604,7 +11712,7 @@ class Player extends MainPlayerFragment {
 					size: 1.0
   },
   ]) {
-			this.setStyle(`CLEARTEXT-TEXT-${txt.name}`, "font-size", `${this.fieldCellSize * txt.size}px`);
+			this.setStyle(`CLEARTEXT-TEXT-${txt.name}`, "font-size", `${this.fieldFontSize * txt.size}px`);
 			this.setStyle(`CLEARTEXT-TEXT-${txt.name}`, "width", `100%`);
 			this.setStyle(`CLEARTEXT-TEXT-${txt.name}`, "text-align", `right`);
 			this.setStyle(`CLEARTEXT-TEXT-${txt.name}`, "opacity", `0%`);
@@ -10700,7 +11808,7 @@ class Player extends MainPlayerFragment {
 
 		this.setStyle("PLAYCHAR-TEXT-DIV", "width", `${(this.fieldCellSize * 24)}px`);
 		this.setStyle("PLAYCHAR-TEXT-DIV", "height", `${this.fieldCellSize * 4}px`);
-		this.setStyle("PLAYCHAR-TEXT", "fontSize", `${this.fieldCellSize * 4}px`);
+		this.setStyle("PLAYCHAR-TEXT", "font-size", `${this.fieldFontSize * 4}px`);
 		for (let hmll of ["DIV", "BG", "CANVAS"]) {
 			this.setStyle(`BLOB-NEXT-${hmll}`, "width", `${(this.fieldCellSize * 3 * 1.5)}px`);
 			this.setStyle(`BLOB-NEXT-${hmll}`, "height", `${this.fieldCellSize * 5 * 1.5}px`);
@@ -10749,7 +11857,9 @@ class Player extends MainPlayerFragment {
 		this.setStyle(`PLAYCHAR-CANVAS`, "transform", `rotateY(${((this.player % 2) == 1 ? 180 : 0)}deg)`);
 		this.setStyle(`RECTANIM-CANVAS`, "transform", `rotateY(${((this.player % 2) == 1 ? 180 : 0)}deg)`);
 
-
+		this.setStyle("NEXT-TEXT", "font-size", `${this.fieldFontSize * 1}px`);
+		this.setStyle("HOLD-TEXT", "font-size", `${this.fieldFontSize * 1}px`);
+		this.setStyle("STATS-SCORE-TEXT", "font-size", `${this.fieldFontSize * 1.8}px`);
 		//AUXILIARY FIELDS FOR SWAP MODE
 		//PX is 0.47;
 		let px = 0.47;
@@ -10761,15 +11871,30 @@ class Player extends MainPlayerFragment {
 
 		this.setStyle("AUX-WHOLE", this.player % 2 == 1 ? "left" : "right", `${this.fieldCellSize*-2.7}px`);
 
-		this.setStyle("FEVER-GAUGE", this.player % 2 == 1 ? "left" : "right", `${this.fieldCellSize*-0.3}px`)
+		this.setStyle("FEVER-GAUGE", this.player % 2 == 1 ? "left" : "right", `${this.fieldCellSize*-0.3}px`);
 
 
+
+		this.setStyle("RPG-DECK", this.player % 2 == 1 ? "left" : "right", `${this.fieldCellSize*-0.9}px`)
+		this.setStyle("RPG-DECK", "top", `${this.fieldCellSize*9}px`);
 		for (let hmll of ["", "-CANVAS"]) {
 			this.setStyle(`FEVER-GAUGE${hmll}`, "width", `${(this.fieldCellSize * 6)}px`);
 			this.setStyle(`FEVER-GAUGE${hmll}`, "height", `${this.fieldCellSize * 15}px`);
 		}
 		this.setCanvasSize("feverGauge", this.cellSize * 6, this.cellSize * 15);
 		this.feverStat.resize(this.cellSize * 6, this.cellSize * 15, this.cellSize, this.player % 2 == 1);
+
+		for (let hmll of ["", "-CANVAS"]) {
+			this.setStyle(`RPG-DECK${hmll}`, "width", `${(this.fieldCellSize * 8)}px`);
+			this.setStyle(`RPG-DECK${hmll}`, "height", `${this.fieldCellSize * 13}px`);
+		}
+		this.setCanvasSize("rpgDeck", 200 * 8, 200 * 13);
+		/*this.setStyle(`RPG-DECK`, "width", `${(this.fieldCellSize * 8.3)}px`);
+		this.setStyle(`RPG-DECK`, "height", `${this.fieldCellSize * 14}px`);
+		this.setStyle(`RPG-DECK-CANVAS`, "width", `${(this.fieldCellSize * 8.25)}px`);
+		this.setStyle(`RPG-DECK-CANVAS`, "height", `${this.fieldCellSize * 13.95}px`);*/
+
+
 
 
 		for (let field of ["-CHARACTER-CANVAS", "", "-PIECE-CANVAS", "-STACK-CANVAS", "-DYNAMIC"]) {
@@ -10971,6 +12096,11 @@ class Player extends MainPlayerFragment {
 		this.isDying = true;
 		this.conclude1v1Overhead(2);
 	}
+	checkWin() {
+		this.isWin = true;
+		//this.isActive = false;
+		this.conclude1v1Overhead(2);
+	}
 
 	phaseLose(o) {
 		this.pressStr = "";
@@ -11008,7 +12138,6 @@ class Player extends MainPlayerFragment {
 
 		this.setStyle("WHOLE", "opacity", "0%");
 		this.setStyle("AUX-WHOLE", "opacity", "0%");
-
 	}
 
 	startNext() {
@@ -11031,11 +12160,13 @@ class Player extends MainPlayerFragment {
 	reset() {
 		this.block.reset();
 		this.blob.reset();
-		this.rpgAttr.reset();
+		//this.rpgAttr.reset();
 		this.swapMode.reset();
 		this.woi.reset();
 		this.woiWormhole.reset();
 		this.feverStat.resetRound();
+		this.block.canControl = true;
+		this.blob.canControl = true;
 
 		//if ("fieldWobbleRotate" in this.fieldAnimations) this.executeRotateWobble(0,65);
 
@@ -11089,6 +12220,7 @@ class Player extends MainPlayerFragment {
 		}
 
 		this.controlsBitwise.bit = 0;
+		this.controlsBitwise.lastBit = this.controlsBitwise.bit
 
 		this.playerTarget.length = 0;
 
@@ -11123,6 +12255,7 @@ class Player extends MainPlayerFragment {
 	}
 
 	addGarbage(player, arr, wait, allMess, del, hpdmg) {
+		//if (this.)
 		let mm = false;
 
 		for (let l = 0, os = arr.length; l < os; l++) {
@@ -11157,7 +12290,7 @@ class Player extends MainPlayerFragment {
 					player: player,
 					count: limit,
 					allmess: allMess,
-					hpdmg: (hpdmg) * (150 / (150 + this.rpgAttr.attributes.defense))
+					hpdmg: (hpdmg) * (100 / (100 + (this.rpgAttr.attributes.defense + this.rpgAttr.statusEffectsAttributes.defense)))
 				});
 				i -= limit;
 				if (i == 0) break;
@@ -11207,7 +12340,7 @@ class Player extends MainPlayerFragment {
 					player: player,
 					count: limit,
 					allmess: allMess,
-					hpdmg: (hpdmg) * (!isDirect ? (150 / (150 + this.rpgAttr.attributes.defense)) : 1)
+					hpdmg: (hpdmg) * (!isDirect ? (150 / (150 + (this.rpgAttr.attributes.defense + this.rpgAttr.statusEffectsAttributes.defense))) : 1)
 				});
 				i -= limit;
 			}
@@ -11281,15 +12414,46 @@ class Player extends MainPlayerFragment {
 	controlsListen() {
 		//let input = this.pressStr[i];
 		if (this.controlsBitwise.on) {
-			let bitPress = 0b00000000000;
-			let bitRelease = 0b00000000000;
-			let impulse = 0b00000000000;
+			let bitPress = 0b00000000000000;
+			let bitRelease = 0b00000000000000;
+			let impulse = 0b00000000000000;
 			//if (this.pressStr) //console.log(this.player, this.pressStr)
 			for (let i = 0; i < this.pressStr.length; i++) {
 				//if (!this.piece.enable) continue;
 				let input = this.pressStr[i];
 				//this.controlsListen(this.pressStr[i]);
 				//this.flagPresses[this.flagNamesByChar[input.toLowerCase()]] = 
+				let isNumber = !isNaN(Number(input));
+
+				if (isNumber) {
+					let isLetter = isNaN(Number(this.pressStr[i + 1])) && ("Nn").indexOf(this.pressStr[i + 1]) !== -1;
+					if (isLetter) {
+						let hms = 0;
+						if (this.pressStr[i + 1] == "N") {
+							hms = 1;
+						}
+						//console.log(input + (this.pressStr[i + 1]))
+						switch (this.pressStr[i]) {
+							case "1": {
+								if (hms) bitPress |= 0b00100000000000;
+								else bitRelease |= 0b00100000000000;
+								break;
+							}
+							case "2": {
+								if (hms) bitPress |= 0b01000000000000;
+								else bitRelease |= 0b01000000000000;
+								break;
+							}
+							case "3": {
+								if (hms) bitPress |= 0b10000000000000;
+								else bitRelease |= 0b10000000000000;
+								break;
+							}
+						}
+						i++;
+						continue;
+					}
+				}
 				let flagName = this.flagNamesByChar[input.toLowerCase()];
 				let bit = this.controlsBitwise.bitList[flagName];
 				if (input in this.flagsLowerToUpper) {
@@ -11298,8 +12462,6 @@ class Player extends MainPlayerFragment {
 				} else {
 					bitRelease |= bit;
 				}
-
-
 				//console.log(input, bit, flagName, bitPress, bitRelease);
 			}
 
@@ -11340,11 +12502,11 @@ class Player extends MainPlayerFragment {
 				if (this.block.isControl) this.block.moveX(-1);
 				if (this.blob.isControl) this.blob.moveX(-1);
 			}
+
 			if ((this.flagPresses.right && !this.lastFlagPresses.right) || (impulse & this.controlsBitwise.bitList.right)) {
 				if (this.block.isControl) this.block.moveX(1);
 				if (this.blob.isControl) this.blob.moveX(1);
 			}
-
 
 
 			if ((this.flagPresses.softdrop && !this.lastFlagPresses.softdrop) || (impulse & this.controlsBitwise.bitList.softdrop)) {
@@ -11370,11 +12532,51 @@ class Player extends MainPlayerFragment {
 				}
 			}
 
+			//console.log(this.controlsBitwise.lastBit, this.controlsBitwise.bit, bitPress, (this.controlsBitwise.lastBit !== this.controlsBitwise.bit) && (bitPress & 0b01000000000000))
+			if ((impulse & 0b00100000000000) || ((this.controlsBitwise.lastBit !== this.controlsBitwise.bit) && (bitPress & 0b00100000000000))) {
+				this.rpgAttr.executeSkill(0);
+				//console.log("establised")
+			}
+			if ((impulse & 0b01000000000000) || ((this.controlsBitwise.lastBit !== this.controlsBitwise.bit) && (bitPress & 0b01000000000000))) {
+				this.rpgAttr.executeSkill(1);
+			}
+			if ((impulse & 0b10000000000000) || ((this.controlsBitwise.lastBit !== this.controlsBitwise.bit) && (bitPress & 0b10000000000000))) {
+				this.rpgAttr.executeSkill(2);
+			}
+
+			this.controlsBitwise.lastBit = this.controlsBitwise.bit;
 
 		} else {
 			for (let i = 0; i < this.pressStr.length; i++) {
 				//if (!this.piece.enable) continue;
+				//if (isNaN(Number(this.pressStr[i])))
 				let input = this.pressStr[i];
+				let isNumber = !isNaN(Number(input));
+				if (isNumber) {
+					let isLetter = isNaN(Number(this.pressStr[i + 1])) && ("Nn").indexOf(this.pressStr[i + 1]) !== -1;
+					if (isLetter) {
+						let hms = 0;
+						if (this.pressStr[i + 1] == "N") {
+							hms = 1;
+						}
+						switch (this.pressStr[i]) {
+							case "1": {
+
+								break;
+							}
+							case "2": {
+
+								break;
+							}
+							case "3": {
+
+								break;
+							}
+						}
+						i++;
+						continue;
+					}
+				}
 				//this.controlsListen(this.pressStr[i]);
 
 				switch (input) {
@@ -11474,18 +12676,18 @@ class Player extends MainPlayerFragment {
 	}
 
 	playerUpdate() {
-
+		//this.pressStr = "";
 		if (!game.replay.isOn) {
 
 			if (this.ai.active) {
 				this.ai.run();
 				this.pressStr = this.ai.pressStr;
-			}
-
-			if (this.ai.active) {
 				this.aiBlob.run();
-
 				this.pressStr += this.aiBlob.pressStr;
+				if (this.rpgAttr.isRPG) {
+					this.aiRPG.run();
+					this.pressStr += this.aiRPG.pressStr;
+				}
 			}
 		}
 		if (game.replay.isOn) {
@@ -11498,9 +12700,9 @@ class Player extends MainPlayerFragment {
 
 
 		this.controlsListen();
-		//this.editIH("SCORE-STATS", this.pressStr)
 
 		this.isDelayStoppable = true;
+		this.block.canControl = this.blob.canControl = !this.checkHalt(1, 0);
 
 		if (this.block.isControl) this.block.shiftDelay();
 		if (this.blob.isControl) this.blob.shiftDelay();
@@ -11528,9 +12730,18 @@ class Player extends MainPlayerFragment {
 			if (this.flagPresses[g] !== this.lastFlagPresses[g]) this.lastFlagPresses[g] = this.flagPresses[g];
 		}
 
-		if (this.block.isEnable) this.block.updateDelay();
-		if (this.blob.isEnable) this.blob.updateDelay();
 
+		if (!this.checkHalt(0, 1)) {
+			if (this.block.isEnable) this.block.updateDelay();
+			if (this.blob.isEnable) this.blob.updateDelay();
+		}
+
+		for (let j = 0; j < this.halt.names.length; j++) {
+			let ref = this.halt.names[j]
+			//let ref = this.halt.delays[j];
+			if (this.halt.delays[ref] > 0) this.halt.delays[ref]--;
+		}
+		// animations
 		if (this.block.isEnable) {
 			let bl = this.block;
 			bl.drawActivePiece();
@@ -11597,8 +12808,8 @@ class Player extends MainPlayerFragment {
 		if (this.woiWormhole.enable) this.woiWormhole.draw();
 
 		this.warningTrig.assign(
-			((this.block.isEnable && this.block.isWarning && !this.block.isAux) ||
-				(this.blob.isEnable && this.blob.isWarning && !this.blob.isAux)) ? 1 : 0);
+			(!this.isWin && ((this.block.isEnable && this.block.isWarning && !this.block.isAux) ||
+				(this.blob.isEnable && this.blob.isWarning && !this.blob.isAux))) ? 1 : 0);
 		this.rectanim.run();
 		this.rpgAttr.update();
 		this.swapMode.run();

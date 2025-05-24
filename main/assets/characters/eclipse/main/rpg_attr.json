@@ -1,0 +1,31 @@
+{
+	"hp": 235,
+	"mana": 145,
+	"atk": 3.5,
+	"def": 25,
+	"regen": 1,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 5,
+		"skill": "eclipse0",
+		"voice": "skill1",
+		"mana": 55,
+		"desc": "healing",
+		"rawdesc": "healing",
+		"skillvalues": {
+
+		},
+		"attr": [
+			{
+				"type": "regen",
+				"time": 2,
+				"parameters": {
+					"maxf": 50,
+					"value": "890%attack"
+				}
+			}
+		]
+	}
+}

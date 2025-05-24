@@ -1,0 +1,42 @@
+{
+	"hp": 140,
+	"mana": 60,
+	"atk": 10,
+	"def": 30,
+	"regen": 0,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 1200,
+		"voice": "skill1",
+		"mana": 22,
+		"skill": "elisha1",
+		"desc": "atkup, immunity",
+		"rawdesc": "atkup|immunity",
+		"attr": [
+			{
+				"type": "atkbuff",
+				"time": 210,
+				"parameters": {
+					"value": "10%attack"
+				}
+			},
+			{
+				"type": "immune2dmg",
+				"time": 210,
+				"parameters": {
+
+				}
+			},
+			{
+				"type": "regen",
+				"time": 270,
+				"parameters": {
+					"value": "1%hp",
+					"maxf": 30
+				}
+			}
+		]
+	}
+}

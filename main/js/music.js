@@ -6,7 +6,7 @@ const music = new class {
 		this.volume = 100;
 		this.sources = {};
 	}
-	async load(filenames) {
+	load(filenames) {
 		let loaded = 0;
 		let loadLength = 0;
 		let notExist = [];
@@ -32,41 +32,53 @@ const music = new class {
 				start: "start",
 				loop: "loop",
 			};
-
+			let subloaded = 0;
 			for (let b in mm) {
 				let reference = mm[b];
 				////console.log(reference);
 				let ml = `/assets/music/${filename.path}/${reference}.ogg`;
 				sources[b] = ml;
-				storage[b] = await load(ml, "blob");
+				
+				load(ml, "blob").then(lk => {
+					storage[b] = lk;
+					subloaded++;
+					//console.log(ml, subloaded)
+					if (subloaded >= 2) {
+						loadLength++;
+					
+
+						for (let b in mm) {
+							let reference = mm[b];
+							blob[b] = URL.createObjectURL(storage[reference]);
+
+						}
+
+
+						this.sources[f] = new MusicObject(f, filename.continuable);
+
+
+
+						////console.log(sources);
+						this.sources[f].load(blob.start, blob.loop, () => {
+							loaded++;
+							if (loadLength <= loaded) {
+								this.isReady = true;
+								for (let mmm = 0; mmm < filenames.length; mmm++) {
+									let filename = filenames[mmm];
+									this.songs[filename.name] = this.sources[filename.path];
+								}
+								this.volumeSet(this.volume);
+								//console.log(this.songs)
+							}
+						});
+					}
+				});
+
+				//console.log(storage[b])
 			}
-			loadLength++;
 
-			for (let b in mm) {
-				let reference = mm[b];
-				blob[b] = URL.createObjectURL(storage[reference]);
-
-			}
-			
-
-			this.sources[f] = new MusicObject(f, filename.continuable);
-
-
-
-			////console.log(sources);
-			this.sources[f].load(blob.start, blob.loop, () => {
-				loaded++;
-				if (loadLength <= loaded) {
-					this.isReady = true;
-					this.volumeSet(this.volume);
-					//console.log(this.songs)
-				}
-			});
 		}
-		for (let mmm = 0; mmm < filenames.length; mmm++) {
-			let filename = filenames[mmm];
-			this.songs[filename.name] = this.sources[filename.path];
-		}
+
 	}
 	stopAll() {
 		for (let st in this.sources) {
@@ -89,27 +101,32 @@ const music = new class {
 		}
 	}
 
-	resetAllSeek(str) {
-		if (!(str in this.songs)) return;
+	resetAllSeek() {
+		//if (!(str in this.songs)) return;
 		for (let i in this.songs) {
 			this.songs[i].reset();
 		}
 	}
 	volumeSet(n) {
 		this.volume = n;
-		
-		 for (let st in this.songs) {
+
+		for (let st in this.songs) {
 			this.songs[st].volume(n / 100);
 		}
 	}
 }();
-
-class MusicObject {
+class BaseMusic {
 	constructor(name, continuable) {
 		this.isContinuable = continuable;
 		this.name = name; //for debugging
 		this.stopTime = 0;
 		this.stopType = "start";
+		this.isPlaying = false;
+	}
+}
+class MusicObject extends BaseMusic {
+	constructor(name, continuable) {
+		super(name, continuable)
 		this.source = {
 			start: null,
 			loop: null
@@ -146,10 +163,7 @@ class MusicObject {
 				});
 			}
 		}
-
 	}
-	
-	
 
 	getPos() {
 		let num = 0;
@@ -193,7 +207,7 @@ class MusicObject {
 		if (!(source in this.source)) return;
 
 		this.source[source].stop();
-		
+
 	}
 	stopMusic() {
 		this.stopType = this.isContinuable ? (this.stopType) : "start";
@@ -214,7 +228,7 @@ class MusicObject {
 		}
 	}
 	reset() {
-		
+
 		if (this.isPlaying) {
 			this.stop("loop");
 			this.stop("start")
@@ -224,3 +238,5 @@ class MusicObject {
 		this.stopType = "start";
 	}
 }
+
+__private.music = music;

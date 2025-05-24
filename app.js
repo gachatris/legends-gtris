@@ -5,56 +5,69 @@
 
 "use-strict";
 
-
-
 (function(global) {
-
-	window.onerror = (event, source, lineno, colno, error) => {
+	
+	window.addEventListener("error", (event, source, lineno, colno, error) => {
 		if (error instanceof SyntaxError) {
 			try {
-				console.log(`FATAL ERROR!!! At ${source}, ${lineno}:${colno}, ${event.indexOf('Strict mode code')!==-1||event.indexOf('Identifier \'')!==-1?'':"there is"} ${['a','e','i','o','u'].indexOf(event.toLowerCase().replace('uncaught syntaxerror: ', '').charAt(0)) !== -1?'an':'a'} ${event.replace('Uncaught SyntaxError: ','').toLowerCase()}. Please contact the Gachatris developer and he will fix a discovered bug to recover the game.`)
+				console.log(`FATAL ERROR!!! At ${source}, ${lineno}:${colno}, ${event.indexOf('Strict mode code')!==-1 || event.indexOf('Identifier \'')!==-1?'': "there is"} ${['a', 'e', 'i', 'o', 'u'].indexOf(event.toLowerCase().replace('uncaught syntaxerror: ', '').charAt(0)) !== -1?'an': 'a'} ${event.replace('Uncaught SyntaxError: ', '').toLowerCase()}. Please contact the Gachatris developer and he will fix a discovered bug to recover the game.`)
 				document.body.style = "background:#000;color:#fff;";
 			} catch (e) {}
 		} else {
-			console.warn(event, source, lineno, colno, error);
+			//console.warn(event, source, lineno, colno, error);
+			
 			//alert(`At ${source}, ${lineno}:${colno}, there is ${[`a`,`e`,`i`,`o`,`u`].indexOf(event.toLowerCase().charAt(0)) !== -1?'an':'a'} ${event}. If you see this error mesage, contact the Gachatris developer.`)
 		}
-	}
-
+	})
+	
 	const accessible = {};
-
-	/*	if ("AndroidIO" in window) {
+	
+	let generateUUID = function() {
+		const HEXADECIMAL = "0123456789abcdef";
+		let uuid = "";
+		for (let u = 0; u < 4 * 8; u++) {
+			if ((u % 4) == 0 && ~~(u / 4) >= 2 && ~~(u / 4) <= 5)
+				uuid += "-";
+			uuid += HEXADECIMAL[~~(Math.random() * 16)];
 			
+		}
+		return uuid;
+	}
+	
+	/*	if ("AndroidIO" in window) {
 		}/**/
-
+	
 	/*//console.log = (...args) => {
 			//accessible.log(args)
 		}*/
+	
+	let isDevMode = window.location.toString().includes("http://localhost:");
+	//console.log(isDevMode)
 	const BASE_DIRECTORY = "./main";
-
+	
 	function dataURIToBinary(dataURI) {
 		const BASE64_MARK = ";base64,"
 		var base64Index = dataURI.indexOf(BASE64_MARK) + BASE64_MARK.length;
-		var base64 = dataURI.substring(base64Index);
+		var base64 = dataURI.split[BASE64_MARK][1];
 		var raw = window.atob(base64);
 		var rawLength = raw.length;
 		var array = new Uint8Array(new ArrayBuffer(rawLength));
-
+		
 		for (i = 0; i < rawLength; i++) {
 			array[i] = raw.charCodeAt(i);
 		}
 		return array;
 	}
-
-
+	
+	
 	class NativeLDBManager {
 		#isBlocked = false;
 		#isError = false;
-
+		
 		/**
-		 *EricLenovo's Natuve Local IndexedDB Manager
+		 *EricLenovo's Native Local IndexedDB Manager
 		 */
-
+		
 		constructor() {
 			this.database;
 			this.backup = [];
@@ -70,7 +83,7 @@
 		backupAndUpdate(lis) {
 			this.backup = [];
 			let requestBackup = this.database.transaction("Main", "readonly").objectStore("Main");
-
+			
 			let test = requestBackup.getAll();
 			test.onsuccess = () => {
 				let arr = test.result;
@@ -82,7 +95,14 @@
 				//console.log("index missing, upgrading database");
 			}
 		}
-
+		
+		close() {
+			//console.log(this.database)
+			
+			this.database.close();
+			
+		}
+		
 		/**
 		 * Initializes EricLenovo Native Local IndexedDB Manager
 		 */
@@ -93,9 +113,10 @@
 			};
 			this.listeners.open = on.open || function() {};
 			this.listeners.update = on.update || function() {};
-
+			
 			let a = indexedDB.open(this.dbname, version || void 0);
 			this.categories = indices || [];
+			this.#isError = false;
 			a.onerror = (e) => {
 				console.error(e.target.error);
 				this.#isError = true;
@@ -121,7 +142,7 @@
 						isExist = false;
 					}
 				};
-
+				
 				if (!isExist) {
 					this.version++;
 					//this.database.close();
@@ -141,63 +162,74 @@
 				}
 				this.listeners.open();
 			};
-
+			
 			a.onupgradeneeded = async (e) => {
 				let aa = e.target.result;
-				let ab, ac;
+				let ab,
+					ac;
 				////////console.log("upgrading...");
-
+				
 				try {
 					let te = a.result.objectStoreNames,
 						isExist = false;
-
+					
 					for (let tew = 0; tew < Object.keys(te).length; tew++) {
 						if (te[tew] == "Main") isExist = true;
 					}
-
+					
 					if (isBackup && isExist) await aa.deleteObjectStore("Main");
-
-					ab = await aa.createObjectStore("Main", { keyPath: "index" });
+					
+					ab = await aa.createObjectStore("Main", {
+						keyPath: "index"
+					});
 					////////console.log(te)
 				} catch (e) {
 					////////console.log(e);
 					// ab = await aa.transaction("Main").objectStore("Main");
 				}
-
-
+				
+				
 				try {
 					let o = ab.indexNames;
 					////////console.log(o, "INDEX")/**/
-
+					
 					let wIsExist = false;
-
+					
 					for (let tew = 0; tew < Object.keys(o).length; tew++) {
 						if (te[tew] == "main") wIsExist = true;
 						if (te[tew] == "main_unique") wIsExist = true;
 					}
-					ac = await ab.createIndex("main", "category", { unique: false });
-					await ab.createIndex("main_unique", ["index", "category"], { unique: false });
+					ac = await ab.createIndex("main", "category", {
+						unique: false
+					});
+					await ab.createIndex("main_unique", ["index", "category"], {
+						unique: false
+					});
 				} catch (e) {
 					////////console.log("error" + e)
 				}
-
+				
 				for (let y of this.categories) {
 					try {
-						ab.createIndex(y, `category`, { unique: false });
-						ab.createIndex(`${y}_unique`, ["index", "category"], { unique: false });
+						ab.createIndex(y, `category`, {
+							unique: false
+						});
+						ab.createIndex(`${y}_unique`, ["index", "category"], {
+							unique: false
+						});
 					} catch (e) {
 						////////console.log(e, "TRANSACTION")
 					}
 				}
-
-
+				
+				
 			}
 		}
-
+		
 		/**
 		 * Checks if IndexedDB fails to initialize or is blocked on your browser.
 		 */
-
+		
 		checkError() {
 			return this.#isBlocked || this.#isError;
 		}
@@ -225,14 +257,14 @@
 				func(undefined);
 			}
 		}
-
+		
 		/**
 		 * Returns an array of all elemets in a specific category.
 		 */
-
+		
 		readAll(category, func) {
 			let _category = "main";
-
+			
 			if (category) _category = category;
 			let a = this.database.transaction("Main", "readonly");
 			let b = a.objectStore("Main").index(_category);
@@ -242,13 +274,13 @@
 				c.onsuccess = () => {
 					func(c.result)
 				}
-
+				
 			} catch (e) {
 				////////console.log("error" + e)
 				func(undefined);
 			}
 		}
-
+		
 		readBulk(bulk, func) {
 			let a = {};
 			let max = bulk.length;
@@ -266,21 +298,24 @@
 				});
 			}
 		}
-
-
+		
+		
 		/**
 		 * Writes data to an element that then is added to a specific category.
 		 */
-		write(category, nind, val, func) {
+		write(category,
+			nind,
+			val,
+			func) {
 			//if (this.categories.indexOf(d) === -1) throw new Error(`Category ${category} not found for index ${ind}`);
 			try {
 				let index = "main";
 				if (category) index = category;
 				let a = this.database.transaction("Main", "readwrite");
 				let b = a.objectStore("Main");
-
+				
 				let ind = index + "===" + nind;
-
+				
 				let c = {
 					index: ind,
 					value: val,
@@ -289,13 +324,13 @@
 					version: this.dataVersion,
 					searchable: {}
 				};
-
-
+				
+				
 				c.category = index;
 				c.searchable[index] = ind;
-
+				
 				b.put(c);
-
+				
 				a.oncomplete = () => {
 					if (func) func();
 				}
@@ -308,11 +343,11 @@
 				});
 			}
 		}
-
+		
 		/**
 		 * Removes an element from a specific category.
 		 */
-
+		
 		delete(category, nind, isPreventPrefix, func) {
 			let _func = func || function() {}
 			let index = "main";
@@ -320,7 +355,7 @@
 			if (category) index = category;
 			let a = this.database.transaction("Main", "readwrite");
 			let b = a.objectStore("Main");
-
+			
 			try {
 				let find = b.get(ind);
 				find.onsuccess = () => {
@@ -338,62 +373,57 @@
 				_func(false);
 			};
 		}
-
+		
 	};
 	//In case Gachatris Legends runs on Android (Java), this has to be used.
 	class AndroidStorageManager {
 		#isBlocked = false;
 		#isError = false;
-
+		
 		/**
 		 *EricLenovo's Natuve Local IndexedDB Manager
 		 */
-
-		constructor() {
-
-		}
+		
+		constructor() {}
 		/**
 		 * Backs up data from an old version upon upgrading beforehand.
 		 */
-
-
+		close() {}
 		/**
 		 * Initializes EricLenovo Native Local AndroidStorage Manager
 		 */
 		initialize(indices, listener, version, isBackup) {
 			listener.open();
-
 		}
-
+		
 		/**
 		 * Checks if IndexedDB fails to initialize or is blocked on your browser.
 		 */
-
+		
 		checkError() {
 			return this.#isBlocked || this.#isError;
 		}
-
+		
 		#toUnicodeString(stringToEncode) {
 			//let a = stringToEncode.split("");
 			let str = "";
 			for (let h = 0; h < stringToEncode.length; h++) {
 				str += stringToEncode.codePointAt(h);
-				if (h < stringToEncode.length) str += ",";
+				if (h < stringToEncode.length - 1) str += ",";
 			}
 			return str;
 		}
-
+		
 		#fromUnicodeString(utfToDecode) {
 			let str = "";
 			let spl = utfToDecode.split(",");
 			for (let h = 0; h < spl.length; h++) {
 				str += String.fromCodePoint(spl[h]);
-				//if (h < utfToDecode.length) str += ",";
 			}
 			return str;
 		}
-
-
+		
+		
 		/**
 		 * Reads and returns an element inside a specific category.
 		 */
@@ -402,13 +432,13 @@
 			if (category) _category = category;
 			try {
 				let obj = undefined;
-				accessible.log(ind);
+				
 				let hb = await accessible.callAsyncJava("callback_databaseLoad", async (name, ad) => {
-					ad.getData(name, `${_category/*.replace(new RegExp("/", "gm"), "_")*/}/${ind}.gtrisutf`);
+					ad.getData(name, `${_category}/${ind}.gtrisutf`);
 				});
-
+				
 				//accessible.log(hb.length);
-
+				
 				if (hb.length !== 0) obj = {
 					index: ind,
 					value: this.#fromUnicodeString(hb),
@@ -417,26 +447,26 @@
 					version: 1,
 					searchable: {}
 				}
-				accessible.log(`${hb.length}, ${JSON.stringify(obj)}`);
+				
 				func(obj);
-
+				
 			} catch (e) {
 				func(undefined);
 				accessible.log("no file for " + ind + "; reason:: " + e.stack);
 			}
-
+			
 		}
-
+		
 		/**
 		 * Returns an array of all elemets in a specific category.
 		 */
-
+		
 		async readAll(category, func) {
 			let _category = "main";
 			if (category) _category = category;
 			let li = [];
 			try {
-
+				
 				let hb = await accessible.callAsyncJava("callback_databaseLoad", async (name, ad) => {
 					ad.getDataFromDir(name, _category.replace(new RegExp("/", "gm"), "_"));
 				});
@@ -456,7 +486,7 @@
 				func([]);
 			}
 		}
-
+		
 		readBulk(bulk, func) {
 			let a = {};
 			let max = bulk.length;
@@ -474,19 +504,22 @@
 				});
 			}
 		}
-
+		
 		/**
 		 * Writes data to an element that then is added to a specific category.
 		 */
-		async write(category, nind, val, func) {
+		async write(category,
+			nind,
+			val,
+			func) {
 			//if (this.categories.indexOf(d) === -1) throw new Error(`Category ${category} not found for index ${ind}`);
 			let index = "main";
 			if (category) index = category;
 			let _func = func || function() {}
-
-
+			
+			
 			//let ind = index + "===" + nind;
-
+			
 			/*let c = {
 				index: ind,
 				value: val,
@@ -495,35 +528,35 @@
 				version: this.dataVersion,
 				searchable: {}
 			};*/
-
+			
 			let utf16IntString = this.#toUnicodeString(val);
 			let u = await accessible.callAsyncJava("callback_database", (name, android) => {
 				android.writeData(name, `${category.replace(new RegExp("/", "gm"), "_")}/${nind.replace(new RegExp("/", "gm"), "_")}.gtrisutf`, utf16IntString);
 			});
-
-
-
+			
+			
+			
 			_func(u == "1");
 		}
-
+		
 		/**
 		 * Removes an element from a specific category.
 		 */
-
+		
 		async delete(category, nind, isPreventPrefix, func) {
 			let _func = func || function() {}
 			let index = "main";
-
-			let u = await accessible.callAsyncJava("callback_databshe", (name, android) => {
+			
+			let u = await accessible.callAsyncJava("callback_database_del", (name, android) => {
 				android.deleteData(name, `${category.replace(new RegExp("/", "gm"), "_")}/${nind.replace(new RegExp("/", "gm"), "_")}.gtrisutf`);
 			});
-
-
-
+			
+			
+			
 			_func(u == "1");
-
+			
 		}
-
+		
 	};
 	const DATABASE = (("AndroidIO" in window) ? AndroidStorageManager : NativeLDBManager);
 	const databaseManager = new DATABASE();
@@ -538,23 +571,21 @@
 		/**ttf: "font/ttf",
 		otf: "font/otf",*/
 	};
-
-
-
-	function dataURIToBinary(dataURI) {
-		const BASE64_MARK = ";base64,"
+	
+	function dataURIToBinary(base64) {
+		/*const BASE64_MARK = ";base64,"
 		var base64Index = dataURI.indexOf(BASE64_MARK) + BASE64_MARK.length;
-		var base64 = dataURI.substring(base64Index);
+		var base64 = dataURI.split(BASE64_MARK)[1];*/
 		var raw = window.atob(base64);
 		var rawLength = raw.length;
 		var array = new Uint8Array(new ArrayBuffer(rawLength));
-
+		
 		for (i = 0; i < rawLength; i++) {
 			array[i] = raw.charCodeAt(i);
 		}
 		return array;
 	}
-
+	
 	function base64func(blob, call) {
 		var reader = new FileReader();
 		reader.readAsDataURL(blob);
@@ -564,14 +595,14 @@
 		}
 	}
 	/**
-	 * Loads a file by XMLHttpRequest() to the window. 
+	 * Loads a file by XMLHttpRequest() to the window.
 	 * @param {String} directory
 	 * @param {"String"} Response Type
 	 * @return {'Response Body'} response
 	 */
-	const __fetch = (("AndroidIO" in window)) ? ((dir, resptype) => {
+	const __fetch = (("AndroidIO" in window) && false) ? ((dir, resptype) => {
 		return new Promise(async res => {
-
+			
 			////console.log(dir)
 			/*let h = await fetch(BASE_DIRECTORY + "/" + dir);
 			let h2 = await h[resptype || "text"]();
@@ -588,38 +619,53 @@
 					try {
 						android.getAssetData(_name, fullDir.replace(new RegExp("//", "gm"), "/"));
 					} catch (e) {
+						
 						//console.log(e.stack);
 						accessible.log(e.stack);
 					}
 				});
 				let mimetype = (ext in CONTENT_TYPES) ? CONTENT_TYPES[ext] : "application/octet-stream";
-				let str = `data:${mimetype};base64,${ba}`;
-				let array = dataURIToBinary(str);
-				let blob = new Blob([array], { type: mimetype });
-
-
+				let numToStrArr = ba.split(",").map(am => ~~am);
+				var uint8array = new Uint8Array(numToStrArr);
+				//var rawLength = ba.length;
+				
+				
+				/*for (i = 0; i < rawLength; i++) {
+				  uint8array[i] = raw.fromCodePoint(i);
+				}*/
+				
+				let _blob = new Blob([uint8array], {
+					type: mimetype
+				});
+				//let str = `data:${mimetype};base64,${ba}`;
+				//let array = dataURIToBinary(ba);
+				
+				// accessible.log(fullDir + ":" + mimetype)
+				
+				
 				if (resptype === "blob") {
-
-					res(blob);
+					
+					res(_blob);
 				} else if (resptype === "base64") {
-					base64func(blob, bsixfour => {
+					base64func(_blob, bsixfour => {
 						res(bsixfour);
-					})
-
-
+					});
+					
+					
 				} else {
-					let text = await blob.text();
+					let text = await _blob.text();
 					let lml = "";
-					for (let k = 0; k < 15; k++) lml += text[k];
+					//for (let k = 0; k < 15; k++) lml += text[k];
 					res(text);
 				}
 			} catch (e) {
-
+				accessibie.log(e.stack)
 			}
-
-
+			
+			
 		});
-	}) : ((_directory, respType) => {
+	}) : ((_directory,
+		respType) => {
 		////console.log(_directory)
 		let dir = _directory;
 		/*
@@ -630,116 +676,95 @@
  		let fullDir = (`${BASE_DIRECTORY.replace("./", "html/")}/${ld[ld.length - 1]}`);
  		//console.log((fullDir.replace(new RegExp("//", "gm"), "/")));
  		*/
-
-
+		
+		
 		let _d = _directory.split("./");
-
-		////console.log(ext)
-
-		////console.log(`${BASE_DIRECTORY.replace("./", "html/")}/${_d[_d.length - 1]}`);
-
-
-		let directory = (`${BASE_DIRECTORY}/${_d[_d.length - 1]}`).replace(new RegExp("//", "gm"), "/");
+		let directory = (`${BASE_DIRECTORY}/${_d[_d.length - 1]}`).replace(new RegExp("//", "gm"),
+			"/");
 		return new Promise((res, rej) => {
 			let xhr = new XMLHttpRequest();
 			xhr.timeout = 20000;
 			xhr.responseType = "arraybuffer";
-
+			
 			xhr.onreadystatechange = async (event) => {
-				
-				if (event.target.readyState === 4 && event.target.status === 403) {
+				if (event.target.readyState === 4 && event.target.status === 0) {
 					//console.error("403: EricLenovo System does not find a file: forbidden or there's an error encountered during the loading of a file.")
 					//rej("403: EricLenovo System does not find a file: forbidden or there's an error encountered during the loading of a file.");
 					let retry = await __fetch(_directory, respType);
 					res(retry);
 					return;
 				};
-
+				
 				if (event.target.readyState === 4 && event.target.status === 200) {
 					////console.log(xhr.response)
-					var uint8Array = new Uint8Array(xhr.response);
-					var i = uint8Array.length;
-					let binaryString = new TextDecoder().decode(uint8Array);
-
-					var base64 = binaryString; //.join('');/**/
-					/*let binaryString = xhr.response
-					let uint8Array = new Uint8Array(xhr.response.length);
-					for (let o = 0; o < xhr.response.length; o++) {
-						uint8Array[o] = xhr.response.charCodeAt(o);
-					}/**/
-
-
-					//var base64 = data;
-					////console.log(uint8Array, binaryString.substring(0, 27));
-
-
-
-					fetchedStorage[directory] = binaryString;
-
-					let type = {
-						text: () => binaryString,
-						blob: () => new Blob([uint8Array]),
-						base64: () => binaryString
-
-					} [respType || "text"];
-					////console.log(type())
-
-					res(type());
+					try {
+						var uint8Array = new Uint8Array(xhr.response);
+						var i = uint8Array.length;
+						let binaryString = new TextDecoder().decode(uint8Array);
+						
+						var base64 = binaryString; //.join('');/**/
+						function rend() {
+							let type;
+							let ret = respType || "text";
+							if (ret == "blob") type = new Blob([uint8Array]);
+							else type = binaryString;
+							//console.log(ret)
+							return type;
+						}
+						res(rend());
+					} catch (e) {
+						console.log(e.stack)
+					}
 				};
 				if (event.target.readyState === 4 && event.target.status === 404) {
-
-					rej("404: EricLenovo System does not find a file: no such file or directory.");
+					log("XHR", 4, event.target.status, directory);
+					rej(directory + ": " + "404: EricLenovo System does not find a file: no such file or directory.");
 				};
-
 				
-
 				if (event.target.status !== 0 && event.target.status === 0) {
-
+					
 					//console.log(directory, event.target.readyState, event.target.status, "0: EricLenovo System does not find a file: the static webserver has been shut down.");
 				};
-
-
 			}
 			xhr.open('GET', directory, true);
 			xhr.send();
 		})
 	});
-
+	
 	const __initScript = __fetch;
-
+	
 	const _private = {};
-
+	
+	let _fontsize = parseFloat(window.getComputedStyle(document.documentElement).fontSize.split("px")[0]);
+	//console.log(_fontsize)
+	
 	let appInfo = {
 		version: "0",
 		isUpdated: false,
 		isUpdateShow: false,
 		agent: window.navigator.userAgent,
 		android: "AndroidIO" in window,
-		dependencies: {}
+		dependencies: {},
+		fontsize: _fontsize
 	};
-
+	
 	if (appInfo.android) try {
 		window.__ANDROID_ACCESSIBLE = accessible;
 		accessible.log = (m) => {
 			try {
 				AndroidIO.showToast(m);
-			} catch (e) {
-
-			}
+			} catch (e) {}
 		}
 		accessible.classes = {};
 		accessible.promises = {};
 		accessible.executeResolvePromise = (base, output) => {
 			accessible.promises[base].resolve(output);
-
+			
 		};
-
 		accessible.executeRejectPromise = (base, output) => {
 			accessible.promises[base].reject(output);
 		};
-
 		accessible.callAsyncJava = (name, promise) => {
-
 			return new Promise((res, rej) => {
 				let base = `${name}_${~~(Math.random() * 100000)}`;
 				accessible.promises[base] = {
@@ -753,35 +778,33 @@
 					}
 				}
 				promise(base, AndroidIO || {});
-
-
 			});
 		};
-
+		
 		accessible.callSyncJava = (promise) => {
 			promise(AndroidIO || {});
 		};
-
+		//accessible.bridge = AndroidIO || {};
+		
 	} catch (e) {
-		try {
-			
-		} catch (e) {};
+		try {} catch (e) {};
 	}
-
-
+	
+	
 	/*global.addEventListener("DOMContentLoaded", (event) => {
 
 	});*/
-
+	
 	function launchDatabaseMain(addcats) {
-		let categories = ["global"];
+		let categories = ["global",
+			"assets"
+		];
 		for (let h of addcats) {
 			categories.push(h);
 		}
+		if (!appInfo.android) databaseManager.close();
 		databaseManager.initialize(categories, {
 			open: () => {
-				//console.error("Database Ready");
-				//	console.error(databaseManager.categories);
 				launch();
 			},
 			update: () => {
@@ -789,18 +812,20 @@
 			}
 		});
 	}
-
-	function readMetaJSON(json) {
+	
+	async function readMetaJSON(json) {
 		////console.log(json.database.categories)
 		let categories = json.database.categories;
 		appInfo.version = json.version;
-
+		
 		////console.log(json);
 		let dson = {};
-
-
-
-		databaseManager.read("global", "dependencies", async result => {
+		if (appInfo.android) {
+			let jsonString = await __fetch("dependencies.json");
+			dson = JSON.parse(jsonString);
+			appInfo.dependencies = dson;
+			launchDatabaseMain(categories);
+		} else databaseManager.read("global", "dependencies", async result => {
 			try {
 				//console.log(result);
 				if (typeof result === "undefined") {
@@ -809,39 +834,35 @@
 				} else {
 					dson = JSON.parse(result.dependencies.value);
 				}
-
+				
 				appInfo.dependencies = dson;
 				//console.log(dson);
 				launchDatabaseMain(categories);
-			} catch (e) {
-
-			}
-
+			} catch (e) {}
+			
 		});
-
+		
 	}
-
-	function startLaunchInitializer() {
-
+	
+	async function startLaunchInitializer() {
+		
 		let isOnline = true || ("AndroidIO" in window) ? true : window.navigator.onLine;
-
+		
 		let json = {};
-		if ("AndroidIO" in window) {
-
-		}
-
-
-		databaseManager.initialize(["global"], {
+		if ("AndroidIO" in window) {}
+		
+		if (appInfo.android) {
+			let jsonString = await __fetch("./metadata.json");
+			json = JSON.parse(jsonString);
+			readMetaJSON(json);
+		} else databaseManager.initialize(["global", "assets"], {
 			open: () => {
-
 				databaseManager.read("global", "metadata", async result => {
-					if ("AndroidIO" in window) {
-
-					}
+					if ("AndroidIO" in window) {}
 					if (!isOnline) {
 						if (typeof result === "undefined") {
 							//alert("Internet is OFFLINE. System cannot find app metadata. Failed to load game.");
-
+							
 						} else {
 							json = JSON.parse(result.value);
 							readMetaJSON(json);
@@ -856,19 +877,19 @@
 								m = (result.value);
 							}
 							let l = JSON.parse(m);
-
+							
 							//let jsonCompare = {};
-							if (l.version !== json.version) {
+							if (l.version !== json.version || isDevMode) {
 								appInfo.isUpdated = true;
 								//console.log("APP UPDATE");
 								databaseManager.write("global", "metadata", jsonString);
-								/*for (let categ of databaseManager.categories)/**/ databaseManager.readAll("assets", (dele) => {
+								databaseManager.readAll("assets", (dele) => {
 									for (let k of dele) {
 										let h = k.index;
 										//console.log(h);
 										databaseManager.delete("assets", h);
 									}
-								})
+								});
 							}
 							readMetaJSON(json);
 						} catch (e) {
@@ -876,104 +897,153 @@
 						}
 					}
 				});
-
-
-				//console.log(json, isOnline);
 			},
 			update: () => {
 				//console.log("Database Upgrade");
 			}
 		});
-
-
+		
+		
 	}
-
-
-
-
+	
+	
+	
+	
 	/**
 	 *Loads an array of scripts containing code, with scoped functions and
 	 * variables.
 	 */
-
+	
 	function loadScripts(categ, base, files, on) {
 		const fileLayer = [];
-
+		
 		let loaded = 0;
 		const loadMax = files.length;
-
+		
 		/*databaseManager.readAll(categ, (dele) => {
 			for (let shie of dele) {
 				let h = shie.index;
 				console.log(h);
 				databaseManager.delete(categ, h);
 			}
-		})/**/
-
+		}) /**/
+		
 		//let handle = {};
-
-		for (let h = 0; h < files.length; h++) {
-			let dir = `${base}${base !== "" ? "/"  : ""}${files[h]}.js`;
-			databaseManager.read(categ, dir, async (result) => {
+		if (appInfo.android) {
+			for (let h = 0; h < files.length; h++) {
+				let dir = `${base}${base !== "" ? "/": ""}${files[h]}.js`;
 				////console.log(result, dir);
 				let request = {};
-				if (typeof result === "undefined") {
-					request = await __fetch(dir);
-
-
-					databaseManager.write(categ, dir, request);
-					////console.log(request);
-				} else {
-					request = result.value;
-				}
-
-
-				fileLayer[h] = request;
-				loaded++;
-				if (loaded === loadMax) {
-					let str = "";
-					for (let b = 0; b < fileLayer.length; b++) {
-						//console.log(files[b], fileLayer[b].split("\n").length)
-						str += `${fileLayer[b]};;;`;
+				__fetch(dir).then(request => {
+					fileLayer[h] = request;
+					loaded++;
+					if (loaded === loadMax) {
+						let str = "";
+						for (let b = 0; b < fileLayer.length; b++) {
+							//console.log(files[b], fileLayer[b].split("\n").length)
+							str += `${fileLayer[b]};;;`;
+						}
+						
+						
+						
+						let handle = {};
+						
+						handle.__checkDependency = (f) => {
+							f();
+						};
+						handle.__BASE_DIRECTORY = BASE_DIRECTORY;
+						
+						// //console.log(str);
+						//document.body.innerHTML = str.replace(new RegExp("\\n", "gm"), "<br>");
+						/*let a = document.createElement("a");
+						a.href = URL.createObjectURL(new Blob([str]));
+						a.download = "resolve.js";
+						a.click();*/
+						try {
+							let func = new Function(["__private", "database", "xhrFetch", "__initScript", "handle", "appinfo", 'android', 'accessible', "generateUUID"], str);
+							
+							let exec = func(_private, databaseManager, __fetch, (_base, _files, _on) => loadScripts(`${base}/${_base}`, _files, _on), handle, appInfo, (appInfo.android ? AndroidIO : {}), accessible, () => generateUUID());
+							// //console.log(handle)
+							
+							on(handle.__setHandle);
+						} catch (ee) {
+							console.log(ee.stack);
+						}
 					}
-
-
-
-					let handle = {};
-
-					handle.__checkDependency = (f) => {
-						f();
-					};
-					handle.__BASE_DIRECTORY = BASE_DIRECTORY;
-
-					// //console.log(str);
-					//document.body.innerHTML = str.replace(new RegExp("\\n", "gm"), "<br>");
-					/*let a = document.createElement("a");
-					a.href = URL.createObjectURL(new Blob([str]));
-					a.download = "resolve.js";
-					a.click();*/
-					try {
-						let func = new Function(["__private", "database", "xhrFetch", "__initScript", "handle", "appinfo", 'android', 'accessible'], str);
-						////console.log(func);
-						let exec = func(_private, databaseManager, __fetch, (_base, _files, _on) => loadScripts(`${base}/${_base}`, _files, _on), handle, appInfo, appInfo.android ? AndroidIO : {}, accessible);
-						// //console.log(handle)
-
-						on(handle.__setHandle);
-					} catch (ee) {
-						console.log(ee.stack);
+				});
+				
+				
+				//databaseManager.write(categ, dir, request);
+				////console.log(request);
+				
+				
+				
+			}
+		} else
+			for (let h = 0; h < files.length; h++) {
+				let dir = `${base}${base !== "" ? "/": ""}${files[h]}.js`;
+				databaseManager.read(categ, dir, async (result) => {
+					////console.log(result, dir);
+					let request = {};
+					if (typeof result === "undefined") {
+						request = await __fetch(dir);
+						
+						
+						databaseManager.write(categ, dir, request);
+						////console.log(request);
+					} else {
+						request = result.value;
 					}
-				}
-
-
-			});
-		}
+					
+					
+					fileLayer[h] = request;
+					loaded++;
+					if (loaded === loadMax) {
+						let str = "";
+						for (let b = 0; b < fileLayer.length; b++) {
+							//console.log(files[b], fileLayer[b].split("\n").length)
+							str += `${fileLayer[b]};;;`;
+						}
+						
+						
+						
+						let handle = {};
+						
+						handle.__checkDependency = (f) => {
+							f();
+						};
+						handle.__BASE_DIRECTORY = BASE_DIRECTORY;
+						
+						//console.log(str);
+						//document.body.innerHTML = str.replace(new RegExp("\\n", "gm"), "<br>");
+						/*let a = document.createElement("a");
+						a.href = URL.createObjectURL(new Blob([str]));
+						a.download = "resolve.js";
+						a.click();*/
+						try {
+							let func = new Function(["__private", "database", "xhrFetch", "__initScript", "handle", "appinfo", 'android', 'accessible'], str);
+							////console.log(func);
+							let exec = func(_private, databaseManager, __fetch, (_base, _files, _on) => loadScripts(`${base}/${_base}`, _files, _on), handle, appInfo, appInfo.android ? AndroidIO : {}, accessible);
+							// //console.log(handle)
+							
+							on(handle.__setHandle);
+						} catch (ee) {
+							console.log(ee.stack);
+						}
+					}
+					
+					
+				});
+			}
+		
+		
 	}
 	/**
-	 * Specifiable function, launches the main files: index.xml, css, and js.
+	 * Specifiable function, launches the main files: index.xml, css.css, and js.
 	 */
-
-
-
+	
+	
+	
 	async function launch() {
 		//const files = ["main"];
 		let query = appInfo.dependencies.start;
@@ -984,11 +1054,11 @@
 			jsfolder = query.script_folder,
 			fontfolder = query.font_folder;
 		////console.log(query)
-
-
+		
+		
 		let cnt = 0;
 		max = 2, h = {};
-
+		
 		function ons() {
 			document.body.innerHTML = h[xml];
 			let style = document.createElement("STYLE");
@@ -996,10 +1066,8 @@
 			document.head.appendChild(style);
 			ems();
 		}
-		for (let lo of [xml, css]) databaseManager.read(category, lo, (rs) => {
-			if (typeof rs !== "undefined") {
-
-			} else {
+		let los = (lo, rs) => {
+			if (typeof rs !== "undefined") {} else {
 				__fetch(lo).then(s => {
 					h[lo] = s;
 					cnt++;
@@ -1008,18 +1076,24 @@
 					}
 				});
 			}
-		});
-
-
-
+		}
+		if (appInfo.android) {
+			for (let lo of [xml, css]) los(lo, undefined);
+		} else
+			for (let lo of [xml, css]) databaseManager.read(category, lo, (rs) => {
+				los(lo, rs);
+			});
+		
+		
+		
 		let ems = () => {
 			loadScripts(category, jsfolder, js, (init) => {
 				//accessible.log("loaded javascript")
-
-
+				
+				
 				/**/
 				const fonts = query.fonts;
-
+				
 				let loaded = 0;
 				let loadMax = fonts.length;
 				let styles = document.createElement("style");
@@ -1033,12 +1107,12 @@
 							let re = reader.result;
 							////console.log(re.substring(0,90));
 							styles.innerHTML += `
-    @font-face {
-     font-family: ${fonts[g].name};
-     src: url('${re}') format('${fonts[g].type}');
-     font-weight: 600;
-    }`;
-
+              @font-face {
+              font-family: ${fonts[g].name};
+              src: url('${re}') format('${fonts[g].type}');
+              font-weight: 600;
+              }`;
+							
 							loaded++;
 							if (loaded === loadMax) {
 								document.head.appendChild(styles);
@@ -1047,14 +1121,14 @@
 						};
 					});
 				}
-
+				
 			});
 		};
-
-
-
+		
+		
+		
 	}
-
+	
 	startLaunchInitializer();
-
+	
 })(window);

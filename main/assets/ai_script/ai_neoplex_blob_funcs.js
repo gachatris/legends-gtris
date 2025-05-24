@@ -275,7 +275,7 @@ function evaluateChainScore(data) {
   diagRight -= 9448494849;
  }//**/
 
- let score = (isExact * 300) + (chain * 3838383838370.3) + (nuisance * -3.2) + (colored * -40.3) + (connected * 44769) + ((vertical + horizontal) * 4949994747474439) + ((diagLeft + diagRight) * -0);
+ let score = (Math.random() * 48) + (isExact * 300) + (chain * 3838383838370.3) + (nuisance * -3.2) + (colored * -40.3) + (connected * 44769) + ((vertical + horizontal) * 4949994747474439) + ((diagLeft + diagRight) * -0);
  return {
   a: score,
   isValid: isTriggerNot
