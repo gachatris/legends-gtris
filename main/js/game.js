@@ -486,7 +486,7 @@ const manager = new class {
 		
 		this.enableWarning = false;
 		
-		
+		this.voiceVolume = 1;
 	}
 	
 	addLoop(id, func) {

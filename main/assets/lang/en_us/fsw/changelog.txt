@@ -1,7 +1,17 @@
+=# VERSION 0.1.0.1 ALPHA (quick fix)
+May 25, 2025 update
+-> If you find bugs in the game, report them to the developer (EricLenovo) through the official Gachatris + Linkblobs Discord Server (with the invite button shown in the Main Menu). 
+
+- This is a quick fix / minor update of 0.1.0 Alpha with quick bug fixes.
+
+# Minor Additions, Changes, and Bug Fixes
+ - Fixed Keybinding button not working properly 
+ - Added Voice volume and Interface SFX volume in Audio and Volume section
+ - Startup-preventing SyntaxError fixed
+
+
 =# VERSION 0.1.0 ALPHA
 May 25, 2025 update
-
--> If you find bugs in the game, report them to the developer (EricLenovo) through the official Gachatris + Linkblobs Discord Server (with the invite button shown in the Main Menu). 
 
 # Character Additions: 
 ## Eclipse
@@ -29,7 +39,7 @@ May 25, 2025 update
  - Notifications now appear on the bottom left of the screen. They are "warnings" that notify you "results", "notifications", or "errors".
  - Other bugfixes, refactoring, and improvements
  
-# Major Additions
+# Major Additions:
 ## FULL-SCREEN WINDOW
  - Navigate by using keyboard, mouse, or touch.
  - The window is automatically resized to the window size of the browser or device, regardless of the aspect ratio/resolution.

@@ -13,6 +13,13 @@
 		"default": 90,
 		"text": "text_percent"
 	},
+		"set_global_voice": {
+		"type": "range_minmax",
+		"min": 0,
+		"max": 100,
+		"default": 50,
+		"text": "text_percent"
+	},
 	"set_global_interface_sfx": {
 		"type": "range_minmax",
 		"min": 0,

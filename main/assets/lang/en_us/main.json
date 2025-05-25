@@ -135,7 +135,7 @@
 	"error_kb_duplicate": "Key [var=0] already exists in this flag",
 	"error_kb_duplicate_desc": "Duplicate keys cannot exist in the same flag.",
 		
-	"menu_main": "Gachatris Legends v0.1.0 Alpha",
+	"menu_main": "Gachatris Legends v0.1.0.1 Alpha",
 	"menu_start": "Play Game",
 	"menu_start_desc": "Start a new game session.",
 	"menu_replaycenter": "Replay Center",
@@ -217,8 +217,11 @@
 	"audiovolume_music_desc": "Adjust background music volume.",
 	"audiovolume_sound": "Sound Effects Volume",
 	"audiovolume_sound_desc": "Adjust the volume for sound effects.",
-	"audiovolume_interface": "Interface Sound Volume",
-	"audiovolume_interface_desc": "Adjust menu interface volume.",
+	"audiovolume_interface_sfx": "Interface Sound Volume",
+	"audiovolume_interface_sfx_desc": "Adjust menu interface volume.",
+	"audiovolume_voice": "Voice Volume",
+	"audiovolume_voice_desc": "Adjust character voice volume.",
+
 	"audiovolume_musicbank": "In-session Music",
 	"audiovolume_musicbank_desc": "Change music to play for a match session.",
 

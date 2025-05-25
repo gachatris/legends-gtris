@@ -20,6 +20,24 @@
 			"offstate": "#fff2"
 		},
 		{
+			"string": "audiovolume_voice",
+			"desc": "audiovolume_voice_desc",
+			"type": "range_minmax",
+			"property": "set_global_voice",
+			"list": "set_global_voice",
+			"onstate": "#ffff",
+			"offstate": "#fff2"
+		},
+		{
+			"string": "audiovolume_interface_sfx",
+			"desc": "audiovolume_interface_sfx_desc",
+			"type": "range_minmax",
+			"property": "set_global_interface_sfx",
+			"list": "set_global_interface_sfx",
+			"onstate": "#ffff",
+			"offstate": "#fff2"
+		},
+		{
 			"string": "audiovolume_musicbank",
 			"desc": "audiovolume_musicbank_desc",
 			"type": "range_list_specific",

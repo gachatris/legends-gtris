@@ -3176,7 +3176,7 @@ const playerVoiceSystem = {
 		let a = `${base}#${version}|${name}`;
 
 		if (a in this.voices) {
-			//this.voices[p][a].main.rate(1);
+			this.voices[a].main.volume(game.voiceVolume / 100);
 
 			return this.voices[a].main.play();
 			/*this.voices[p][a].main.play();

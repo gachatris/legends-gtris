@@ -1,5 +1,5 @@
 {
-	"version": "0.1.0 Alpha",
+	"version": "0.1.0.1 Alpha",
 	"build": "1",
 	"database": {
 		"categories": ["cache", "local_data", "replays"]

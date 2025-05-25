@@ -762,7 +762,8 @@ const menu = new class {
 			isActive: false,
 			change: 0,
 			index: 0, //index
-		}
+		};
+		this.volume = 1;
 	}
 	
 	loadReplayData(dataString, isFile) {
@@ -1073,6 +1074,16 @@ const menu = new class {
 		if (sfxvol !== sound.volume) {
 			sound.volumeSet(sfxvol);
 		}
+		
+		let vofxvol = this.storage.getItem("set_global_voice", 0);
+		if (vofxvol !== game.voiceVolume) {
+			game.voiceVolume = vofxvol;
+		}
+		
+		let ifxvol = this.storage.getItem("set_global_interface_sfx", 0);
+		if (ifxvol !== this.volume) {
+			this.volume = ifxvol;
+		}
 	}
 	
 	checkStorageSettings() {
@@ -1218,6 +1229,7 @@ const menu = new class {
 	playSound(name) {
 		this.sounds[name].stop();
 		this.sounds[name].play();
+		this.sounds[name].volume(this.volume / 100);
 	}
 	
 	run() {
