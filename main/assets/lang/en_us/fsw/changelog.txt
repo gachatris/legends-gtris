@@ -36,8 +36,10 @@ May 25, 2025 update
  - Adjusted particles
  - New "dust"-like particles
  - New song: "Starbells In Motion"
+ - Changed some sound effects for Gachatris
  - Notifications now appear on the bottom left of the screen. They are "warnings" that notify you "results", "notifications", or "errors".
  - Other bugfixes, refactoring, and improvements
+
  
 # Major Additions:
 ## FULL-SCREEN WINDOW
