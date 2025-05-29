@@ -1,6 +1,22 @@
+=# VERSION 0.1.0.2 ALPHA (quick fix 2)
+May 30, 2025 update
+-> If you find bugs in the game, report them to the developer (EricLenovo) through the official Gachatris + Linkblobs Discord Server (with the invite button shown in the Main Menu). 
+
+- This is a minor update of 0.1.0.1 Alpha.
+
+# Minor Additions, Changes, and Bug Fixes
+ - Fixed English language
+ - Fixed splash image: 2024 was mistaken for the actual initial development date.
+ - "Sheeshie" text removed from Linkblobs; it was supposed to be removed before updating to 0.1.0 Alpha. This text was there every time the Game detects a 7-chain or above in Linkblobs but now it's gone.
+ - Probable "TypeError" fix: a function when referencing a song that doesn't get properly loaded is not a function.
+ - Fixed pause key not working (reproduced from 0.0.1 A1q1 Alpha)
+ - Fixed replay data download: .txt extension in a file name is removed
+ - RPG Mode: margin time set to 320 seconds, adjusted garbage blocking
+ - Bug fix: pausing the game while the files are being loaded prior to a session
+ - Other bug fixes
+
 =# VERSION 0.1.0.1 ALPHA (quick fix)
 May 25, 2025 update
--> If you find bugs in the game, report them to the developer (EricLenovo) through the official Gachatris + Linkblobs Discord Server (with the invite button shown in the Main Menu). 
 
 - This is a quick fix / minor update of 0.1.0 Alpha with quick bug fixes.
 
@@ -8,7 +24,6 @@ May 25, 2025 update
  - Fixed Keybinding button not working properly 
  - Added Voice volume and Interface SFX volume in Audio and Volume section
  - Startup-preventing SyntaxError fixed
-
 
 =# VERSION 0.1.0 ALPHA
 May 25, 2025 update
@@ -30,16 +45,15 @@ May 25, 2025 update
  - Adjusted font size to precision (not in some cases)
  - Changed Gachatris's timings (Autoshift Rate (ARR), Autoshift Delay (DAS), Line Clear Delay, Piece Entry Delay, and Pre-Line Clear Delay)
  - Double Play: Professional Gachatris mode moved to Versus mode (now a mode parameter)
- - Zen Mode: Parameter "T-Spin Double Only" is now added for Gachatris-only sessions, where you are not allowed to clear lines other than T-Spin Dounles but you'll win if you achieve 20 or more T-Spin Doubles.
+ - Zen Mode: Parameter "T-Spin Double Only" is now added for Gachatris-only sessions, where you are not allowed to clear lines other than T-Spin Doubles but you'll win if you achieve 20 or more T-Spin Doubles.
  - KEYBINDING: You are now able to assign one or more keys to flags using the "Many-to-One" keybinding system where multiple bound keys correspond to a flag/trigger.
  - All Character's fever entrance images are removed, but they will come back after some updates.
  - Adjusted particles
  - New "dust"-like particles
  - New song: "Starbells In Motion"
- - Changed some sound effects for Gachatris
  - Notifications now appear on the bottom left of the screen. They are "warnings" that notify you "results", "notifications", or "errors".
+ - Changed some general in-game sound effects
  - Other bugfixes, refactoring, and improvements
-
  
 # Major Additions:
 ## FULL-SCREEN WINDOW

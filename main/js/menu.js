@@ -976,8 +976,8 @@ const menu = new class {
 	downloadReplayData() {
 		let u = game.replayDataToString();
 		let a = document.createElement("a");
-		let blob = new Blob([u]);
-		a.setAttribute("href", URL.createObjectURL(blob), { type: 'application/octet-stream' });
+		let blob = new Blob([u], { type: 'application/octet-stream' });
+		a.setAttribute("href", URL.createObjectURL(blob));
 		a.setAttribute("download", `gtrislegends-${Date.now()}.gtlrx`);
 		a.click();
 	}

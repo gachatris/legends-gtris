@@ -1387,6 +1387,9 @@ blob.colorSet = defaultBlobColors;
 			//RPG ATTRIBUTES 
 			case 7: {
 				this.targetPointSystem.on = true;
+				
+				this.targetPointSystem.prep.initial = 70;
+				this.targetPointSystem.prep.marginTime = 320 * 60;
 				this.forEachPlayer(player => {
 					let ap = this.replay.data.players[player.player].rpg;
 					/*player.block.isProfessional = true;
@@ -1438,6 +1441,10 @@ blob.colorSet = defaultBlobColors;
 						rs.skill.desc = strDesc;
 					}
 					
+					player.garbageBlocking = "linkblob-full";
+					player.block.garbageLimit = 8;
+					player.blob.isChainOffsetting = true;
+					
 					
 				});
 				
@@ -1457,11 +1464,14 @@ blob.colorSet = defaultBlobColors;
 				//let professional = this.getRDDataKey("professional", 0) == 1;
 				this.forEachPlayer(player => {
 					let isInsane = false;
-					
+					player.garbageBlocking = "linkblob-full";
+					player.block.garbageLimit = 8;
+					player.blob.isChainOffsetting = true;
 					if (professional) {
 						player.block.isProfessional = true;
 						player.block.isAllSpin = true;
 						player.block.piece.is180able = true;
+						
 					}
 				});
 				this.isProfessional = professional;
@@ -3165,7 +3175,7 @@ blob.colorSet = defaultBlobColors;
 		log.run();
 	}
 	pauseGame() {
-		if (this.pause.on) return;
+		if (this.pause.on || !this.isGameLoaded) return;
 		this.pause.on = true;
 		if (this.replay.isOn) touchButtons.enableControllers(true);
 		menu.changeMenu(this.replay.isOn ? JSON.stringify(menu.pauseReplaySels) : JSON.stringify(menu.pauseSels), false);
@@ -3174,7 +3184,7 @@ blob.colorSet = defaultBlobColors;
 	}
 	
 	unpauseGame() {
-		if (!this.pause.on) return;
+		if (!this.pause.on || !this.isGameLoaded) return;
 		this.pause.frame = 50;
 		if (this.replay.isOn) touchButtons.enableControllers(false);
 		//menu.changeSelectables(menu.pauseSels);
@@ -3342,9 +3352,9 @@ const keypressManager = new class {
 		
 	}
 	keyGeneral(code, type) {
-		if (code in this.bindsDefault.general) {
+		if (code in this.binds.general) {
 			if (type === "keydown") {
-				switch (this.bindsDefault.general[code]) {
+				switch (this.binds.general[code]) {
 					case "pause": {
 						game.pauseGame();
 						break;
@@ -3441,7 +3451,7 @@ const keypressManager = new class {
 			fsw.keyInput(key, evt.type);
 		} else if (!menu.isMenu)
 			do {
-				//if (this.keyGeneral(key, evt.type)) break;
+				if (this.keyGeneral(key, evt.type)) break;
 				let player = manager.players[manager.activePlayer];
 				var flag = this.keyFlag(key, {
 					keydown: 0,

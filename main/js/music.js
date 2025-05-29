@@ -103,16 +103,16 @@ const music = new class {
 
 	resetAllSeek() {
 		//if (!(str in this.songs)) return;
-		for (let i in this.songs) {
+		for (let i in this.songs) try {
 			this.songs[i].reset();
-		}
+		} catch(e) {}
 	}
 	volumeSet(n) {
 		this.volume = n;
 
-		for (let st in this.songs) {
+		for (let st in this.songs) try {
 			this.songs[st].volume(n / 100);
-		}
+		} catch(e) {}
 	}
 }();
 class BaseMusic {

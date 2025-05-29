@@ -10,7 +10,6 @@ const language = new class {
 
 	load(file) {
 		this.#current = file;
-		this.coun
 		let km = file.toLowerCase().replace(/\-/gm, "_");
 		return new Promise(async (res, rej) => {
 			this.loadLanguage(await load(`./assets/lang/${km}/main.json`, "text"));

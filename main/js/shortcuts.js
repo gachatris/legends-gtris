@@ -146,7 +146,6 @@ function hexToRGB(hex) {
 		b: b,
 	}
 }
-////console.log((0xffFFffffffffffffffffff), Number.MAX_SAFE_INTEGER)
 
 const blobToBase64 = function(blob) {
 	return new Promise((call, rej) => {
@@ -379,13 +378,6 @@ class GIFRenderer {
   this.frameDelay = fps;
   this.enabled = false;
   this.isLoop = isLoop;
-  
-  /*this.#canvas.convertToBlob().then(res => {
-   let a = document.createElement("a");
-   a.download = Date.now() + "rawlead.png";
-   a.href = URL.createObjectURL(res);
-   a.click();
-  })*/
   
  }
  initialize(target) {

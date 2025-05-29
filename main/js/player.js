@@ -3293,14 +3293,6 @@ class RectangularAnimations {
 			this.#ctx.drawImage(j.a, /*0,0,1235,700,/**/ 1235 * (ms[0]), this.dim.h * 10 * (~~(ms[1])), 1235, this.dim.h * 10);
 
 		}
-		/*this.#canvas.convertToBlob().then((res) => {
-		 elem("a", uu => {
-		  let url = URL.createObjectURL(res);
-		  uu.download = "7373jdjd.png";
-		  uu.href = url;
-		  uu.click();
-		 })
-		})*/
 		this.#testCtx.drawImage(this.#canvas, 0, 0);
 	}
 	fetchCtx(ctx) {
@@ -4998,7 +4990,7 @@ class GachatrisBlock extends LegacyMode {
 			}
 
 			//if (this.parent.garbageBlocking === "full" && this.isProfessional) this.raiseGarbage();
-			if (this.parent.garbageBlocking === "full") {
+			if (this.parent.garbageBlocking !== "linkblob-full" && this.parent.garbageBlocking === "full") {
 				this.canRaiseGarbage = true;
 			}
 			if (this.insane.isOn) {
@@ -5484,7 +5476,7 @@ class GachatrisBlock extends LegacyMode {
 			}
 			this.parent.rpgAttr.emulateDamage(mpl);
 
-			this.canRaiseGarbage = this.parent.garbageBlocking !== "full";
+			this.canRaiseGarbage = this.parent.garbageBlocking == "linkblob-full" || this.parent.garbageBlocking !== "full";
 			let isLose = false;
 			if (this.parent.rpgAttr.isOn && this.parent.rpgAttr.checkZeroHP()) {
 				isLose = true;
@@ -5681,7 +5673,7 @@ class GachatrisBlock extends LegacyMode {
 				this.parent.engageCleartext("line", true, language.translate(`line${lines}`));
 			}
 
-			if (this.parent.garbageBlocking == "full") {
+			if (this.parent.garbageBlocking !== "linkblob-full" && this.parent.garbageBlocking == "full") {
 				this.canRaiseGarbage = false;
 			}
 			if (this.isTSDOnly && !this.isAux) this.parent.engageCleartext("b2b", this.tsdCount > 0, language.translate("tsd_" + (this.tsdCount == 1 ? "singular" : "plural"), [this.tsdCount]));
@@ -9705,7 +9697,7 @@ class NeoplexianBlob extends LegacyMode {
 			this.pop.x = this.eraseInfo[0].x;
 			this.pop.y = this.eraseInfo[0].y;
 
-			this.canFallTrash = this.canFallTrashAfterFever = this.isActive || ((this.requiredChain > 0) && (this.chain < this.requiredChain)) || (this.parent.garbageBlocking !== "full");
+			this.canFallTrash = this.canFallTrashAfterFever = this.isActive || ((this.requiredChain > 0) && (this.chain < this.requiredChain)) || (this.parent.garbageBlocking !== "linkblob-full" && this.parent.garbageBlocking !== "full");
 			this.firstGroupsPop.length = 0;
 			for (let h of groupsFirstBlob) {
 				this.firstGroupsPop.push(h);
@@ -9978,25 +9970,6 @@ class NeoplexianBlob extends LegacyMode {
 		let a = blobChainDetector.forecast(grid, width, hiddenHeight, height, this.blobRequire);
 		this.forecastedChain = a.chain;
 		this.blobCount = a.remaining;
-		//console.log(this.parent.player, a.chain);
-		if (a.chain > 6) {
-
-			if (this.parent.isVisible) {
-				let asset = this.parent.assetRect(this.isAux ? "AUX-FIELD" : "FIELD");
-				let plw = this.isAux ? 0.47 : 1;
-				let px = (asset.x) + (this.parent.fieldCellSize * this.getQPosX(this.piece.x) * plw);
-				let py = (asset.y) + (this.parent.fieldCellSize * this.getQPosY(this.piece.y - this.fieldSize.hh) * plw);
-				htmlEffects.add(language.translate("7chain"), px, py, 40, {
-					name: "chain-text-anim",
-					iter: 1,
-					timefunc: "cubic-bezier(0,0,1,0)",
-					initdel: 0,
-				}, "color: #ff0; text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; --__chaintext_size: 1.5em")
-
-
-			}
-			/**/
-		}
 	}
 
 	checkHoles() {
@@ -12177,6 +12150,8 @@ class Player extends MainPlayerFragment {
 		this.resetEmAnimation();
 
 		this.engagePlaycharExt();
+		
+		if (this.fieldAnimations.tspid)
 
 		this.isDelayStoppable = true;
 
