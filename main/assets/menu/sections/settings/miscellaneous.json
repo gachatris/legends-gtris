@@ -19,6 +19,16 @@
 			"onstate": "#ffff",
 			"offstate": "#fff2",
 			"is_default": true
+		},
+		{
+			"string": "miscellaneous_tmb",
+			"desc": "miscellaneous_tmb_desc",
+			"type": "switch",
+			"property": "set_global_toggle_mobilebuttons",
+			"list": "set_global_toggle_mobilebuttons",
+			"onstate": "#ffff",
+			"offstate": "#fff2",
+			"is_default": false
 		}
 	],
 	"title": "miscellaneous_title",

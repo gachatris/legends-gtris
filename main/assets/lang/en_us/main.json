@@ -244,6 +244,11 @@
 	"miscellaneous_title": "Miscellaneous Settings",
 	"miscellaneous_fieldwarning": "Field Stack Warning",
 	"miscellaneous_background": "Background Type",
+	"miscellaneous_tmb": "Enable Mobile Controls",
+		
+	"miscellaneous_fieldwarning_desc": "Field Stack Warning",
+	"miscellaneous_background_dewc": "Change how the in-session background looks.",
+	"miscellaneous_tmb_desc": "Toggle Mobile Controls' visibility",
 	
 	"keybind_title": "Keybinds / Key Mapping",
 	"keybind_gachatris": "Gachatris",

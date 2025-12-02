@@ -1,7 +1,26 @@
-=# VERSION 0.2.0 ALPHA
-December 2, 2025 update
+=# VERSION 0.2.0.1 ALPHA
+December 3, 2025 update
 -> If you find bugs in the game, report them to the developer (EricLenovo) through the official Gachatris + Linkblobs Discord Server (with the invite button shown in the Main Menu).
 
+- This is a quick fix / minor update from 0.2.0 Alpha with quick bug fixes.
+
+# Minor Additions, Changes, and Bug Fixes
+ - Splash screen changed
+ - Touch controls can now be hidden or shown using a setting that is added in Settings -> Miscellaneous
+ - Language fixes (hashtag: #sesrch)
+ - Wormhole Mayhem War: The garbage wait meter bar of Gachatris was shown, but now it's hidden.
+ 
+# Unmentioned updates in 0.2.0 Alpha
+ - Gachatris: The left meter bar Gachatris has (Garbage Wait Meter) now has a black background.
+ - Eclipse now has her voice lines volume-boosted
+ 
+# Bugs that may still need to be fixed in the next updates:
+ - AI locking the softdrop button causing it to tap out almost frequently at a moment.
+ - Menu UI touch swipe bug
+ 
+
+=# VERSION 0.2.0 ALPHA
+December 2, 2025 update
 -> Game title: Gachatris Legends: Neoplexus - The Legend of Blocks and Blobs 
 
 # Character Additions: 
@@ -37,7 +56,7 @@ December 2, 2025 update
 ## Gachatris AI native
  - Check if one or more characters playing Gachatris are controlled by this AI.
  - It performs a good opener and T-Spin.
- - However, it can somehow tap itself out because of a dumb T-spin sesrch.
+ - However, it can somehow tap itself out because of a dumb T-Spin search.
  - It's faster than everyone else. Its speed will become adjustable in the future updates.
  
 ## New video background: Arcturlens Neoplexus
@@ -45,7 +64,6 @@ December 2, 2025 update
  - There are two camera angles in that video: slow wobble and freeform. They're transitioned in its middle.
  
 # Minor Additions, Changes, and Bug Fixes
- - "Inevitable Force" OST now has a minor change
  - Dominic Zi now has voices
  - Post-match/post-session result animation added
  - menu interface: glass-like blurry background enabling users to see what's happening in a session through it.
@@ -62,10 +80,10 @@ December 2, 2025 update
  - Menu UI touch swipe bug
 
 
-=# VERSION 0.1.0.2 ALPHA (quick fix 2)
+=# VERSION 0.1.0.2 ALPHA
 May 30, 2025 update
 
-- This is a minor update of 0.1.0.1 Alpha.
+- This is a minor update from 0.1.0.1 Alpha.
 
 # Minor Additions, Changes, and Bug Fixes
  - Fixed English language
@@ -78,16 +96,15 @@ May 30, 2025 update
  - Bug fix: pausing the game while the files are being loaded prior to a session
  - Other bug fixes
 
-=# VERSION 0.1.0.1 ALPHA (quick fix)
+=# VERSION 0.1.0.1 ALPHA
 May 25, 2025 update
 
-- This is a quick fix / minor update of 0.1.0 Alpha with quick bug fixes.
+- This is a quick fix / minor update from 0.1.0 Alpha with quick bug fixes.
 
 # Minor Additions, Changes, and Bug Fixes
  - Fixed Keybinding button not working properly 
  - Added Voice volume and Interface SFX volume in Audio and Volume section
  - Startup-preventing SyntaxError fixed
-
 
 
 =# VERSION 0.1.0 ALPHA

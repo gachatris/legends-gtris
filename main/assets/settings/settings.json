@@ -28,6 +28,13 @@
 		"text": "text_percent"
 	},
 	
+	"set_global_toggle_mobilebuttons": {
+		"type": "switch",
+		"on": "option_on",
+		"off": "option_off",
+		"default": 1
+	},
+	
 
 	"set_global_bgtype": {
 	    "type": "range_list_specific",
