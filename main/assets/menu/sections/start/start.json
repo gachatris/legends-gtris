@@ -11,15 +11,16 @@
 		"submenu": "start/1p/list.json"
 	},
 	{
-	"string": "start_2p",
-	"desc": "start_2p_desc",
+	"string": "start_mp",
+	"desc": "start_mp_desc",
 	"type": "button",
 	"action": "submenu",
 	"onstate": "#ffff",
 	"offstate": "#fff2",
 	"backable": true,
 	"submenu": "start/2p/list.json"
-	}],
+	}
+	],
 	"title": "start_title",
 	"name": "start",
 	"background": {

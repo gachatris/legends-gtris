@@ -1,0 +1,42 @@
+{
+	"hp": 540,
+	"mana": 190,
+	"atk": 20,
+	"def": 60,
+	"regen": 0,
+	"lifesteal": 0.6,
+	"lfa": 0,
+	"deflect": 0.1,
+	"skill": {
+		"cooldown": 2400,
+		"voice": "skill1",
+		"mana": 90,
+		"skill": "phylumlittle1",
+		"desc": "atkup, immunity",
+		"rawdesc": "atkup|immunity",
+		"attr": [
+			{
+				"type": "atkbuff",
+				"time": 210,
+				"parameters": {
+					"value": "30%attack"
+				}
+			},
+			{
+				"type": "immune2dmg",
+				"time": 210,
+				"parameters": {
+
+				}
+			},
+			{
+				"type": "regen",
+				"time": 300,
+				"parameters": {
+					"value": "5%hp",
+					"maxf": 60
+				}
+			}
+		]
+	}
+}

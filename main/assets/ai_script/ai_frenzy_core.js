@@ -176,7 +176,7 @@ function makeMove(args) {
   x: best.x,
   y: best.y
  };
- ////////console.log(best)
+ //////////console.log(best)
  let hf = (f) => {
   let hq = 0;
   switch (f) {
@@ -437,7 +437,7 @@ function evaluatePieces(jsobj) {
     mainX++;
    }
    let rotSetGroup = mainRotations.length;
-   // //////console.log("ROTATING", rotSetGroup, mainRotations)
+   // ////////console.log("ROTATING", rotSetGroup, mainRotations)
    for (let rs = 0; rs < rotSetGroup; rs++) {
     mainGrid = JSON.parse(JSON.stringify(jsobj.grid));
     let rotSet = mainRotations[rs];

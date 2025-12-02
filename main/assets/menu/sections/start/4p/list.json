@@ -1,0 +1,104 @@
+{
+	"def": 0,
+	"sel": [
+		
+		
+
+		
+		{
+			"string": "mpstart_versus",
+			"desc": "mpstart_versus_desc",
+			"type": "button",
+			"action": "init",
+			"init": 1,
+			"onstate": "#fff5",
+			"offstate": "#0000",
+			"selectname": "MAIN",
+			"selectnumber": 0,
+			"is_default": true,
+			"charselect_param": {
+				"is_dual": false,
+				"is_pick_mode": true,
+				"is_ai": true,
+				"players": 4,
+				"playerpos": "last"
+			},
+			"mode_param": [
+			"wins|wins(vs)|wins",
+ 			"professional|professional(vs)|gachatris_professional"
+		]
+				},
+		{
+			"string": "mpstart_swap",
+			"desc": "mpstart_swap_desc",
+			"type": "button",
+			"action": "init",
+			"init": 2,
+			"onstate": "#fff5",
+			"offstate": "#0000",
+			"selectname": "MAIN",
+			"selectnumber": 1,
+			"is_default": false,
+			"charselect_param": {
+				"is_dual": true,
+				"is_pick_mode": false,
+				"is_ai": true,
+				"players": 2,
+				"playerpos": "first"
+			},
+			"mode_param": [
+			"wins|wins(swap)|wins"
+		]
+				},
+		{
+			"string": "mpstart_wormhole",
+			"desc": "mpstart_wormhole_desc",
+			"type": "button",
+			"action": "init",
+			"init": 3,
+			"onstate": "#fff5",
+			"offstate": "#0000",
+			"selectname": "MAIN",
+			"selectnumber": 2,
+			"is_default": false,
+			"charselect_param": {
+				"is_dual": true,
+				"is_pick_mode": true,
+				"is_ai": true,
+				"players": 2,
+				"playerpos": "first"
+			},
+			"mode_param": [
+			"wins|wins(wmw)|wins"
+		]
+				},
+		{
+			"string": "mpstart_fever",
+			"desc": "mpstart_fever_desc",
+			"type": "button",
+			"action": "init",
+			"init": 4,
+			"onstate": "#ffff",
+			"offstate": "#fff2",
+			"selectname": "MAIN",
+			"selectnumber": 3,
+			"is_default": false,
+			"charselect_param": {
+				"is_dual": true,
+				"is_pick_mode": false,
+				"is_ai": true,
+				"players": 2,
+				"playerpos": "first"
+			},
+			"mode_param": [
+			"wins|wins(fever)|wins"
+		]
+				}
+		],
+	"title": "mpstart_title",
+	"name": "main_2p",
+	"background": {
+		"type": "rgba",
+		"color": "#030F"
+	}
+}

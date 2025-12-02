@@ -74,6 +74,8 @@
 			"image": "overhead"
 		},
 		"main": {
+		 "ai": "normal",
+		 "uniqueVoicePlay": true,
 			"attributes": {
 				"hp": 374,
 				"def": 120,
@@ -108,10 +110,10 @@
      
     },
         "loseasset": {
-         "width": 400,
-         "height": 400,
-         "framewidth": 400,
-         "frameheight": 400,
+         "width": 1280,
+         "height": 1280,
+         "framewidth": 1280,
+         "frameheight": 1280,
          "aspectwidth": 1,
          "aspectheight": 1,
          "cellsizemult": 21,
@@ -247,9 +249,9 @@
       {
        "action": "createAnimLayer",
        "targetsrc": "loseasset",
-       "framemax": 0,
+       "framemax": 1,
        "framepos": 0,
-       "framedel": 0,
+       "framedel": 1,
        "loop": false,
        "paused": true,
        "targetid": "win"

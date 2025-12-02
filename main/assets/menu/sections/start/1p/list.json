@@ -12,7 +12,7 @@
 		"selectnumber": 0,
 		"is_default": false,
 		"charselect_param": {
-			"is_dual": false,
+			"is_fixed": true,
 			"is_pick_mode": true,
 			"is_ai": false,
 			"players": 1,

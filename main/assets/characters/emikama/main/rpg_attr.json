@@ -1,0 +1,24 @@
+{
+	"hp": 240,
+	"mana": 120,
+	"atk": 14,
+	"def": 140,
+	"regen": 2,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 900,
+		"skill": "skylight1",
+		"voice": "skill1",
+		"mana": 45,
+		"desc": "reducegarbage",
+		"rawdesc": "reducegarbage",
+		"skillvalues": {
+		
+		},
+		"attr": [
+		
+		]
+	}
+}

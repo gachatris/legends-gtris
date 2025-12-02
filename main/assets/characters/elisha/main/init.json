@@ -47,6 +47,7 @@
 			"image": "overhead"
 		},
 		"main": {
+			"ai": "normal",
 			"chainPower": [
         0,
         8,

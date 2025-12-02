@@ -1,0 +1,43 @@
+{
+	"hp": 740,
+	"mana": 240,
+	"atk": 50,
+	"def": 90,
+	"regen": 0,
+	"lifesteal": 0.4,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 3600,
+		"voice": "skill1",
+		"mana": 200,
+		"skill": "phylum1",
+		"desc": "absorb, immunity",
+		"rawdesc": "absorb|immunity",
+		"attr": [
+			{
+				"type": "atkbuff",
+				"time": 210,
+				"parameters": {
+					"value": "40%attack"
+				}
+			},
+			{
+				"type": "regen",
+				"time": 300,
+				"parameters": {
+					"value": "0.31%hp",
+					"maxf": 15
+				}
+			},
+			{
+				"type": "absorb",
+				"time": 2400,
+				"parameters": {
+					"value": "400%hp"
+				}
+			}
+		
+		]
+	}
+}

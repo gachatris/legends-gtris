@@ -11,13 +11,14 @@
 			"offstate": "#fff2"
 		},
 		{
-			"string": "miscellaneous_boardpos_2p",
-			"desc": "miscellaneous_boardpos_2p",
+			"string": "miscellaneous_background",
+			"desc": "miscellaneous_background_desc",
 			"type": "range_list_specific",
-			"property": "set_session_boardpos_2p",
-			"list": "set_session_boardpos_2p",
+			"property": "set_global_bgtype",
+			"list": "set_global_bgtype",
 			"onstate": "#ffff",
-			"offstate": "#fff2"
+			"offstate": "#fff2",
+			"is_default": true
 		}
 	],
 	"title": "miscellaneous_title",

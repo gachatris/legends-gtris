@@ -1,0 +1,49 @@
+{
+  "base": "rainuff",
+  "version": "main",
+  
+  "sources": {
+    "image": {
+      "normal": "images/normal.png",
+      "warning": "images/warning.png",
+      "overhead": "images/counter_overhead.png"
+
+    },
+    "voice": {
+      
+    }
+  },
+  
+  
+  
+  "init": {
+    "main": {
+      "ai": "normal",
+      "chainPower": [0, 8, 17, 26, 59, 79, 129, 165, 336, 461, 539, 597, 675, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+      "feverPower": [0, 6, 10, 15, 23, 29, 39, 52, 68, 85, 101, 133, 169, 204, 246, 269, 321, 369, 445, 479, 508, 571, 686, 699],
+      "dropset": [0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 4, 0, 2, 3, 0]
+    },
+    "ca_overhead": {
+      "image": "overhead"
+    },
+    
+    "image": {
+      "normal": {
+        "src": "normal"
+      },
+      "warning": {
+        "src": "warning"
+      }
+      
+      
+      
+      
+      
+    },
+    
+    "voice": {
+      
+    }
+    
+  }
+}

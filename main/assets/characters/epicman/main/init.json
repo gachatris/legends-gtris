@@ -65,6 +65,7 @@
 			"image": "overhead"
 		},
   "main": {
+   "ai": "normal",
   	"attributes": {
   		"hp": 374,
   		"def": 120,

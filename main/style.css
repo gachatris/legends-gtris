@@ -61,31 +61,35 @@
 
 @keyframes chain-text-anim {
 	0% {
-		font-size: 0em;
+	    transform-origin: var(--td) var(--ty);;
+	    translate: var(--tx) var(--ty);
+		scale: 0%;
 		opacity: 0%;
-		margin-top: 0em;
+		
 
 	}
 
 	20% {
-		font-size: calc(var(--__chaintext_size) + 0.1em);
+	    translate: 0 0.16em;
+		scale: 100%;
 		opacity: 100%;
-		margin-top: 0.16em;
+		
 	}
 
 	35% {
-		margin-top: 0.1em;
+		translate: 0 0.1em;
 	}
 
 	90% {
-		margin-top: 0em;
+		translate: 0 0em;
 		opacity: 100%;
 	}
 
 	100% {
-		font-size: calc(var(--__chaintext_size) + 0.1em);
+	    translate: 0 -1.2em;
+		scale: 100%;
 		opacity: 0%;
-		margin-top: -1.2em;
+		
 	}
 }
 
@@ -934,6 +938,18 @@
 	}
 }
 
+@keyframes stamp-in {
+	from {
+		opacity: 0%;
+		transform: scale(2);
+	}
+	
+	to {
+		opacity: 100%;
+		transform: scale(1);
+	}
+}
+
 @keyframes menu-layer-out {
 	from {
 		opacity: 100%;
@@ -1030,6 +1046,7 @@
 
 html,
 body {
+  overscroll-behavior: none!important;
 	margin: 0 0 0 0;
 	padding: 0 0 0 0;
 	background: #000;
@@ -1286,11 +1303,11 @@ body {
 }
 
 #WINSBAR-BAR {
-	display: flex;
+	display: none;
 	justify-content: center;
 	align-items: center;
 	position: absolute;
-	bottom: 3em;
+	bottom: 0;
 	background: linear-gradient(to bottom, #0007, #ddda, #0007);
 	width: 10em;
 	height: 10em;
@@ -1322,7 +1339,7 @@ body {
 	flex-direction: column;
 	position: absolute;
 	pointer-events: none;
-	z-index: 2;
+	z-index: 7;
 }
 
 #GTRIS-SPLASH-DIV {
@@ -1361,7 +1378,7 @@ body {
 	flex-direction: column;
 	position: absolute;
 	justify-content: top;
-	z-index: 29;
+	z-index: 6;
 	overflow: hidden;
 }
 
@@ -1375,7 +1392,8 @@ body {
 
 #MM-CONTENT-CANVAS {
 	position: absolute;
-	background: #333
+	background: #00000000;
+	backdrop-filter: blur(10px);
 }
 
 #MM-CONTENT-FOOTER {
@@ -1457,7 +1475,7 @@ body {
 	flex-direction: row;
 	position: absolute;
 	justify-content: center;
-	background: #8384;
+	background: #8380;
 }
 
 #MENU-HEADER {

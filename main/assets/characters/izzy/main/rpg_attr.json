@@ -1,0 +1,30 @@
+{
+	"hp": 255,
+	"mana": 140,
+	"atk": 9,
+	"def": 100,
+	"regen": 2,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 1400,
+		"skill": "izzy",
+		"voice": "skill1",
+		"mana": 35,
+		"desc": "defup",
+		"rawdesc": "defup",
+		"skillvalues": {
+
+		},
+		"attr": [
+			{
+				"type": "defup",
+				"time": 600,
+				"parameters": {
+					"value": "400"
+				}
+			}
+		]
+	}
+}

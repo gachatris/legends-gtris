@@ -112,7 +112,7 @@ let testSpace = function(grid, x, y, width, height) {
     return r - 1;
    }
   }
-  ////console.log(`DROP: ${r - 1}`)
+  //////console.log(`DROP: ${r - 1}`)
   return r - 1;
  },
  checkHoles = function(grid, width, height, vh) {
@@ -144,7 +144,7 @@ function isPieceValid(active, stack_, w, h, px, py, dx, dy) {
      (cx + x) < 0 ||
      (y + cy) >= h ||
      stack_[((x + cx) * h) + (y + cy)] > 0) {
-     // //console.log(px, py, w, h)
+     // ////console.log(px, py, w, h)
      //throw stack_//[((x + cx) * h) + (y + cy)] 
      return false;
     }

@@ -11,7 +11,61 @@
 
 		},
 		"voice": {
-
+			"init1": "voices/init1.ogg",
+			"init2": "voices/init2.ogg",
+			"init3": "voices/init3.ogg",
+			"init4": "voices/init4.ogg",
+			"init5": "voices/init5.ogg",
+			"gtris": "voices/gtris.ogg",
+			"gtrisplus": "voices/gtrisplus.ogg",
+			
+			"spell1": "voices/spell1.ogg",
+			"spell2": "voices/spell2.ogg",
+			"spell3": "voices/spell3.ogg",
+			"spell4": "voices/spell4.ogg",
+			"spell5": "voices/spell5.ogg",
+			
+			"damage1": "voices/damage1.ogg",
+			"damage2": "voices/damage2.ogg",
+			"damage3": "voices/damage3.ogg",
+			"counter_mid": "voices/counter.ogg",
+			"counterattack": "voices/counter.ogg",
+			
+			"insane": "voices/insane.ogg",
+			"insane_success": "voices/success.ogg",
+			"daihenshin": "voices/daihenshin.ogg",
+			
+			"zenkeshi": "voices/zenkeshi.ogg",
+			
+			"insane_fail": "voices/fail.ogg",
+			
+			"wormhole_enter": "voices/wormhole_enter.ogg",
+			"wormhole_inflict1": "voices/wormhole_send1.ogg",
+			"wormhole_inflict2": "voices/wormhole_send2.ogg",
+			"wormhole_win": "voices/wormhole_win.ogg",
+			"wormhole_damage1": "voices/wormhole_receive1.ogg",
+			"wormhole_damage2": "voices/wormhole_receive2.ogg",
+			"wormhole_lose": "voices/wormhole_lose.ogg",
+			
+			"swap_gtris": "voices/swap_gtris.ogg",
+			"swap_blob": "voices/swap_blob.ogg",
+			
+			"swap_swap": "voices/swap_swap.ogg",
+			"swap_closecall": "voices/swap_closecall.ogg",
+			"swap_danger": "voices/swap_danger.ogg",
+			
+			"win": "voices/win.ogg",
+			"lose": "voices/lose.ogg",
+			
+			"t_count1": "voices/t_count1.ogg",
+			"t_count2": "voices/t_count2.ogg",
+			"t_count3": "voices/t_count3.ogg",
+			"t_count4": "voices/t_count4.ogg",
+			"t_count5": "voices/t_count5.ogg",
+			"t_count6": "voices/t_count6.ogg",
+			"t_count7": "voices/t_count7.ogg",
+			"t_small": "voices/t_small.ogg",
+			"t_large": "voices/t_large.ogg"
 		}
 	},
 
@@ -20,6 +74,7 @@
 			"image": "overhead"
 		},
 		"main": {
+			"ai": "normal",
 			"attributes": {
 				"hp": 374,
 				"def": 120,
@@ -50,7 +105,59 @@
 		},
 
 		"voice": {
+			"init1": "init1",
+			"init2": "init2",
+			"init3": "init3",
+			"init4": "init4",
+			"init5": "init5",
+			"gtris": "gtris",
+			"gtrisplus": "gtrisplus",
+			"spell1": "spell1",
+			"spell2": "spell2",
+			"spell3": "spell3",
+			"spell4": "spell4",
+			"spell5": "spell5",
+			"damage1": "damage1",
+			"damage2": "damage2",
+			"damage3": "damage3",
+			"win": "win",
+			"lose": "lose",
 
+			"insane": "insane",
+
+			"daihenshin": "daihenshin",
+
+			"insane_success": "insane_success",
+			"insane_fail": "insane_fail",
+			"zenkeshi": "zenkeshi",
+
+			"wormhole_enter": "wormhole_enter",
+			"wormhole_inflict1": "wormhole_inflict1",
+			"wormhole_inflict2": "wormhole_inflict2",
+			"wormhole_win": "wormhole_win",
+			"wormhole_damage1": "wormhole_damage1",
+			"wormhole_damage2": "wormhole_damage2",
+			"wormhole_lose": "wormhole_lose",
+			"counter_mid": "counter_mid",
+			"counterattack": "counterattack",
+
+
+			"swap_gtris": "swap_gtris",
+			"swap_blob": "swap_blob",
+
+			"swap_swap": "swap_swap",
+			"swap_closecall": "swap_closecall",
+			"swap_danger": "swap_danger",
+			
+			"t_count1": "t_count1",
+			"t_count2": "t_count2",
+			"t_count3": "t_count3",
+			"t_count4": "t_count4",
+			"t_count5": "t_count5",
+			"t_count6": "t_count6",
+			"t_count7": "t_count7",
+			"t_small": "t_small",
+			"t_large": "t_large"
 		}
 
 	}

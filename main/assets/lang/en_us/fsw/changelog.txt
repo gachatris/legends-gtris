@@ -1,6 +1,69 @@
+=# VERSION 0.2.0 ALPHA
+December 2, 2025 update
+-> If you find bugs in the game, report them to the developer (EricLenovo) through the official Gachatris + Linkblobs Discord Server (with the invite button shown in the Main Menu).
+
+-> Game title: Gachatris Legends: Neoplexus - The Legend of Blocks and Blobs 
+
+# Character Additions: 
+## Izzy The Grape
+ - As her name suggests, Izzy loves grapes. She may look like "Isaac Newton" only because her grapes fall on her head.
+## Skylight Cloud
+ - Skylight is the Illuminator of the skies using the stars and the moon. She flies up using her so-called "Moonmobile" that hovers up magically. Izzy is her "pet fish."
+## Emikama
+ - Emikama uses they/them or any pronouns although Skylight Cloud's online mother. They use astonishing teleportation moves and looks as well as hand powers.
+## Rainuff Cloud (incomplete)
+ - Rainuff is a colorful fox. She's not even Skylight Cloud's sister, however, but her "cloud cousin" just because Rainuff and Skylight have "Cloud" in their names. She aims to colorize the whole world.
+ - Rainuff does not have animations yet. Wait for the next update.
+## EricLenovo and Abbygaile (Phylum)
+ - E.L. and Abbygaile first existed in Gachae Linkblobs, a game based in Gachatris Legends: Neoplexus Blocks and Blobs. They are both the Phylum leaders and parents of their daughter Sun Gabbryielle, the child who discovered the Linkblobs. Now, they're wondering how the Blobs got here prior to that Game.
+## Sun Gabbryielle (Phylum)
+ - Alongside her above-mentioned parents, Sun Gabbryielle Abbygaile first existed in Gachae Linkblobs. She's their daughter and child who discovered the myserious Linkblobs. Now she's wondering how Blobs got here prior to that Game.
+ 
+# Major Additions and Changes
+## IMPROVED MENU
+ - You can now interact with the menu using touch and mouse.
+ - New minor visuals
+ 
+## ROLE-PLAYING MUSIC (Phylum)
+ - In Wormhole Mayhem War and normal states of Enhancement (except Transformation), music plays a role, featuring the theme song of the Phylum family.
+ - This song is only played when there is a character of the Phylum Family (EricLenovo, Abbygaile, and Sun Gabbryielle).
+ 
+## 4-PLAYER SESSIONS (alpha)
+ - You can create a session of 3 to 4 players. This will be more fun
+ - The player layout will change in this kind of session.
+ - However, it can only be initialized in SOME of the modes or not all.
+ - In the character selection screen, you see the "player with X on them" icon that excludes not you but computers.
+ 
+## Gachatris AI native
+ - Check if one or more characters playing Gachatris are controlled by this AI.
+ - It performs a good opener and T-Spin.
+ - However, it can somehow tap itself out because of a dumb T-spin sesrch.
+ - It's faster than everyone else. Its speed will become adjustable in the future updates.
+ 
+## New video background: Arcturlens Neoplexus
+ - The Neoplexus X Mark which comes from the previous version gets minor improvements in the background.
+ - There are two camera angles in that video: slow wobble and freeform. They're transitioned in its middle.
+ 
+# Minor Additions, Changes, and Bug Fixes
+ - "Inevitable Force" OST now has a minor change
+ - Dominic Zi now has voices
+ - Post-match/post-session result animation added
+ - menu interface: glass-like blurry background enabling users to see what's happening in a session through it.
+ - Character selection: expanded up to 9×4 - 1 (35) slots
+ - Nameplate editing window switched to a Full-screen Window
+ - Background setting included (black, red, green, blue, A. Neoplexus)
+ - Pre-session Loading Screen changed
+ - Gachatris vs Linkblobs: Gachatris can offset garbage by 100% of attack from a line clear (Gachatris vs Gachatris mechanic) while also maintaining slightly weaker 2-/3-line T-Spin or Perfect Clear attacks to send to a Linkblobs player
+ - Swap: auxiliary boards now have colored borders with respect to player colors
+ - Other bug fixes and changes
+ 
+# Bugs that may still need to be fixed in the next updates:
+ - AI locking the softdrop button causing it to tap out almost frequently at a moment.
+ - Menu UI touch swipe bug
+
+
 =# VERSION 0.1.0.2 ALPHA (quick fix 2)
 May 30, 2025 update
--> If you find bugs in the game, report them to the developer (EricLenovo) through the official Gachatris + Linkblobs Discord Server (with the invite button shown in the Main Menu). 
 
 - This is a minor update of 0.1.0.1 Alpha.
 
@@ -24,6 +87,8 @@ May 25, 2025 update
  - Fixed Keybinding button not working properly 
  - Added Voice volume and Interface SFX volume in Audio and Volume section
  - Startup-preventing SyntaxError fixed
+
+
 
 =# VERSION 0.1.0 ALPHA
 May 25, 2025 update

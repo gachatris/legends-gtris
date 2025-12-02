@@ -1,0 +1,714 @@
+{
+  "base": "izzy",
+  "version": "main",
+  
+  "sources": {
+    "image": {
+      "normal": "images/normal.png",
+      "warning": "images/warning.png",
+      "overhead": "images/counter_overhead.png",
+      "lose": "images/lose.png",
+      "win": "images/win.png",
+      "half_grape_top": "images/half_grape_top.png",
+      "half_grape_bottom": "images/half_grape_bottom.png",
+      "grape": "images/grape.png"
+    },
+    "voice": {
+      
+    }
+  },
+  "init": {
+    "animation": {
+      "sources": {
+        "grape": {
+          "width": 400,
+          "height": 400,
+          "framewidth": 400,
+          "frameheight": 400,
+          "aspectwidth": 1,
+          "aspectheight": 1,
+          "cellsizemult": 8.5,
+          "src": "grape",
+          "xbound": 1
+        },
+        "tgrape": {
+          "width": 400,
+          "height": 400,
+          "framewidth": 400,
+          "frameheight": 400,
+          "aspectwidth": 1,
+          "aspectheight": 1,
+          "cellsizemult": 8.5,
+          "src": "half_grape_top",
+          "xbound": 1
+        },
+        "bgrape": {
+          "width": 400,
+          "height": 400,
+          "framewidth": 400,
+          "frameheight": 400,
+          "aspectwidth": 1,
+          "aspectheight": 1,
+          "cellsizemult": 8.5,
+          "src": "half_grape_bottom",
+          "xbound": 1
+        },
+        "win": {
+          "width": 1600,
+          "height": 1600,
+          "framewidth": 400,
+          "frameheight": 400,
+          "aspectwidth": 1,
+          "aspectheight": 1,
+          "cellsizemult": 20,
+          "src": "win",
+          "xbound": 4
+        },
+        "lose": {
+          "width": 1600,
+          "height": 1600,
+          "framewidth": 400,
+          "frameheight": 400,
+          "aspectwidth": 1,
+          "aspectheight": 1,
+          "cellsizemult": 20,
+          "src": "lose",
+          "xbound": 4
+          
+        }
+      },
+      
+      "triggers": {
+        "win": {
+          "0": [
+          {
+            "action": "createAnimLayer",
+            "targetsrc": "win",
+            "framemax": 13,
+            "framepos": 0,
+            "framedel": 8,
+            "loop": true,
+            "paused": true,
+            "targetid": "win"
+          },
+          {
+            "action": "createAnimLayer",
+            "targetsrc": "grape",
+            "framemax": 1,
+            "framepos": 0,
+            "framedel": 8,
+            "loop": true,
+            "paused": true,
+            "targetid": "grape",
+            "opacity": 0
+          },
+          {
+            "action": "rotate",
+            "targetid": "grape",
+            "start": 0,
+            "end": 40,
+            "duration": 20,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "win",
+            "x0": 0,
+            "y0": 20,
+            "x1": 0,
+            "y1": -4,
+            "duration": 20,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "grape",
+            "x0": 0,
+            "y0": -20,
+            "x1": 0,
+            "y1": -20,
+            "duration": 20,
+            "timing": "linear"
+          }],
+          "20": [
+          {
+            "action": "rotate",
+            "targetid": "grape",
+            "start": 40,
+            "end": 450,
+            "duration": 25,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "win",
+            "x0": 0,
+            "y0": -4,
+            "x1": 0,
+            "y1": 3,
+            "duration": 20,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "grape",
+            "x0": 0,
+            "y0": -20,
+            "x1": 1,
+            "y1": -3.6,
+            "duration": 25,
+            "timing": "linear"
+          },
+          {
+            "action": "opacity",
+            "targetid": "grape",
+            "duration": 7,
+            "opacity": 1
+          }],
+          "45": [
+            
+            {
+              "action": "configureAnimLayer",
+              "framemax": 4,
+              "framepos": 1,
+              "framedel": 3,
+              "loop": true,
+              "paused": false,
+              "targetid": "win"
+            },
+            {
+              "action": "rotate",
+              "targetid": "grape",
+              "start": 90,
+              "end": 400,
+              "duration": 30,
+              "timing": "linear"
+            },
+            {
+              "action": "move",
+              "targetid": "grape",
+              "x0": 1,
+              "y0": -3.6,
+              "x1": 2.1,
+              "y1": -5.32,
+              "duration": 15,
+              "timing": "linear"
+            }
+          ],
+          "53": [
+            
+            {
+              "action": "configureAnimLayer",
+              "framemax": 13,
+              "framepos": 4,
+              "framedel": 5,
+              "loop": false,
+              "paused": true,
+              "targetid": "win"
+            }
+          ],
+          "60": [
+          {
+            "action": "move",
+            "targetid": "grape",
+            "x0": 2.1,
+            "y0": -5.32,
+            "x1": 3.7,
+            "y1": 3.2,
+            "duration": 15,
+            "timing": "linear"
+          }],
+          
+          "75": [
+          {
+            "action": "configureAnimLayer",
+            "framemax": 5,
+            "framepos": 5,
+            "framedel": 1,
+            "loop": false,
+            "paused": true,
+            "targetid": "win"
+          }],
+          "90": [
+          {
+            "action": "configureAnimLayer",
+            "framemax": 10,
+            "framepos": 6,
+            "framedel": 5,
+            "loop": true,
+            "paused": false,
+            "targetid": "win"
+          },
+          {
+            "action": "rotate",
+            "targetid": "grape",
+            "start": 40,
+            "end": -15,
+            "duration": 15,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "grape",
+            
+            "x0": 3.7,
+            "y0": 3.2,
+            "x1": 2.85,
+            "y1": 2.4,
+            "duration": 15,
+            "timing": "linear"
+          }],
+          "109": [
+          {
+            "action": "configureAnimLayer",
+            "framemax": 12,
+            "framepos": 9,
+            "framedel": 10,
+            "loop": true,
+            "paused": false,
+            "resetframe": 9,
+            "targetid": "win"
+          }],
+          "110": [
+          {
+            "action": "move",
+            "targetid": "grape",
+            
+            "x0": 2.85,
+            "y0": 2.4,
+            "x1": 2.85,
+            "y1": 0.4,
+            "duration": 50,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "win",
+            "x0": 0,
+            "y0": 3,
+            "x1": 0,
+            "y1": 1,
+            "duration": 50,
+            "timing": "linear"
+          }],
+          "160": [
+          {
+            "action": "move",
+            "targetid": "grape",
+            
+            "x1": 2.85,
+            "y1": 2.4,
+            "x0": 2.85,
+            "y0": 0.4,
+            "duration": 50,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "win",
+            "x0": 0,
+            "y0": 1,
+            "x1": 0,
+            "y1": 3,
+            "duration": 50,
+            "timing": "linear"
+          }],
+          "210": [
+            {
+              "action": "time",
+              "time": 110
+            }
+            
+          ]
+          
+        },
+        "lose": {
+          "0": [
+            {
+              "action": "createAnimLayer",
+              "targetsrc": "lose",
+              "framemax": 0,
+              "framepos": 0,
+              "framedel": 3,
+              "loop": true,
+              "paused": true,
+              "targetid": "lose"
+            },
+            {
+              "action": "createAnimLayer",
+              "targetsrc": "bgrape",
+              "framemax": 1,
+              "framepos": 0,
+              "framedel": 8,
+              "loop": true,
+              "paused": true,
+              "targetid": "bgrape",
+              "opacity": 0
+            },
+            {
+              "action": "createAnimLayer",
+              "targetsrc": "tgrape",
+              "framemax": 1,
+              "framepos": 0,
+              "framedel": 8,
+              "loop": true,
+              "paused": true,
+              "targetid": "tgrape",
+              "opacity": 0
+            },
+            
+            {
+              "action": "move",
+              "targetid": "lose",
+              "x0": 0,
+              "y0": 20,
+              "x1": 0,
+              "y1": -4,
+              "duration": 20,
+              "timing": "linear"
+            },
+            {
+              "action": "move",
+              "targetid": "tgrape",
+              "x0": 8,
+              "y0": 20,
+              "x1": 8,
+              "y1": 20,
+              "duration": 20,
+              "timing": "linear"
+            },
+            {
+              "action": "move",
+              "targetid": "bgrape",
+              "x0": 10,
+              "y0": 20,
+              "x1": 10,
+              "y1": 20,
+              "duration": 20,
+              "timing": "linear"
+            },
+            {
+              "action": "rotate",
+              "targetid": "tgrape",
+              "start": 80,
+              "end": 20,
+              "duration": 20,
+              "timing": "linear"
+            },
+            {
+              "action": "rotate",
+              "targetid": "bgrape",
+              "start": 80,
+              "end": 20,
+              "duration": 20,
+              "timing": "linear"
+            }
+          ],
+          "20": [
+          {
+            "action": "opacity",
+            "targetid": "tgrape",
+            "duration": 7,
+            "opacity": 1
+          },
+          {
+            "action": "opacity",
+            "targetid": "bgrape",
+            "duration": 7,
+            "opacity": 1
+          },
+          {
+            "action": "move",
+            "targetid": "tgrape",
+            "x0": 8,
+            "y0": 20,
+            "x1": 3.5,
+            "y1": 0.7,
+            "duration": 20,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "bgrape",
+            "x0": 8,
+            "y0": 20,
+            "x1": 3.5,
+            "y1": 0.7,
+            "duration": 20,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "lose",
+            "x0": 0,
+            "y0": -4,
+            "x1": 0,
+            "y1": 3,
+            "duration": 20,
+            "timing": "linear"
+          },
+          {
+            "action": "rotate",
+            "targetid": "tgrape",
+            "start": 300,
+            "end": 30,
+            "duration": 20,
+            "timing": "linear"
+          },
+          {
+            "action": "rotate",
+            "targetid": "bgrape",
+            "start": 300,
+            "end": 30,
+            "duration": 20,
+            "timing": "linear"
+          }],
+          "40": [
+            {
+              "action": "configureAnimLayer",
+              "framemax": 8,
+              "framepos": 1,
+              "framedel": 5,
+              "loop": true,
+              "paused": false,
+              "resetframe": 9,
+              "targetid": "lose"
+            },
+            {
+              "action": "move",
+              "targetid": "lose",
+              "x0": 0,
+              "y0": 3,
+              "x1": -0.9,
+              "y1": -2,
+              "duration": 20,
+              "timing": "linear"
+            },
+            {
+              "action": "move",
+              "targetid": "bgrape",
+              "x0": 3.5,
+              "y0": 0.7,
+              "x1": 2.7,
+              "y1": -10,
+              "duration": 20,
+              "timing": "linear"
+            },
+            {
+              "action": "move",
+              "targetid": "tgrape",
+              "x0": 3.5,
+              "y0": 0.7,
+              "x1": 7.3,
+              "y1": -10,
+              "duration": 20,
+              "timing": "linear"
+            },
+            {
+              "action": "rotate",
+              "targetid": "tgrape",
+              "start": 30,
+              "end": -300,
+              "duration": 20,
+              "timing": "linear"
+            },
+            {
+              "action": "rotate",
+              "targetid": "bgrape",
+              "start": 30,
+              "end": -190,
+              "duration": 40,
+              "timing": "linear"
+            }
+            
+          ],
+          "53": [
+          {
+            "action": "opacity",
+            "targetid": "tgrape",
+            "duration": 7,
+            "opacity": 0
+          }],
+          "60": [
+            {
+              "action": "move",
+              "targetid": "lose",
+              "x0": -0.9,
+              "y0": -2,
+              "x1": -1.8,
+              "y1": 7.3,
+              "duration": 20,
+              "timing": "linear"
+            },
+            
+            {
+              "action": "move",
+              "targetid": "bgrape",
+              "x0": 2.7,
+              "y0": -10,
+              "x1": 2.5,
+              "y1": 13,
+              "duration": 20,
+              "timing": "linear"
+            }
+          ],
+          "79": [
+          {
+            "action": "configureAnimLayer",
+            "framemax": 11,
+            "framepos": 9,
+            "framedel": 5,
+            "loop": true,
+            "paused": false,
+            "resetframe": 9,
+            "targetid": "lose"
+          }],
+          
+          "80": [
+          {
+            "action": "move",
+            "targetid": "bgrape",
+            "x0": 2.5,
+            "y0": 13,
+            "x1": 2.5,
+            "y1": 11,
+            "duration": 50,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "lose",
+            "x0": -1.8,
+            "y0": 7.3,
+            "x1": -1.8,
+            "y1": 5.3,
+            "duration": 50,
+            "timing": "linear"
+          }],
+          "130": [
+          {
+            "action": "move",
+            "targetid": "bgrape",
+            "x1": 2.5,
+            "y1": 13,
+            "x0": 2.5,
+            "y0": 11,
+            "duration": 50,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "lose",
+            "x1": -1.8,
+            "y1": 7.3,
+            "x0": -1.8,
+            "y0": 5.3,
+            "duration": 50,
+            "timing": "linear"
+          }],
+          "150": [
+          {
+            "action": "configureAnimLayer",
+            "framemax": 13,
+            "framepos": 11,
+            "framedel": 5,
+            "loop": true,
+            "paused": false,
+            "resetframe": 11,
+            "targetid": "lose"
+          }],
+          "165": [
+          {
+            "action": "configureAnimLayer",
+            "framemax": 11,
+            "framepos": 9,
+            "framedel": 5,
+            "loop": true,
+            "paused": false,
+            "resetframe": 9,
+            "targetid": "lose"
+          }],
+          "180": [
+          {
+            "action": "move",
+            "targetid": "bgrape",
+            "x0": 2.5,
+            "y0": 13,
+            "x1": 2.5,
+            "y1": 11,
+            "duration": 50,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "lose",
+            "x0": -1.8,
+            "y0": 7.3,
+            "x1": -1.8,
+            "y1": 5.3,
+            "duration": 50,
+            "timing": "linear"
+          }],
+          "230": [
+          {
+            "action": "move",
+            "targetid": "bgrape",
+            "x1": 2.5,
+            "y1": 13,
+            "x0": 2.5,
+            "y0": 11,
+            "duration": 50,
+            "timing": "linear"
+          },
+          {
+            "action": "move",
+            "targetid": "lose",
+            "x1": -1.8,
+            "y1": 7.3,
+            "x0": -1.8,
+            "y0": 5.3,
+            "duration": 50,
+            "timing": "linear"
+          }],
+          
+          "280": [
+            {
+              "action": "time",
+              "time": 80
+            }
+            
+          ]
+          
+        }
+      }
+    },
+    "main": {
+      "ai": "normal",
+      "chainPower": [0, 8, 17, 26, 59, 79, 129, 165, 336, 461, 539, 597, 675, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+      "feverPower": [0, 6, 10, 15, 23, 29, 39, 52, 68, 85, 101, 133, 169, 204, 246, 269, 321, 369, 445, 479, 508, 571, 686, 699],
+      "dropset": [0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 4, 0, 2, 3, 0]
+    },
+    "ca_overhead": {
+      "image": "overhead"
+    },
+    
+    "image": {
+      "normal": {
+        "src": "normal"
+      },
+      "warning": {
+        "src": "warning"
+      }
+      
+      
+      
+      
+      
+    },
+    
+    "voice": {
+      
+    }
+    
+  }
+}

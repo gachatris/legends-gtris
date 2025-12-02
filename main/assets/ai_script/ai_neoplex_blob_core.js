@@ -120,7 +120,7 @@ let testSpace = function(grid, x, y, width, height) {
     return r - 1;
    }
   }
-  ////console.log(`DROP: ${r - 1}`)
+  //////console.log(`DROP: ${r - 1}`)
   return r - 1;
  },
  checkHoles = function(grid, width, height, vh) {
@@ -152,7 +152,7 @@ function isPieceValid(active, stack_, w, h, px, py, dx, dy) {
      (cx + x) < 0 ||
      (y + cy) >= h ||
      stack_[((x + cx) * h) + (y + cy)] > 0) {
-     //////console.log(px, py, w, h)
+     ////////console.log(px, py, w, h)
      //throw stack_//[((x + cx) * h) + (y + cy)] 
      return false;
     }
@@ -583,7 +583,7 @@ function evaluateChain(data) {
      return r - 1
     }
    }
-   ////console.log(`DROP: ${r - 1}`)
+   //////console.log(`DROP: ${r - 1}`)
    return r - 1
   },/**/
   checkHoles = function() {
@@ -823,7 +823,7 @@ function checkTrigger(stack, w, hh, vh) {
      return r - 1
     }
    }
-   //////console.log(`DROP: ${r - 1}`)
+   ////////console.log(`DROP: ${r - 1}`)
    return r - 1
   },/**/
   checkHoles = function() {
@@ -848,7 +848,7 @@ function checkTrigger(stack, w, hh, vh) {
   while (!testSpace(x, y + a) && dis >= a) {
    a++;
   }
-  //////console.log(a)
+  ////////console.log(a)
   return a - 1;
  }
 
@@ -922,7 +922,7 @@ function evaluateNodes(arr, x, rot) {
 
 /*function _eval(datum) {
  //let [width, height, stack, active, hold, next] = datum;
-////console.log(datum)
+//////console.log(datum)
  let u = datum[0];
  let h = evaluateNodes(u, datum[1], datum[2]);
  return h;

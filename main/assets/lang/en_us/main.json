@@ -1,7 +1,7 @@
 {
 	"title": "Gachatris Legends",
 
-	"alpha_note": "This Game is under Alpha stage, version 0.0.1 A1q3. If you have any suggestions, go contact the developer through the official Gachatris Discord Server.",
+	"alpha_note": "This Game is under Alpha stage, version 0.2.0. If you have any suggestions, go contact the developer through the official Gachatris Discord Server.",
 
 	"splash_note": "Press any key, tap, or click anywhere to start.",
 
@@ -43,7 +43,7 @@
 	"line10": "Deca",
 	"line11": "Undeca",
 	"line12": "Dodeca",
-	"line13": "Trideca",
+	"line13": "Tredeca",
 	"line14": "Tetradeca",
 	"line15": "Pentadeca",
 	"line16": "Ultera",
@@ -53,6 +53,11 @@
 	"pc_spam": "Perfect Clear Spam",
 
 	"first_to": "FTvar=0",
+	
+	"result_win": "Yeah!",
+	"result_lose": "Oh no...",
+	"result_match_win": "Winner!",
+	"result_match_lose": "Loser!",
 	
 	"fsw_update_notes": "Update Notes (var=0)",
 	"fsw_patch_notes_full": "See Full Patch Notes",
@@ -68,6 +73,18 @@
 	"fsw_keybinds_ingame_blob_desc": "Adjust key bindings for Gachae Linkblobs",
 	"fsw_keybinds_ingame_general_title": "General",
 	"fsw_keybinds_ingame_general_desc": "Map keys for when you're playing a session.",
+	
+	"fsw_nameplate": "Edit Nameplate",
+	"fsw_nameplate_title": "Nameplate Editor",
+	"fsw_nameplate_note": "Note: the maximum number of characters for your nameplate is 20.",
+	"fsw_nameplate_reset": "Reset",
+	"fsw_nameplate_save": "Save",
+	
+	"fsw_nameplate_samename_title": "You are not actually changing your name!",
+	"fsw_nameplate_samename_desc": "Your desired name \"var=0\" appears to be the same as your saved nameplate. Try using a different name.",
+
+	"fsw_nameplate_noname_title": "Blank Nameplate Not Allowed",
+	"fsw_nameplate_noname_desc": "You need to specify your name with at least one alphanumeric or special character!",
 
 	"fsw_kb_buttonslist_text": "Keys Used",
 	"fsw_kb_ig_add": "ADD KEY",
@@ -134,7 +151,7 @@
 	"error_kb_duplicate": "Key [var=0] already exists in this flag",
 	"error_kb_duplicate_desc": "Duplicate keys cannot exist in the same flag.",
 		
-	"menu_main": "Gachatris Legends v0.1.0.2 Alpha",
+	"menu_main": "Gachatris Legends: Neoplexus Blocks and Blobs v0.2.0 Alpha",
 	"menu_start": "Play Game",
 	"menu_start_desc": "Start a new game session.",
 	"menu_replaycenter": "Replay Center",
@@ -144,7 +161,7 @@
 	"menu_changelog": "Changelogs (Patch Notes)",
 	"menu_changelog_desc": "See how far the Game has gone through.",
 	"menu_discord": "Gachatris + Linkblobs Discord",
-	"menu_discord_desc": "Enter this Discord server so you can communicate with Gachatris users and report bugs there. Be civil!",
+	"menu_discord_desc": "Enter this Discord server so you can communicate with Gachatris + Linkblobs users and report bugs there. Be civil!",
 
 	"pause_title": "Paused",
 	"pause_resume": "Resume",
@@ -226,7 +243,7 @@
 
 	"miscellaneous_title": "Miscellaneous Settings",
 	"miscellaneous_fieldwarning": "Field Stack Warning",
-	"miscellaneous_boardpos_2p": "Board Position (1v1)",
+	"miscellaneous_background": "Background Type",
 	
 	"keybind_title": "Keybinds / Key Mapping",
 	"keybind_gachatris": "Gachatris",
@@ -239,10 +256,8 @@
 	"start_title": "Start - Select Amount of Player Slots",
 	"start_1p": "Solo Player",
 	"start_1p_desc": "Play modes alone and feel like this is your practice area.",
-	"start_2p": "Double Play",
-	"start_2p_desc": "Play modes that include your opposing player controlled by Computer.",
-
-	"start_mp": "Multiplayer",
+	"start_mp": "Offline Multiplayer",
+	"start_mp_desc": "Play modes that include your opposing player controlled by Computer. In case of 3-way or 4-way offline multiplayer sessions, you can assign what team you belong to.",
 
 	"1pstart_title": "Solo Player Modes",
 	"1pstart_zen": "Zen",
@@ -253,18 +268,22 @@
 	"1pstart_block_modes_desc": "Open game modes featuring Gachatris.",
 	"1pstart_blob_modes_desc": "Open game modes featuring Gachae Linkblobs",
 
-	"2pstart_title": "Double Player Modes",
-	"2pstart_versus": "Versus",
-	"2pstart_swap": "Swap",
-	"2pstart_wormhole": "Wormhole Mayhem War",
-	"2pstart_fever": "Linkblob Fever",
-	"2pstart_rpg": "RPG Skill Combat [ALPHA]",
-
-	"2pstart_versus_desc": "Play this plain mode against Computer. You have the freedom to choose either Gachatris or Linkblobs.",
-	"2pstart_swap_desc": "Play this confusing yet fun game mode where you have Gachatris and Linkblobs take turns over a certain amount of time.",
-	"2pstart_wormhole_desc": "Play this exciting mode where your board gets an upgrade that lasts a certain amount of time. After the time expires, the game will then evaluate your total garbage collected. You have the freedom to choose either Gachatris or Linkblobs.",
-	"2pstart_fever_desc": "Play this Linkblob-only mode featuring its own upgrade mode, the Fever.",
-	"2pstart_rpg_desc": "This is in Alpha stage where there are bugs present in this mode. Players have special skills using three of what's called \"Character Cards\". Each card adds up attributes and a specific skill. You have the freedom to choose either Gachatris or Linkblobs.",
+	"mpstart_title": "Multiplayer Modes (OFFLINE)",
+	"mpstart_settings_playeramount": "Player Amount",
+	"mpstart_settings_boardpos_mp": "Board Position",
+	"mpstart_versus": "Versus",
+	"mpstart_swap": "Swap",
+	"mpstart_wormhole": "Wormhole Mayhem War",
+	"mpstart_fever": "Linkblob Fever",
+	"mpstart_rpg": "RPG Skill Combat [ALPHA]",
+	
+	"mpstart_settings_playeramount_desc": "Choose the amount of players (including yourself) that you want to have in a session. If there are 3-4 players, the players will sit side-by-side with narrower bodies.",
+	"mpstart_settings_boardpos_mp_desc": "Choose which board you want to play. In the case of a session with 2 players, you can pick one of two boards to play on, LEFT and RIGHT; in the case of a session with 3 to 4 players, you can pick which board to play on, from 1st to 4th.",
+	"mpstart_versus_desc": "Play this plain mode against one Computer or so, with teaming in case of a 3-way or 4-way multiplayer. You have the freedom to choose either Gachatris or Linkblobs.",
+	"mpstart_swap_desc": "Play this confusing yet fun game mode where you have Gachatris and Linkblobs take turns over a certain amount of time.",
+	"mpstart_wormhole_desc": "Play this exciting mode where your board gets an upgrade that lasts a certain amount of time. After the time expires, the game will then evaluate your total garbage collected. You have the freedom to choose either Gachatris or Linkblobs.",
+	"mpstart_fever_desc": "Play this Linkblob-only mode featuring its own upgrade mode, the Fever.",
+	"mpstart_rpg_desc": "This is in Alpha stage where there are bugs present in this mode. Players have special skills using three of what's called \"Character Cards\". Each card adds up attributes and a specific skill. You have the freedom to choose either Gachatris or Linkblobs.",
 	
 	"gameprep_title": "Preparation",
 	
@@ -320,9 +339,9 @@
 	"gameprepset_gachatris_holdenable_desc": "Enabling this option gives Gachatris the ability to hold pieces. Adjust how a piece is held.",
 	"gameprepset_gachatris_b2b_type_desc": "Spins, minis, and Gachatrises add up a B2B (Bsck-to-back) chain when done consecutively. B2Bs reward extra points and garbage. Select which type of B2B to use.",
 	"gameprepset_frenzy_map_set_desc": "Select which set of Frenzy maps to use for Frenzy mode.",
-	"gameprepset_gachatris_harddrop_desc": "This option is on by default. Hard Drops in Gachatris will be impossible when it is off.",
+	"gameprepset_gachatris_harddrop_desc": "This option is on by default. This drops a Gachaquadromino instantly and locks it down.",
 
-	"gameprepset_linkblob_quickdrop_desc": "This option is off by default. If turned on, Blob segments will land and lock itself down immediately.",
+	"gameprepset_linkblob_quickdrop_desc": "This option is off by default. If turned on, Blob segments will land and lock itself down immediately, but that will not add up drop bonus.",
 	"gameprepset_linkblob_chainlimit_desc": "Adjust how long enough a chain should be for a player to send garbage.",
 	"gameprepset_linkblob_color_desc": "Adjust the number of colors existing in a session.",
 	
@@ -336,6 +355,7 @@
 	"rpg_skilldesc_immunity": "Immunity",
 	"rpg_skilldesc_immunedebuff": "Immune to Debuffs",
 	"rpg_skilldesc_deflect": "Deflect",
+	"rpg_skilldesc_reducegarbage": "Reduce Garbage",
 	
 	"rpg_skilldesc_burning": "Burn",
 	"rpg_skilldesc_assemble": "Assemble",

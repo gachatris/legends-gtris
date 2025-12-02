@@ -6,16 +6,24 @@
  "cs_border_yellow": { "path": "./assets/menu/images/cs_border_yellow.png", "type": "image" },
  "cs_border_green": { "path": "./assets/menu/images/cs_border_green.png", "type": "image" },
  "cs_mode_pick": { "path": "./assets/menu/images/cs_mode_pick.png", "type": "image" },
+ "cs_removeplayer": { "path": "./assets/menu/images/cs_removeplayer.png", "type": "image" },
+
  "switch_on": { "path": "./assets/menu/images/switch_on.png", "type": "image" },
  "switch_off": { "path": "./assets/menu/images/switch_off.png", "type": "image" },
+ "cs_back": { "path": "./assets/menu/images/cs_back.png", "type": "image" },
+ "back_normal": { "path": "./assets/menu/images/back_normal.png", "type": "image" },
+ "back_hover": { "path": "./assets/menu/images/back_hover.png", "type": "image" },
+ "back_press": { "path": "./assets/menu/images/back_press.png", "type": "image" },
+ 
+ "team_select": { "path": "./assets/menu/images/cs_team.png", "type": "image" },
 
+ 
  "lang_images": { "path": "./assets/init/lang_images.json", "type": "text" },
  "frenzy_ai_moves": { "path": "./assets/ai_script/frenzy_ai_movements.json", "type": "text" },
  "perfect_clear_sprite": { "path": "./assets/field/perfect_clear.png", "type": "image" },
  "blobs_preset": { "path": "./assets/field/blobs_preset.json", "type": "text" },
  "microblob_breset": { "path": "./assets/field/microblob_preset.json", "type": "text" },
  "blocks_preset": { "path": "./assets/field/blocks_preset.json", "type": "text" },
- "javascriptus_preset": { "path": "./assets/field/blocks_preset_javascriptus.json", "type": "text" },
  "ai_sapphirus": { "path": "./assets/ai_script/ai_sapphirus_core.js", "type": "text" },
  "ai_neoplex": { "path": "./assets/ai_script/ai_neoplex.js", "type": "text" },
  "ai_n_blob_c": { "path": "./assets/ai_script/ai_neoplex_blob_core.js", "type": "text" },
@@ -52,5 +60,11 @@
  "skin_blob": { "path": "./assets/skins/default/blob.png", "type": "image" },
  "skin_garbage_block": { "path": "./assets/skins/default/garbage_block.png", "type": "image" },
  "skin_garbage_blob": { "path": "./assets/skins/default/garbage_blob.png", "type": "image" },
- "skin_particle": { "path": "./assets/skins/default/particle.png", "type": "image" }
+ "skin_particle": { "path": "./assets/skins/default/particle.png", "type": "image" },
+  "block_next": { "path": "./assets/field/block_next.png", "type": "image" },
+ "block_hold": { "path": "./assets/field/block_hold.png", "type": "image" },
+ "block_nextqueue": { "path": "./assets/field/block_nextqueue.png", "type": "image" },
+
+ "team_colors": { "path": "./assets/field/team_colors.png", "type": "image" }
+
 }

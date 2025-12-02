@@ -20,7 +20,7 @@ let testSpace = function(grid, x, y, width, height) {
     return r - 1
    }
   }
-  ////console.log(`DROP: ${r - 1}`)
+  //////console.log(`DROP: ${r - 1}`)
   return r - 1
  },
  checkHoles = function(grid, width, height) {
@@ -209,7 +209,7 @@ function evaluateChainScore(data) {
      return r - 1
     }
    }
-   ////console.log(`DROP: ${r - 1}`)
+   //////console.log(`DROP: ${r - 1}`)
    return r - 1
   },/**/
   checkHoles = function() {
@@ -449,7 +449,7 @@ function checkTrigger(stack, w, hh, vh) {
      return r - 1
     }
    }
-   //////console.log(`DROP: ${r - 1}`)
+   ////////console.log(`DROP: ${r - 1}`)
    return r - 1
   },/**/
   checkHoles = function() {
@@ -474,7 +474,7 @@ function checkTrigger(stack, w, hh, vh) {
   while (!testSpace(x, y + a) && dis >= a) {
    a++;
   }
-  //////console.log(a)
+  ////////console.log(a)
   return a - 1;
  }
 

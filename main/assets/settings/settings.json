@@ -27,25 +27,31 @@
 		"default": 50,
 		"text": "text_percent"
 	},
-	"set_misc_bgopacity": {
-		"type": "range_minmax",
-		"min": 0,
-		"max": 100,
-		"default": 75,
-		"text": "text_percent"
-	},
 	
+
+	"set_global_bgtype": {
+	    "type": "range_list_specific",
+	    "choices": [
+	        "bg_black||0=",
+	        "bg_red||1=",
+	        "bg_green||2=",
+	        "bg_blue||3=",
+	        "bg_neoplexus1||4=./assets/background/video.webm"
+	    ],
+	    "default": 4,
+	    "text": "text_text"
+	},
 	
 	"set_global_musicbank": {
 		"type": "range_list_specific",
 		"choices": [
-			"music_music1||./assets/music/music1",
-			"music_transformation||./assets/music/insane_transform",
-			"music_fever1||./assets/music/insane2",
-			"music_fever2||./assets/music/insane",
-			"music_warning||./assets/music/warning",
-			"music_wormhole||./assets/music/wmw_eval",
-			"music_music2||./assets/music/music2"
+			"music_music1||music1",
+			"music_transformation||insane_transform",
+			"music_fever1||insane2",
+			"music_fever2||insane",
+			"music_warning||warning",
+			"music_wormhole||wmw_eval",
+			"music_music2||music2"
 		],
 		"default": 0,
 		"text": "text_text"
@@ -56,15 +62,28 @@
 		"off": "option_off",
 		"default": 1
 	},
-	"set_session_boardpos_2p": {
+	"set_session_boardpos_mp": {
 		"type": "range_list_specific",
 		"choices": [
-			"board_left||0",
-			"board_right||1"
+			"board_0||0",
+			"board_1||1",
+			"board_2||2",
+			"board_3||3"
 		],
 		"default": 0,
 		"text": "text_text"
 	},
+		"set_session_playeramount": {
+		"type": "range_list_specific",
+		"choices": [
+			"playeramount_2||2",
+			"playeramount_4||4"
+		],
+		"default": 0,
+		"text": "text_text"
+	},
+	
+
 	
 	"set_prep_wins": {
 		"type": "range_minmax",
@@ -84,10 +103,14 @@
 		"min": 0,
 		"max": 350,
 		"default_obj": {
-			"vs": 2,
-			"swap": 2,
-			"wmw": 1,
-			"fever": 2
+			"vs": 96,
+			"swap": 128,
+			"wmw": 256,
+			"fever": 128,
+			"vs4": 75,
+			"swap4": 2,
+			"wmw4": 1,
+			"fever4": 2
 		} ,
 		"text": "text_text"
 	},
@@ -113,6 +136,7 @@
 			"zen": 0
 		}
 	},
+	
 	"set_prep_tsdonly": {
 		"type": "switch",
 		"on": "option_on",

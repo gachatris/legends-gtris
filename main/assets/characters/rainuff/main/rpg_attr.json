@@ -1,0 +1,30 @@
+{
+	"hp": 255,
+	"mana": 140,
+	"atk": 9,
+	"def": 100,
+	"regen": 2,
+	"lifesteal": 0,
+	"lfa": 0,
+	"deflect": 0,
+	"skill": {
+		"cooldown": 1400,
+		"skill": "rainuff1",
+		"voice": "skill1",
+		"mana": 55,
+		"desc": "absorb",
+		"rawdesc": "absorb",
+		"skillvalues": {
+
+		},
+		"attr": [
+			{
+				"type": "absorb",
+				"time": 1200,
+				"parameters": {
+					"value": "25%hp"
+				}
+			}
+		]
+	}
+}

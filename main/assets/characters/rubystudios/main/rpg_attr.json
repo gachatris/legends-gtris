@@ -4,8 +4,8 @@
 	"atk": 6,
 	"def": 25,
 	"regen": 0,
-	"lifesteal": 0,
-	"lfa": 0,
+	"lifesteal": 0.02,
+	"lfa": 0.003,
 	"deflect": 0,
 	"skill": {
 		"cooldown": 1200,

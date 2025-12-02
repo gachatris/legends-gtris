@@ -1,0 +1,528 @@
+{
+ "base": "skylight",
+ "version": "main",
+ "sources": {
+  "image": {
+   "win": "images/win.png",
+   "lose": "images/lose.png",
+   "glow_orb": "images/glow_orb.png",
+   "body_white_silhouette": "images/bws.png",
+   "normal": "images/normal.png",
+   "warning": "images/warning.png",
+   "overhead": "images/overhead.png"
+  },
+  "voice": {
+   
+  }
+ },
+ "init": {
+  "animation": {
+   "paths": {
+    "op1": [
+     {
+      "x": 3.2,
+      "y": 20
+     },
+     {
+      "x": -5,
+      "y": 9
+     },
+     {
+      "x": -6.444,
+      "y": 1
+     },
+     {
+      "x": -3,
+      "y": -3
+     },
+     {
+      "x": 2,
+      "y": -2
+     },
+     {
+      "x": 6,
+      "y": 2.7
+     },
+     {
+      "x": 3,
+      "y": 7
+     },
+     {
+      "x": -1.2,
+      "y": 5
+     },
+     {
+      "x": -7,
+      "y": -4.5
+     }
+    ],
+    "op2": [
+     {
+      "x": -3.2,
+      "y": 20
+     },
+     {
+      "x": 5,
+      "y": 9
+     },
+     {
+      "x": 6.444,
+      "y": 1
+     },
+     {
+      "x": 3,
+      "y": -3
+     },
+     {
+      "x": -2,
+      "y": -2
+     },
+     {
+      "x": -6,
+      "y": 2.7
+     },
+     {
+      "x": -3,
+      "y": 7
+     },
+     {
+      "x": 1.2,
+      "y": 5
+     },
+     {
+      "x": 5,
+      "y": -4.5
+     }
+    ]
+   },
+   "sources": {
+    "win": {
+     "width": 1200,
+     "height": 1200,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 20,
+     "src": "win",
+     "xbound": 3,
+     "opacity": 1
+    },
+    "lose": {
+     "width": 800,
+     "height": 400,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 20,
+     "src": "lose",
+     "xbound": 2,
+     "opacity": 1
+    },
+    "bws": {
+     "width": 400,
+     "height": 400,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 20,
+     "src": "body_white_silhouette",
+     "xbound": 1,
+     "opacity": 1
+    },
+    "orb": {
+     "width": 1000,
+     "height": 2000,
+     "framewidth": 200,
+     "frameheight": 200,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 6,
+     "src": "glow_orb",
+     "xbound": 5,
+     "opacity": 1
+    }
+   },
+   "triggers": {
+    "win": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetid": "win",
+       "targetsrc": "win",
+       "framepos": 0,
+       "framemax": 1,
+       "framedel": 5,
+       "loop": false,
+       "paused": 1,
+       "opacity": 0,
+       "resetframe": 0
+      },
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 0,
+       "x1": 0,
+       "y1": 3,
+       "duration": 0,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "createAnimLayer",
+       "targetid": "bws",
+       "targetsrc": "bws",
+       "framepos": 0,
+       "framemax": 1,
+       "framedel": 5,
+       "loop": false,
+       "paused": 1,
+       "opacity": 0,
+       "resetframe": 0
+      },
+      {
+       "action": "createAnimLayer",
+       "targetid": "bws2",
+       "targetsrc": "bws",
+       "framepos": 0,
+       "framemax": 1,
+       "framedel": 5,
+       "loop": false,
+       "paused": 1,
+       "opacity": 0,
+       "resetframe": 0
+      },
+      {
+       "action": "createAnimLayer",
+       "targetid": "orb",
+       "targetsrc": "orb",
+       "framepos": 28,
+       "framemax": 49,
+       "framedel": 1,
+       "loop": 1,
+       "paused": false,
+       "opacity": 1,
+       "resetframe": 0
+      },
+      {
+       "action": "createAnimLayer",
+       "targetid": "orb2",
+       "targetsrc": "orb",
+       "framepos": 0,
+       "framemax": 49,
+       "framedel": 1,
+       "loop": 1,
+       "paused": false,
+       "opacity": 1,
+       "resetframe": 0
+      },
+      {
+       "action": "path",
+       "targetid": "orb",
+       "path": "op1",
+       "duration": 80,
+       "timing": "bezier",
+       "bez_s1": 1,
+       "bez_s2": 1
+      },
+      {
+       "action": "path",
+       "targetid": "orb2",
+       "path": "op2",
+       "duration": 80,
+       "timing": "bezier",
+       "bez_s1": 1,
+       "bez_s2": 1
+      }
+     ],
+     "15": [
+      {
+       "action": "move",
+       "targetid": "bws",
+       "x0": -5.5,
+       "y0": 3,
+       "x1": 0,
+       "y1": 3,
+       "duration": 20,
+       "timing": "bezier",
+       "bez_s1": 1,
+       "bez_s2": 1
+      },
+      {
+       "action": "opacity",
+       "targetid": "bws",
+       "opacity": 1,
+       "duration": 20
+      },
+      {
+       "action": "move",
+       "targetid": "bws2",
+       "x0": 5.5,
+       "y0": 3,
+       "x1": 0,
+       "y1": 3,
+       "duration": 20,
+       "timing": "bezier",
+       "bez_s1": 1,
+       "bez_s2": 1
+      },
+      {
+       "action": "opacity",
+       "targetid": "bws2",
+       "opacity": 1,
+       "duration": 20
+      }
+     ],
+     "35": [
+      {
+       "action": "opacity",
+       "targetid": "bws",
+       "opacity": 0,
+       "duration": 10
+      },
+      {
+       "action": "opacity",
+       "targetid": "bws2",
+       "opacity": 0,
+       "duration": 0
+      },
+      {
+       "action": "opacity",
+       "targetid": "win",
+       "opacity": 1,
+       "duration": 0
+      }
+     ],
+     "45": [
+      {
+       "action": "configureAnimLayer",
+       "targetid": "win",
+       "framepos": 0,
+       "framemax": 4,
+       "framedel": 5,
+       "loop": 0,
+       "paused": 0,
+       "opacity": 1,
+       "resetframe": 0
+      }
+     ],
+     "55": [
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 3,
+       "x1": 0,
+       "y1": 1.7,
+       "duration": 20,
+       "timing": "bezier",
+       "bez_s1": 0,
+       "bez_s2": 0
+      }
+     ],
+     "65": [
+      {
+       "action": "configureAnimLayer",
+       "targetid": "win",
+       "framepos": 5,
+       "framemax": 5,
+       "framedel": 0,
+       "loop": 0,
+       "paused": 1,
+       "opacity": 1,
+       "resetframe": 0
+      }
+     ],
+     "85": [
+      {
+       "action": "move",
+       "targetid": "win",
+       "x0": 0,
+       "y0": 1.7,
+       "x1": 0,
+       "y1": 0.227272,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "orb",
+       "x0": -7,
+       "y0": -4.5,
+       "x1": -7,
+       "y1": -6.22727,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "orb2",
+       "x0": 5,
+       "y0": -4.5,
+       "x1": 5,
+       "y1": -6.22727,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "135": [
+      {
+       "action": "move",
+       "targetid": "win",
+       "x1": 0,
+       "y1": 1.7,
+       "x0": 0,
+       "y0": 0.227272,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "orb",
+       "x1": -7,
+       "y1": -4.5,
+       "x0": -7,
+       "y0": -6.22727,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "orb2",
+       "x1": 5,
+       "y1": -4.5,
+       "x0": 5,
+       "y0": -6.22727,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "185": [
+      {
+       "action": "time",
+       "time": 85
+      }
+     ]
+    },
+    "lose": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetid": "lose",
+       "targetsrc": "lose",
+       "framepos": 0,
+       "framemax": 2,
+       "framedel": 5,
+       "loop": 1,
+       "paused": 0,
+       "opacity": 1,
+       "resetframe": 0
+      },
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": 14,
+       "x1": 0,
+       "y1": -1.3,
+       "duration": 20,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "20": [
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": -1.3,
+       "x1": 0,
+       "y1": 3.3,
+       "duration": 20,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "40": [
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": 3.3,
+       "x1": 0,
+       "y1": 1.1,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "90": [
+      {
+       "action": "move",
+       "targetid": "lose",
+       "x0": 0,
+       "y0": 1.1,
+       "x1": 0,
+       "y1": 3.3,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "140": [
+      {
+       "action": "time",
+       "time": 40
+      }
+     ]
+    }
+   }
+  },
+  "main": {
+   "ai": "normal",
+   "chainPower": [0, 8, 17, 26, 59, 79, 129, 165, 336, 461, 539, 597, 675, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+   "feverPower": [0, 6, 10, 15, 23, 29, 39, 52, 68, 85, 101, 133, 169, 204, 246, 269, 321, 369, 445, 479, 508, 571, 686, 699],
+   "dropset": [0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 4, 0, 2, 3, 0]
+  },
+  "ca_overhead": {
+   "image": "overhead"
+  },
+  
+  "image": {
+   "normal": {
+    "src": "normal"
+   },
+   "warning": {
+    "src": "warning"
+   }
+   
+   
+   
+   
+   
+  },
+  "voice": {
+   
+  }
+ }
+}

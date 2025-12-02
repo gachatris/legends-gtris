@@ -85,24 +85,6 @@
 	position: relative;
 }
 
-#PNUMBER-HOLD-PLACE {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	background:
-		/*linear-gradient(to right, #333, #0000)/**/
-		#000;
-}
-
-#PNUMBER-HOLD-TEXT {
-	position: absolute;
-	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-	color: #fff;
-	margin-right: 0.1em;
-}
-
 #PNUMBER-HOLD-CANVAS {
 	position: relative;
 	background:
@@ -251,12 +233,7 @@
 	transform: translateX(calc(var(--bn-position-x))) translateY(calc(var(--bn-position-y)));
 }
 
-#PNUMBER-BLOCK-NEXT {
-	position: absolute;
-	--bn-position-x: 0px;
-	--bn-position-y: -1em;
-	transform: translateX(calc(var(--bn-position-x))) translateY(calc(var(--bn-position-y)));
-}
+
 
 #PNUMBER-BLOB-NEXT-BG,
 #PNUMBER-BLOB-NEXT-CANVAS {
@@ -297,66 +274,21 @@
 	flex-direction: column;
 	position: relative;
 }
-
 #PNUMBER-BLOCK-NEXT {
+	position: absolute;
+	--bn-position-x: 0px;
+	--bn-position-y: -1em;
+	transform: translateX(calc(var(--bn-position-x))) translateY(calc(var(--bn-position-y)));
 	display: flex;
 	flex-direction: column;
 	position: absolute;
-}
-
-#PNUMBER-NEXT {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	/*justify-content: center;*/
-	position: relative;
-}
-
-#PNUMBER-NEXT-QUEUE {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	background:
-		/*linear-gradient(to right, #333, #0000)/**/
-		#000;
-	border: 1.1px solid #fff;
-}
-
-#PNUMBER-NEXT-PLACE {
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: relative;
-	background:
-		/*linear-gradient(to right, #333, #0000)/**/
-		#000;
-	border: 1.1px solid #fff;
-	border-bottom: none;
-}
-
-#PNUMBER-NEXT-TEXT {
-	position: absolute;
-	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-	color: #fff;
-	margin-left: 0.1em;
 }
 
 #PNUMBER-NEXT-CANVAS {
 	position: relative;
-	background:
-		/*linear-gradient(to right, #333, #0000)/**/
-		#000;
-	border: 1.1px solid #fff;
+	background:	#0000;
+	border: 1.1px solid #fff0;
 	border-top: none;
-
-}
-
-#PNUMBER-NEXT-QUEUE-CANVAS {
-	position: absolute;
 
 }
 
@@ -427,9 +359,51 @@
 	position: absolute;
 }
 
+
+#PNUMBER-WINS-SCORE {
+	position: relative;
+	display: flex;
+justify-content: center;
+align-items: center;
+}
+
+#PNUMBER-STATS-SCORE {
+	position: relative;
+	display: flex;
+	justify-content: center;
+align-items: center;
+}
+
 #PNUMBER-STATS-SCORE-TEXT {
 	position: absolute;
 	font-size: 2em;
+}
+
+
+#PNUMBER-TEAM-WIN {
+	position: relative;
+	font-size: 2em;
+	display: flex;
+	background: #666;
+	justify-content: center;
+	align-items: center;
+}
+
+#PNUMBER-WINS-DIV {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	background: #fe2;
+	align-items: center;
+}
+
+#PNUMBER-WINS-TEXT {
+	
+}
+
+#PNUMBER-TEAM-CANVAS {
+ position: relative;
+ 
 }
 
 #PNUMBER-RECTANIM-DIV {

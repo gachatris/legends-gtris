@@ -5,10 +5,11 @@
 		"middle_name": "Sesquipedalian",
 		"last_name": "Phylum",
 		"gender": 1,
+		"pronouns": "he/him",
 		"description": "He is the developer of Gachatris Legends. He keeps an eye on what his powers are gonna do.",
 		"ver": {
 			"main": {
-				"name": "Blue Wolf",
+				"name": "Phylum Star",
 				"description": "Known for his talent, EricLenovo goes on to outdo himself when it comes to the Neoplexian Land."
 			}
 		}
@@ -19,6 +20,7 @@
 		"middle_name": "",
 		"last_name": "",
 		"gender": 2,
+		"pronouns": "she/her",
 		"description": "She is an Enchantress who uses dark and red magic.",
 		"ver": {
 			"main": {
@@ -33,6 +35,7 @@
 		"middle_name": "",
 		"last_name": "Firefox",
 		"gender": 2,
+		"pronouns": "she/her",
 		"description": "She is a human fox who uses fire as her name suggests. Not only that, she also has ice abilities to use.",
 		"ver": {
 			"main": {
@@ -47,6 +50,7 @@
 		"middle_name": "",
 		"last_name": "Zi",
 		"gender": 1,
+		"pronouns": "he/him",
 		"description": "He is EricLenovo's student and Epicman's friend. He loves playing two puzzle modes and he belongs to the RIVALS team.",
 		"ver": {
 			"main": {
@@ -61,6 +65,7 @@
 		"middle_name": "",
 		"last_name": "Dimensions",
 		"gender": 2,
+		"pronouns": "she/her",
 		"description": "She is one of EricLenovo's friends. She loves using and playing with fire; she belongs to the Pyro Dimension.",
 		"ver": {
 			"main": {
@@ -76,6 +81,7 @@
 		"middle_name": "",
 		"last_name": "Astorga",
 		"gender": 1,
+		"pronouns": "he/him",
 		"description": "He's an adventurous neko aiming to dominate the Blobs and Blocks. His friend who does the same is Dominic.",
 		"ver": {
 			"main": {
@@ -90,6 +96,7 @@
 		"middle_name": "",
 		"last_name": "Orchidea",
 		"gender": 2,
+		"pronouns": "she/her",
 		"description": "She's the leader and a Gangster from the Star domain.",
 		"ver": {
 			"main": {
@@ -104,6 +111,7 @@
 		"middle_name": "",
 		"last_name": "",
 		"gender": 2,
+		"pronouns": "she/her",
 		"description": "This fairy herself hopes that she's gonna be the greatest fairy of all fairies.",
 		"ver": {
 			"main": {
@@ -118,12 +126,103 @@
 		"middle_name": "",
 		"last_name": "",
 		"author": "Abcia2",
+		"pronouns": "he/him",
 		"gender": 1,
 		"description": "This one himself is themed in lavender; he likes stars.",
 		"ver": {
 			"main": {
 				"name": "Lavender Star",
 				"description": "      "
+			}
+		}
+	},
+	"izzy": {
+		"name": "Izzy The Grape",
+		"first_name": "Izzy",
+		"middle_name": "",
+		"last_name": "Grapes",
+		"pronouns": "she/her",
+		"gender": 2,
+		"description": "This grape lover holds a large grape and she always brings it with her.",
+		"ver": {
+			"main": {
+				"name": "Grape Lover",
+				"description": "      "
+			}
+		}
+	},
+		"skylight": {
+		"name": "Skylight Cloud",
+		"first_name": "Skylight",
+		"middle_name": "",
+		"last_name": "Cloud",
+		"pronouns": "she/her",
+		"gender": 2,
+		"description": "Her small starlit moon ornament tells all. She has a friend Izzy, whom she calls \"her pet fish\"!",
+		"ver": {
+			"main": {
+				"name": "Star And Moon In The Skies",
+				"description": "      "
+			}
+		}
+	},
+	"emikama": {
+		"name": "Emikama",
+		"first_name": "Emikama",
+		"middle_name": "",
+		"last_name": "",
+		"gender": 3,
+		"pronouns": "they/them",
+		"description": "This is Skylight Cloud's online mother who goes by they/them pronouns. We can't see their hands but their sleeves serve a purpose. What do they have up their sleeves?",
+		"ver": {
+			"main": {
+				"name": "Arcane Sleeves Specialist",
+				"description": "      "
+			}
+		}
+	},
+			"rainuff": {
+		 "name": "Rainuff Cloud",
+		 "first_name": "Rainuff",
+		 "middle_name": "",
+		 "last_name": "Cloud",
+		 "gender": 2,
+		 "pronouns": "she/her",
+		 "description": "She aims to maintain the vibrance and color of the whole world with rainbow powers. Without rainbows, the world will turn grayscale and look like it's in the '40s.",
+		 "ver": {
+		  "main": {
+		   "name": "Colorful Rainbow Fox",
+		   "description": "      "
+		  }
+		 }
+		},
+			"gabbryielle": {
+		"name": "Sun Gabbryielle",
+		"first_name": "Sun Gabbryielle Abbygaile",
+		"middle_name": "Candriea",
+		"last_name": "Phylum",
+		"gender": 4,
+		"pronouns": "she/her",
+		"description": "She is the one who discovered the Linkblobs that dominated Phar Re.",
+		"ver": {
+			"main": {
+				"name": "Little Dark Sunshine",
+				"description": "Look how adorable Gabbryielle is even when she has dark colors."
+			}
+		}
+	},
+	"elabbygaile": {
+		"name": "E.L. and Abbygaile",
+		"first_name": "EricLenovo and Abbygaile",
+		"middle_name": "(Sesquipedalian and Rigallerta)",
+		"last_name": "Phylum",
+		"gender": 4,
+		"pronouns": "E.L.: he/him, Abbygaile: she/her",
+		"description": "EricLenovo and his wife, Abbygaile, are Sun Gabbryielle's parents. They are the Phylum leaders.",
+		"ver": {
+			"main": {
+				"name": "Phylum V",
+				"description": "Their secondary accent colors are their favorite colors. Their base colors? They remain the same."
 			}
 		}
 	}

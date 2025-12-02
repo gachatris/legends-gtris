@@ -681,13 +681,25 @@
 		let _d = _directory.split("./");
 		let directory = (`${BASE_DIRECTORY}/${_d[_d.length - 1]}`).replace(new RegExp("//", "gm"),
 			"/");
-		return new Promise((res, rej) => {
+		return new Promise(async (res, rej) => {
+			if (("fetch" in window)) {
+				let re = respType || "text";
+				if (re === "arraybuffer") re = "arrayBuffer";
+				let h = await fetch(directory);
+				let m = await h[re]();
+				if (re == "arrayBuffer") {
+					//console.log(m);
+				}
+				res(m);
+				return;
+			}
 			let xhr = new XMLHttpRequest();
 			xhr.timeout = 20000;
 			xhr.responseType = "arraybuffer";
 			
 			xhr.onreadystatechange = async (event) => {
-				if (event.target.readyState === 4 && event.target.status === 0) {
+				//console.log(directory, event.target.readyState)
+				if (event.target.readyState === 4 && event.target.status === 403) {
 					//console.error("403: EricLenovo System does not find a file: forbidden or there's an error encountered during the loading of a file.")
 					//rej("403: EricLenovo System does not find a file: forbidden or there's an error encountered during the loading of a file.");
 					let retry = await __fetch(_directory, respType);
@@ -697,16 +709,26 @@
 				
 				if (event.target.readyState === 4 && event.target.status === 200) {
 					////console.log(xhr.response)
+					let original = xhr.response;
+					let copy = original.slice(0);
 					try {
-						var uint8Array = new Uint8Array(xhr.response);
+						let ret = respType || "text";
+						
+						var uint8Array = new Uint8Array(original);
 						var i = uint8Array.length;
 						let binaryString = new TextDecoder().decode(uint8Array);
 						
 						var base64 = binaryString; //.join('');/**/
+						
 						function rend() {
 							let type;
-							let ret = respType || "text";
+							
 							if (ret == "blob") type = new Blob([uint8Array]);
+							else if (ret == "arraybuffer") {
+								//console.log(uint8Array.buffer, event.target.status, directory)
+								type = (uint8Array.buffer);
+								
+							}
 							else type = binaryString;
 							//console.log(ret)
 							return type;
@@ -717,7 +739,7 @@
 					}
 				};
 				if (event.target.readyState === 4 && event.target.status === 404) {
-					log("XHR", 4, event.target.status, directory);
+					console.log("XHR", 4, event.target.status, directory);
 					rej(directory + ": " + "404: EricLenovo System does not find a file: no such file or directory.");
 				};
 				
@@ -730,6 +752,8 @@
 			xhr.send();
 		})
 	});
+	
+	
 	
 	const __initScript = __fetch;
 	
@@ -1021,9 +1045,9 @@
 						a.download = "resolve.js";
 						a.click();*/
 						try {
-							let func = new Function(["__private", "database", "xhrFetch", "__initScript", "handle", "appinfo", 'android', 'accessible'], str);
+							let func = new Function(["__main_params__"], str);
 							////console.log(func);
-							let exec = func(_private, databaseManager, __fetch, (_base, _files, _on) => loadScripts(`${base}/${_base}`, _files, _on), handle, appInfo, appInfo.android ? AndroidIO : {}, accessible);
+							let exec = func({__private: _private, database: databaseManager, fetch:  __fetch, initScript: (_base, _files, _on) => loadScripts(`${base}/${_base}`, _files, _on), handle: handle, appinfo: appInfo,accessible: accessible});
 							// //console.log(handle)
 							
 							on(handle.__setHandle);

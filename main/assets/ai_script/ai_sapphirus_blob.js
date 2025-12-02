@@ -251,7 +251,7 @@ function evaluate(p) {
 								return r - 1
 							}
 						}
-						////console.log(`DROP: ${r - 1}`)
+						//////console.log(`DROP: ${r - 1}`)
 						return r - 1
 					},
 					checkHoles = function() {
@@ -473,7 +473,7 @@ function checkChain() {
 								return r - 1
 							}
 						}
-						////console.log(`DROP: ${r - 1}`)
+						//////console.log(`DROP: ${r - 1}`)
 						return r - 1
 					},
 					checkHoles = function() {

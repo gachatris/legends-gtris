@@ -1,0 +1,579 @@
+{
+ "sources": {
+  "image": {
+   			"normal": "images/normal.png",
+			"warning": "images/warning.png",
+   "a_fev": "images/a_fev.png",
+   "e_fev": "images/e_fev.png",
+   "a_win": "images/a_win.png",
+   "e_win": "images/e_win.png",
+   "a_lose": "images/a_lose.png",
+   "e_lose": "images/e_lose.png",
+"overhead": "images/overhead.png"
+  },
+    "voice": {
+   
+  }
+ },
+ "init": {
+  		"ca_overhead": {
+			"image": "overhead"
+		},
+  "animation": {
+   "paths": {},
+   "sources": {
+    "a_fev": {
+     "width": 1200,
+     "height": 400,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 19.5,
+     "src": "a_fev",
+     "xbound": 3,
+     "opacity": 1
+    },
+    "e_fev": {
+     "width": 800,
+     "height": 400,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 19.5,
+     "src": "e_fev",
+     "xbound": 2,
+     "opacity": 1
+    },
+    "a_win": {
+     "width": 1200,
+     "height": 1200,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 19,
+     "src": "a_win",
+     "xbound": 3,
+     "opacity": 1
+    },
+    "e_win": {
+     "width": 800,
+     "height": 400,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 19.5,
+     "src": "e_win",
+     "xbound": 2,
+     "opacity": 1
+    },
+    "a_lose": {
+     "width": 400,
+     "height": 400,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 19,
+     "src": "a_lose",
+     "xbound": 1,
+     "opacity": 1
+    },
+    "e_lose": {
+     "width": 400,
+     "height": 400,
+     "framewidth": 400,
+     "frameheight": 400,
+     "aspectwidth": 1,
+     "aspectheight": 1,
+     "cellsizemult": 19.5,
+     "src": "e_lose",
+     "xbound": 0,
+     "opacity": 1
+    }
+   },
+   "triggers": {
+    "fever": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetid": "fever2",
+       "targetsrc": "e_fev",
+       "framepos": 0,
+       "framemax": 2,
+       "framedel": 5,
+       "loop": false,
+       "paused": 1,
+       "opacity": 1,
+       "resetframe": 0
+      },
+      {
+       "action": "createAnimLayer",
+       "targetid": "fever",
+       "targetsrc": "a_fev",
+       "framepos": 0,
+       "framemax": 3,
+       "framedel": 5,
+       "loop": "true",
+       "paused": 1,
+       "opacity": 1,
+       "resetframe": 0
+      },
+      {
+       "action": "move",
+       "targetid": "fever",
+       "x0": 2.2,
+       "y0": 8,
+       "x1": 2.2,
+       "y1": 2.4,
+       "duration": 5,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "opacity",
+       "targetid": "fever",
+       "opacity": 1,
+       "duration": 5
+      },
+      {
+       "action": "move",
+       "targetid": "fever2",
+       "x0": -1.2,
+       "y0": 10,
+       "x1": -1.2,
+       "y1": 0.5,
+       "duration": 5,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "opacity",
+       "targetid": "fever2",
+       "opacity": 1,
+       "duration": 5
+      },
+      {
+       "action": "scale",
+       "targetid": "fever2",
+       "x0": 1,
+       "y0": 1,
+       "x1": -1,
+       "y1": 1,
+       "duration": 0,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "5": [
+      {
+       "action": "move",
+       "targetid": "fever",
+       "x0": 2.2,
+       "y0": 2.4,
+       "x1": 2.2,
+       "y1": 1.5,
+       "duration": 40,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "fever2",
+       "x0": -1.2,
+       "y0": 0.5,
+       "x1": -1.2,
+       "y1": -0.2,
+       "duration": 40,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "12": [
+      {
+       "action": "configureAnimLayer",
+       "targetid": "fever",
+       "framepos": 0,
+       "framemax": 3,
+       "framedel": 5,
+       "loop": 1,
+       "paused": 0,
+       "opacity": 1,
+       "resetframe": 2
+      },
+      {
+       "action": "configureAnimLayer",
+       "targetid": "fever2",
+       "framepos": 1,
+       "framemax": 2,
+       "framedel": 0,
+       "loop": 1,
+       "paused": 1,
+       "opacity": 2,
+       "resetframe": 0
+      }
+     ],
+     "45": [
+      {
+       "action": "move",
+       "targetid": "fever",
+       "x0": 2.2,
+       "y0": 1.5,
+       "x1": 2.2,
+       "y1": -10,
+       "duration": 5,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "opacity",
+       "targetid": "fever",
+       "opacity": 0,
+       "duration": 5
+      },
+      {
+       "action": "opacity",
+       "targetid": "fever2",
+       "opacity": 0,
+       "duration": 5
+      },
+      {
+       "action": "move",
+       "targetid": "fever2",
+       "x0": -1.2,
+       "y0": -0.2,
+       "x1": -1.2,
+       "y1": -12,
+       "duration": 5,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ]
+    },
+    "win": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetid": "a_win",
+       "targetsrc": "a_win",
+       "framepos": 0,
+       "framemax": 8,
+       "framedel": 10,
+       "loop": 1,
+       "paused": 0,
+       "opacity": 1,
+       "resetframe": 0
+      },
+      {
+       "action": "move",
+       "targetid": "a_win",
+       "x0": 2.2,
+       "y0": 10,
+       "x1": 2.2,
+       "y1": -0.1,
+       "duration": 15,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "createAnimLayer",
+       "targetid": "e_win",
+       "targetsrc": "e_win",
+       "framepos": 0,
+       "framemax": 1,
+       "framedel": 40,
+       "loop": 1,
+       "paused": 0,
+       "opacity": 1,
+       "resetframe": 1
+      },
+      {
+       "action": "scale",
+       "targetid": "e_win",
+       "x0": 1,
+       "y0": 1,
+       "x1": -1,
+       "y1": 1,
+       "duration": 0,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "e_win",
+       "x0": -0.5,
+       "y0": 11,
+       "x1": -0.5,
+       "y1": -0.1,
+       "duration": 15,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "15": [
+      {
+       "action": "move",
+       "targetid": "a_win",
+       "x0": 2.2,
+       "y0": 0,
+       "x1": 2.2,
+       "y1": 3,
+       "duration": 15,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "e_win",
+       "x0": -0.5,
+       "y0": -0.1,
+       "x1": -0.5,
+       "y1": 2,
+       "duration": 15,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "30": [
+      {
+       "action": "move",
+       "targetid": "a_win",
+       "x0": 2.2,
+       "y0": 3,
+       "x1": 2.2,
+       "y1": 2,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "e_win",
+       "x0": -0.5,
+       "y0": 2,
+       "x1": -0.5,
+       "y1": 1,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "80": [
+      {
+       "action": "move",
+       "targetid": "a_win",
+       "x0": 2.2,
+       "y0": 2,
+       "x1": 2.2,
+       "y1": 3,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "e_win",
+       "x0": -0.5,
+       "y0": 1,
+       "x1": -0.5,
+       "y1": 2,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "130": [
+      {
+       "action": "time",
+       "time": 30
+      }
+     ]
+    },
+    "lose": {
+     "0": [
+      {
+       "action": "createAnimLayer",
+       "targetid": "a_lose",
+       "targetsrc": "a_lose",
+       "framepos": 0,
+       "framemax": 0,
+       "framedel": 10,
+       "loop": 1,
+       "paused": 1,
+       "opacity": 1,
+       "resetframe": 0
+      },
+      {
+       "action": "move",
+       "targetid": "a_lose",
+       "x0": 2.2,
+       "y0": 10,
+       "x1": 2.2,
+       "y1": -0.1,
+       "duration": 15,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "createAnimLayer",
+       "targetid": "e_lose",
+       "targetsrc": "e_lose",
+       "framepos": 0,
+       "framemax": 0,
+       "framedel": 40,
+       "loop": 1,
+       "paused": 1,
+       "opacity": 1,
+       "resetframe": 0
+      },
+      {
+       "action": "scale",
+       "targetid": "e_lose",
+       "x0": 1,
+       "y0": 1,
+       "x1": -1,
+       "y1": 1,
+       "duration": 0,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "e_lose",
+       "x0": -0.5,
+       "y0": 11,
+       "x1": -0.5,
+       "y1": -0.1,
+       "duration": 15,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "15": [
+      {
+       "action": "move",
+       "targetid": "a_lose",
+       "x0": 2.2,
+       "y0": 0.5,
+       "x1": 2.2,
+       "y1": 2.5,
+       "duration": 15,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "e_lose",
+       "x0": -0.5,
+       "y0": -0.1,
+       "x1": -0.5,
+       "y1": 2,
+       "duration": 15,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "30": [
+      {
+       "action": "move",
+       "targetid": "a_lose",
+       "x0": 2.2,
+       "y0": 2.5,
+       "x1": 2.2,
+       "y1": 1.5,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "e_lose",
+       "x0": -0.5,
+       "y0": 2,
+       "x1": -0.5,
+       "y1": 1,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "80": [
+      {
+       "action": "move",
+       "targetid": "a_lose",
+       "x0": 2.2,
+       "y0": 1.5,
+       "x1": 2.2,
+       "y1": 2.5,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      },
+      {
+       "action": "move",
+       "targetid": "e_lose",
+       "x0": -0.5,
+       "y0": 1,
+       "x1": -0.5,
+       "y1": 2,
+       "duration": 50,
+       "timing": "linear",
+       "bez_s1": 0.3333333333333333,
+       "bez_s2": 0.6666666666666666
+      }
+     ],
+     "130": [
+      {
+       "action": "time",
+       "time": 30
+      }
+     ]
+    }
+   }
+  },
+  		"main": {
+  		 "ai": "neoplexus",
+		 "chainPower": [0, 8, 16, 27, 41, 79, 111, 206, 346, 408, 679, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699, 699],
+		 "feverPower": [0, 6, 9, 14, 20, 28, 39, 54, 75, 92, 108, 125, 156, 196, 219, 271, 310, 344, 404, 469, 500, 559, 604, 699],
+		 "dropset": [0, 1, 2, 0, 0, 3, 0, 4, 0, 0, 0, 0, 3, 0, 0, 4]
+		},
+		"image": {
+		 "normal": {
+		  "src": "normal"
+		 },
+		 "warning": {
+		  "src": "warning"
+		 }
+		},
+		  "voice": {
+   
+  }
+ }
+}
